@@ -44,11 +44,6 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1"
   },
-  "babel": {
-    "presets": [
-      "react"
-    ]
-  },
   "build": {
     "appId": "com.robinmalfait.smithers",
     "app-category-type": "app-category-type=public.app-category.developer-tools"
@@ -57,7 +52,7 @@
     "dev": "webpack --watch",
     "build": "NODE_ENV=production webpack",
     "test": "NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
-    "test:watch": "npm test --watch",
+    "test:watch": "npm test -- --watch",
     "start": "electron app",
     "prepublish": "npm test",
     "prepush": "npm test",

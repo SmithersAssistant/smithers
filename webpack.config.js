@@ -3,9 +3,10 @@ const path = require('path');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
+const noop = () => {};
 
 module.exports = {
-  devtool: isProduction ? 'hidden-source-map' : 'cheap-eval-source-map',
+  devtool: isProduction ? 'hidden-source-map' : 'devtool',
   entry: './src/index.js',
   output: {
     path: path.join(__dirname, 'app', 'dist'),
@@ -21,6 +22,10 @@ module.exports = {
       {
         test: /\.json/,
         loader: 'json-loader'
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
       }
     ]
   },
@@ -30,11 +35,11 @@ module.exports = {
         'NODE_ENV': JSON.stringify(nodeEnv)
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
+    isProduction ? new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false
       }
-    })
+    }) : noop
   ],
   target: 'electron'
 };
