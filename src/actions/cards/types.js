@@ -1,0 +1,4 @@
+export const ADD_CARD = 'ADD_CARD'
+export const SAVE_CARD_STATES = 'SAVE_CARD_STATES'
+export const REMOVE_CARD = 'REMOVE_CARD'
+export const CLEAR_CARD_HISTORY = 'CLEAR_CARD_HISTORY'
