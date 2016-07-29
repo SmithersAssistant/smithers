@@ -29,8 +29,7 @@ const settings = (state = {}, action) => {
 
 export const defaultState = {
   theme: 'indigo',
-  voice: undefined,
-  language: navigator.language
+  voice: undefined
 }
 
 export default settings
