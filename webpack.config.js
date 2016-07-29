@@ -12,6 +12,10 @@ module.exports = {
     path: path.join(__dirname, 'app', 'dist'),
     filename: 'bundle.js'
   },
+  resolve: {
+    extensions: ['', '.js'],
+    modulesDirectories: ['src', 'node_modules']
+  },
   module: {
     loaders: [
       {
