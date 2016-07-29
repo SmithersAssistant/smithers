@@ -1,0 +1,44 @@
+/* Makes the UI feel more native */
+html {
+  font-family: sans-serif;
+  -webkit-user-select: none; /* disable selection */
+  -webkit-user-drag: none; /* disable dragging */
+  cursor: default; /* use default cursor */
+}
+
+body {
+  margin: 0; /* remove default margin */
+}
+
+
+/* enable text selection */
+.is-selectable,
+pre,
+code {
+  -webkit-user-select: auto;
+  cursor: auto;
+  white-space: pre-wrap;
+}
+
+
+/* Buttons and links */
+button{
+  cursor: default;
+}
+
+/* Internal links */
+a {
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+}
+
+a:focus,
+a:hover {
+  border-bottom: none;
+}
+
+/* Images */
+img {
+  -webkit-user-drag: none; /* disable dragging */
+}
