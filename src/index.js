@@ -1,0 +1,27 @@
+import React from 'react';
+import {render} from 'react-dom';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
+// Import global CSS
+import './styles/global.css'
+import './styles/nativize.css'
+
+// Import the App
+import App from './components/App'
+
+// Load store and provider
+import {Provider} from 'react-redux'
+import store from './store'
+
+// Render
+render((
+  <MuiThemeProvider muiTheme={getMuiTheme()}>
+    <Provider store={store}>
+      <App/>
+    </Provider>
+  </MuiThemeProvider>
+), document.getElementById('root'));
