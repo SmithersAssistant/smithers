@@ -4,7 +4,7 @@ import {shell} from 'electron'
 import styles from './AStyles'
 const noop = () => {}
 
-const A = React.createCless({
+const A = React.createClass({
   getDefaultProps() {
     return {onClick: noop}
   },
