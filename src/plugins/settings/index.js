@@ -111,11 +111,17 @@ export default robot => {
 
   robot.registerComponent(Settings, SETTINGS_COMPONENT);
 
-  robot.listen(/^settings$/, "Settings", () => {
+  robot.listen(/^settings$/, {
+    description: "Settings",
+    usage: 'settings'
+  }, () => {
     robot.addCard('com.robinmalfait.settings');
   });
 
-  robot.listen(/^restart$/, "Restart", () => {
+  robot.listen(/^restart$/, {
+    description: "Restart",
+    usage: 'restart'
+  }, () => {
     restart();
   });
 

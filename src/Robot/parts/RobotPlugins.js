@@ -14,14 +14,14 @@ export default {
     ]
     currentPlugin = plugin
   },
-  listen(regex, description, cb) {
+  listen(regex, {description, usage}, cb) {
     plugins = plugins.map((plugin) => {
       if (plugin.name === currentPlugin.name) {
         plugin = {
           ...plugin,
           commands: [
             ...plugin.commands,
-            {regex, description, cb}
+            {regex, description, usage, cb}
           ]
         };
       }
@@ -43,7 +43,7 @@ export default {
     return plugins
       .find(p => p.name === plugin.name)
       .commands
-      .map(({regex: name, description}) => ({name, description}));
+      .map(({regex: name, description, usage}) => ({name, description, usage}));
   },
   plugins() {
     return pluginManager.list().map(plugin => ({

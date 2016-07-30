@@ -48,7 +48,10 @@ export default robot => {
 
   robot.registerComponent(Help, HELP_COMPONENT);
 
-  robot.listen(/^help$/, "Help Plugin", () => {
+  robot.listen(/^help$/, {
+    description: "Help Plugin",
+    usage: 'help'
+  }, () => {
     robot.addCard(HELP_COMPONENT);
   });
 
