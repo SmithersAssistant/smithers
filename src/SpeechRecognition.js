@@ -1,3 +1,5 @@
+import Event, {SPEECH_RESULT} from 'Event'
+
 const REC = new webkitSpeechRecognition();
 const AVAILABLE_EVENTS = [
   'onaudiostart', 'onaudioend', 'onend', 'onerror',
@@ -90,6 +92,11 @@ class SpeechRecognition {
       // We are pretty sure now
       if (parseFloat(details.confidence) >= parseFloat(this.confidence)) {
         const contents = details.transcript.trim();
+
+        Event.fire(SPEECH_RESULT, {
+          message: contents,
+          confidence: details.confidence
+        });
 
         this.listeners.forEach(listener => {
           listener.regex.forEach(regex => {
