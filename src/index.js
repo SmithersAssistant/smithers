@@ -21,6 +21,10 @@ import store from './store'
 import robot from './Robot'
 window.Robot = robot
 
+// Load inhouse plugins
+import pluginManager from 'PluginSystem/PluginManager'
+pluginManager.register('help', require('plugins/help'));
+
 // Render
 render((
   <MuiThemeProvider muiTheme={getMuiTheme()}>
