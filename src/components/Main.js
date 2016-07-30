@@ -1,7 +1,7 @@
 import React from 'react'
 import isEmpty from 'lodash/isEmpty'
 
-// import pluginManager from '../../PluginManager'
+import pluginManager from 'PluginSystem/PluginManager'
 
 import {dispatch, getState} from 'store'
 import {removeCard} from 'actions/index'
@@ -32,7 +32,6 @@ const RestorableComponent = React.createClass({
   getDefaultProps() {
     return {
       registerCard: () => {}, //  NOOP
-      unRegisterCard: () => {} //  NOOP
     }
   },
   componentDidMount() {

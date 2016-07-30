@@ -1,4 +1,4 @@
-// import pluginManager from '../PluginManager'
+import pluginManager from 'PluginSystem/PluginManager'
 
 let plugins = [];
 let currentPlugin;
