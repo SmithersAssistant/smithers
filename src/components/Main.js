@@ -154,7 +154,7 @@ const Main = React.createClass({
 
         this.saveComponentStates()
       })
-    }, 5000) // Every 5 seconds
+    }, 1000) // Every second
   },
   unRegisterCard(id) {
     this.cards = this.cards.filter(c => c.id !== id)
