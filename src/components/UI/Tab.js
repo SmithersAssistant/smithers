@@ -2,7 +2,7 @@ import React from 'react'
 import {css} from 'aphrodite'
 import {deleteProps} from '../functions'
 import {SortableElement} from 'react-sortable-hoc'
-import styleFactory from './TabStyles'
+import styles from './TabStyles'
 import flatten from 'lodash/flatten'
 
 export const TabHolder = ({
@@ -19,8 +19,6 @@ export const TabHolder = ({
   const otherProps = deleteProps(other, [
     'onActive', 'index', 'collection', 'scrollIntoView'
   ])
-
-  const styles = styleFactory()
 
   return (
     <li

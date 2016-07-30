@@ -1,13 +1,13 @@
 import {StyleSheet} from 'aphrodite'
-import themeFactory, {theme, color, rgba, px} from 'styles/theme'
+import {theme, color, rgba, px} from 'styles/theme'
 
 const tabBorderSize = 2
 
-export default () => StyleSheet.create({
+export default StyleSheet.create({
   tab: {
     position: 'relative',
     display: 'inline-block',
-    backgroundColor: color(themeFactory().colorTheme, 700)
+    backgroundColor: color(theme.colorTheme, 700)
   },
   tabActive: {
     borderBottom: `${px(tabBorderSize)} solid white`

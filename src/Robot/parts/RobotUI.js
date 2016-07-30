@@ -1,5 +1,5 @@
 // UI
-import theme, * as themeFunctions from 'styles/theme'
+import {theme} from 'styles/theme'
 import {color} from 'styles/functions/_color'
 import * as colors from 'styles/functions/_colors'
 
@@ -17,7 +17,6 @@ import {Collection, Item as CollectionItem} from 'components/UI/Collection'
 export default {
   UI: {
     theme,
-    themeFunctions,
     color,
     colors,
 

@@ -2,7 +2,7 @@ import React from 'react'
 import cx from 'classnames'
 import {css} from 'aphrodite'
 import {deleteProps} from '../functions'
-import styleFactory from './TabsStyles'
+import styles from './TabsStyles'
 import {TabHolder, SortableItem} from './Tab'
 import flatten from 'lodash/flatten'
 
@@ -18,8 +18,6 @@ const TabsHolder = ({externalStyles, headers, ...rest}) => {
     'hideSortableGhost', 'contentWindow', 'sorting', 'sortingIndex',
     'lockOffset'
   ])
-
-  const styles = styleFactory()
 
   return (
     <ul
@@ -63,9 +61,7 @@ export const Tabs = React.createClass({
     } = this.props
     let headers = []
     let panels = []
-
-    const styles = styleFactory()
-
+    
     for (var i = 0; i < children.length; i++) {
       let item = children[i]
       let isActive = i === selectedIndex

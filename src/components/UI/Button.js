@@ -1,6 +1,6 @@
 import React from 'react'
 import {css} from 'aphrodite'
-import themeFactory  from 'styles/theme'
+import {theme}  from 'styles/theme'
 import cx from 'classnames'
 import styles from './ButtonStyles'
 import TouchRipple from 'material-ui/internal/TouchRipple'
@@ -33,7 +33,7 @@ export const ButtonColors = {
 const Button = ({color = ButtonColors.THEME, children, className, ...other}) => (
   <button {...other} className={cx({
     [`${css(styles().button)}`]: true,
-    [`${css(styles(color === ButtonColors.THEME ? themeFactory().colorTheme : color).buttonColor)}`]: true,
+    [`${css(styles(color === ButtonColors.THEME ? theme.colorTheme : color).buttonColor)}`]: true,
     [className]: className != undefined
   })}>
     <TouchRipple>{children}</TouchRipple>

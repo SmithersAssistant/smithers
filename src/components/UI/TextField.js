@@ -1,14 +1,14 @@
 import React from 'react'
 import TextField from 'material-ui/TextField';
-import themeFactory, {color} from 'styles/theme';
+import {theme, color} from 'styles/theme';
 
 const Field = (props) => (
   <TextField
     underlineFocusStyle={{
-      borderColor: color(themeFactory().colorTheme)
+      borderColor: color(theme.colorTheme)
     }}
     floatingLabelStyle={{
-      color: color(themeFactory().colorTheme)
+      color: color(theme.colorTheme)
     }}
     {...props}
   />

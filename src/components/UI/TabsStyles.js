@@ -1,9 +1,9 @@
 import {StyleSheet} from 'aphrodite'
-import themeFactory, {theme, color} from 'styles/theme'
+import {theme, color} from 'styles/theme'
 
-export default () => StyleSheet.create({
+export default StyleSheet.create({
   tabsBar: {
-    backgroundColor: color(themeFactory().colorTheme, 700),
+    backgroundColor: color(theme.colorTheme, 700),
     listStyle: 'none',
     paddingLeft: 0,
     margin: 0,
@@ -27,6 +27,6 @@ export default () => StyleSheet.create({
   tab: {
     position: 'relative',
     display: 'inline-block',
-    backgroundColor: color(themeFactory().colorTheme, 700)
+    backgroundColor: color(theme.colorTheme, 700)
   }
 })
