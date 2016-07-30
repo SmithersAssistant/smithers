@@ -7,7 +7,7 @@ import {dispatch, getState} from 'store'
 import {removeCard} from 'actions/index'
 
 import {StyleSheet, css} from 'aphrodite'
-import {theme} from 'styles/theme'
+import {theme, px} from 'styles/theme'
 
 const styles = StyleSheet.create({
   cardsStyles: {
@@ -78,7 +78,14 @@ const NoCards = () => (
     ...theme.center,
     width: '80%'
   }}>
-    <h1 className={css(styles.noCardsTitleStyles)}>I am awaiting your instructions</h1>
+    <h1 className={css(styles.noCardsTitleStyles)}>Type <kbd style={{
+      fontFamily: "Roboto",
+      background: 'white',
+      padding: px(5, 14),
+      border: '1px solid #ccc',
+      borderRadius: 3,
+      ...theme.shadow1
+    }}>help</kbd> to see available commands</h1>
   </div>
 );
 
