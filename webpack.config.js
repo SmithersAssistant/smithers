@@ -1,5 +1,8 @@
 const webpack = require('webpack');
+const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const path = require('path');
+
+const packageJson = require('./package.json');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
@@ -7,7 +10,10 @@ const noop = () => {};
 
 module.exports = {
   devtool: isProduction ? 'hidden-source-map' : 'devtool',
-  entry: './src/index.js',
+  entry: {
+    app: './src/index.js',
+    vendor: Object.keys(packageJson.dependencies).filter(item => ! ['lodash'].includes(item))
+  },
   output: {
     path: path.join(__dirname, 'app', 'dist'),
     filename: 'bundle.js'
@@ -34,6 +40,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new CommonsChunkPlugin("vendor", "vendor.chunk.js"),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(nodeEnv)
@@ -45,5 +52,5 @@ module.exports = {
       }
     }) : noop
   ],
-  target: 'electron'
+  target: 'electron-renderer'
 };
