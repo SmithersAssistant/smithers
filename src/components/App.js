@@ -6,14 +6,33 @@ import Navbar from './layout/NavbarContainer';
 import Tools from './layout/ToolsContainer';
 import Tabs from './layout/TabsContainer';
 
-import {getState} from 'store';
+import store, {getState} from 'store';
 
-export default () => (
-  <div className={css(styles.bodyStyles)}>
-    <Navbar/>
-    <div className={css(styles.contentStyles, getState().tabs.visible ? undefined : styles.scrollBar)}>
-      <Tabs/>
-    </div>
-    <Tools/>
-  </div>
-)
+export default React.createClass({
+  getInitialState() {
+    return {
+      visibleTabs: getState().tabs.visible
+    }
+  },
+  componentDidMount() {
+    this._unsubscribe = store.subscribe(() => {
+      this.setState({ visibleTabs: getState().tabs.visible });
+    });
+  },
+  componentWillUnmount() {
+    this._unsubscribe()
+  },
+  render() {
+    let {visibleTabs} = this.state;
+
+    return (
+      <div className={css(styles.bodyStyles)}>
+        <Navbar/>
+        <div className={css(styles.contentStyles, visibleTabs ? undefined : styles.scrollBar)}>
+          <Tabs/>
+        </div>
+        <Tools/>
+      </div>
+    )
+  }
+})
