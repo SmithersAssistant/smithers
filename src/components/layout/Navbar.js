@@ -5,7 +5,7 @@ import styles from './NavbarStyles'
 
 // UI Elements
 import Icon from 'components/UI/Icon'
-// import pluginManager from '../../PluginManager'
+import pluginManager from 'PluginSystem/PluginManager'
 
 const Keys = {
   ENTER: 13,
@@ -80,7 +80,7 @@ const Navbar = React.createClass({
 
         const value = e.target.value;
         handleInput(value);
-        // pluginManager.execute(value);
+        pluginManager.execute(value);
         input.value = "";
         break;
       case Keys.ESC:
