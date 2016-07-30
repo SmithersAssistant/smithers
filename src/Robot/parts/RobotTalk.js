@@ -1,5 +1,6 @@
 import {dispatch, getState} from 'store'
 import {setVoice} from 'actions/index'
+import speechRecognition from 'SpeechRecognition'
 
 let voices = []
 let voice = null
@@ -14,6 +15,30 @@ export default {
     }
 
     window.speechSynthesis.speak(msg)
+  },
+  
+  hear(regex, cb) {
+    speechRecognition.listenFor(regex, cb)
+  },
+
+  speechAddEventListener(event, cb) {
+    speechRecognition.addEventListener(event, cb);
+  },
+
+  isListening() {
+    return speechRecognition.isListening();
+  },
+
+  abortListening() {
+    speechRecognition.abort();
+  },
+
+  startListening() {
+    speechRecognition.start();
+  },
+
+  stopListening() {
+    speechRecognition.stop();
   },
 
   loadVoices() {
