@@ -9,6 +9,8 @@ import {removeCard} from 'actions/index'
 import {StyleSheet, css} from 'aphrodite'
 import {theme, px} from 'styles/theme'
 
+import Event, {OPEN_HELP} from 'Event';
+
 const styles = StyleSheet.create({
   cardsStyles: {
     display: 'flex',
@@ -78,13 +80,18 @@ const NoCards = () => (
     ...theme.center,
     width: '80%'
   }}>
-    <h1 className={css(styles.noCardsTitleStyles)}>Type <kbd style={{
-      fontFamily: "Roboto",
-      background: 'white',
-      padding: px(5, 14),
-      borderRadius: 3,
-      ...theme.shadow1
-    }}>help</kbd> to see available commands</h1>
+    <h1 className={css(styles.noCardsTitleStyles)}>Type <kbd
+      style={{
+        fontFamily: "Roboto",
+        background: 'white',
+        padding: px(5, 14),
+        borderRadius: 3,
+        ...theme.shadow1
+      }}
+      onClick={() => {
+        Event.fire(OPEN_HELP);
+      }}
+    >help</kbd> to see available commands</h1>
   </div>
 );
 

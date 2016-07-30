@@ -49,6 +49,10 @@ export default robot => {
   robot.registerComponent(Help, HELP_COMPONENT);
 
   robot.listen(/^help$/, "Help Plugin", () => {
-    robot.addCard(HELP_COMPONENT)
-  })
+    robot.addCard(HELP_COMPONENT);
+  });
+
+  robot.on(robot.events.OPEN_HELP, () => {
+    robot.addCard(HELP_COMPONENT);
+  });
 }
