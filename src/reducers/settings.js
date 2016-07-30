@@ -1,7 +1,6 @@
 import {
   SET_THEME,
-  SET_VOICE,
-  SET_LANGUAGE
+  SET_VOICE
 } from '../actions/types'
 
 const settings = (state = {}, action) => {
@@ -15,12 +14,6 @@ const settings = (state = {}, action) => {
       return {
         ...state,
         voice: action.voice
-      }
-
-    case SET_LANGUAGE:
-      return {
-        ...state,
-        language: action.language
       }
     default:
       return state
