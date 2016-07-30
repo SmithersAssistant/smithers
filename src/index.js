@@ -1,3 +1,4 @@
+import {webFrame} from 'electron'
 import React from 'react';
 import {render} from 'react-dom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -30,6 +31,9 @@ pluginManager.register('tabs', require('plugins/tabs'));
 // Listen for notifications
 import notifications from './Notifications'
 notifications.start();
+
+// Disable pinch zoom
+webFrame.setZoomLevelLimits(1, 1);
 
 // Render
 render((
