@@ -24,6 +24,9 @@ window.Robot = robot
 // Load inhouse plugins
 import pluginManager from 'PluginSystem/PluginManager'
 pluginManager.register('help', require('plugins/help'));
+// Listen for notifications
+import notifications from './Notifications'
+notifications.start();
 
 // Render
 render((
