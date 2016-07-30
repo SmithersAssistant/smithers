@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import notifications, {defaultState} from '../../src/reducers/notifications';
 import {ENQUEUE_NOTIFICATION, DEQUEUE_NOTIFICATION} from '../../src/actions/types';
 
-describe('Reducers', () => {
+export default () => {
   describe('notifications', () => {
     it('should have a default state', () => {
       const state = [];
@@ -42,4 +42,4 @@ describe('Reducers', () => {
       expect(newState[1]).to.equal(notificationTwo);
     });
   });
-});
+}

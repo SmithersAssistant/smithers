@@ -3,7 +3,7 @@ import {expect} from 'chai';
 import cards, {defaultState} from '../../src/reducers/cards';
 import {ADD_CARD, REMOVE_CARD} from '../../src/actions/types';
 
-describe('Reducers', () => {
+export default () => {
   describe('cards', () => {
     it('should have a default state', () => {
       const state = {
@@ -75,4 +75,4 @@ describe('Reducers', () => {
       expect(newState.cards[0]).to.deep.equal(cardB);
     });
   });
-});
+}
