@@ -82,7 +82,6 @@ const NoCards = () => (
       fontFamily: "Roboto",
       background: 'white',
       padding: px(5, 14),
-      border: '1px solid #ccc',
       borderRadius: 3,
       ...theme.shadow1
     }}>help</kbd> to see available commands</h1>
