@@ -1,6 +1,5 @@
 import {dispatch, getState} from 'store'
 import {setVoice} from 'actions/index'
-import {List} from 'Immutable'
 
 let voices = []
 let voice = null
@@ -23,10 +22,10 @@ export default {
 
       if (voices.length > 0) {
         const savedVoice = getState().settings.voice
-        voice = List(voices).find(v => v.name === savedVoice)
+        voice = voices.find(v => v.name === savedVoice)
 
         if (voice === null || voice === undefined) {
-          voice = List(voices).first()
+          voice = voices[0]
         }
 
         if (voice.name !== savedVoice) {

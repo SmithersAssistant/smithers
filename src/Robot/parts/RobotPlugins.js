@@ -1,56 +1,54 @@
-import {List, Map} from 'Immutable'
 // import pluginManager from '../PluginManager'
 
-let observables = List([]);
+let plugins = [];
 let currentPlugin;
 
 export default {
   registerPlugin(plugin) {
-    observables = observables.push(
-      Map({
+    plugins = [
+      ...plugins,
+      {
         name: plugin.name,
-        commands: List([])
-      })
-    );
-
+        commands: []
+      }
+    ]
     currentPlugin = plugin
   },
   listen(regex, description, cb) {
-    let p = observables.filter(o => o.get('name') == currentPlugin.name).first();
+    plugins = plugins.map((plugin) => {
+      if (plugin.name === currentPlugin.name) {
+        plugin = {
+          ...plugin,
+          commands: [
+            ...plugin.commands,
+            {regex, description, cb}
+          ]
+        };
+      }
 
-    p = p.set('commands', p.get('commands').push({
-      regex, description, cb
-    }));
-
-    observables = observables.map(o => o.get('name') == currentPlugin.name ? p : o)
+      return plugin;
+    });
   },
   test(plugin, command) {
-    observables
-    .filter(o => o.get('name') == plugin.name)
-    .first()
-    .get('commands')
-    .filter(o => o.regex.test(command))
-    .forEach(o => o.cb({
-      command,
-      matches: o.regex.exec(command)
-    }))
+    plugins
+      .find(p => p.name === plugin.name)
+      .commands
+      .filter(cmd => cmd.regex.test(command))
+      .forEach(plugin => plugin.cb({
+        command,
+        matches: plugin.regex.exec(command)
+      }));
   },
   commands(plugin) {
-    return observables
-    .filter(o => o.get('name') == plugin.name)
-    .first()
-    .get('commands')
-    .map(o => {
-      return {
-        name: o.regex,
-        description: o.description
-      }
-    })
+    return plugins
+      .find(p => p.name === plugin.name)
+      .commands
+      .map(({regex: name, description}) => ({name, description}));
   },
   plugins() {
     return pluginManager.list().map(plugin => ({
       ...plugin,
-      commands: plugin.commands.toArray()
-    })).toArray()
+      commands: plugin.commands
+    }))
   }
 }
