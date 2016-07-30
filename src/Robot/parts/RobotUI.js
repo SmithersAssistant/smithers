@@ -8,6 +8,7 @@ import Button, {ButtonColors} from 'components/UI/Button'
 import Icon from 'components/UI/Icon'
 import {Tabs} from 'components/UI/Tabs'
 import {Tab} from 'components/UI/Tab'
+import Chip from 'components/UI/Chip'
 import Webview from 'components/UI/Webview'
 import TextField from 'components/UI/TextField'
 import SelectField from 'components/UI/SelectField'
@@ -26,6 +27,7 @@ export default {
     Icon,
     Tabs,
     Tab,
+    Chip,
     Webview,
     TextField,
     SelectField,
