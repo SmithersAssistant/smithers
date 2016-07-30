@@ -1,0 +1,16 @@
+export default robot => {
+  robot.listen(/^add tab (.*)$/, "Add a tab", res => robot.addTab(res.matches[1] || "Untitled"))
+  robot.listen(/^edit tab (.*)$/, "Edit current tab", res => robot.editTab(res.matches[1] || "Untitled"))
+  robot.listen(/^hide tabs$/, "Hide tabs", () => robot.hideTabs())
+  robot.listen(/^show tabs$/, "Show tabs", () => robot.showTabs())
+  robot.listen(/^close tab$/, "Remove current tab", () => robot.removeTab())
+  robot.listen(/^close left$/, "Remove tabs to the left", () => robot.removeTabsToTheLeft())
+  robot.listen(/^close right$/, "Remove tabs to the right", () => robot.removeTabsToTheRight())
+  robot.listen(/^close other$/, "Remove other tabs", () => robot.removeOtherTabs())
+  robot.listen(/^prev tab$/, "Focus tab to the left", () => robot.focusPrevTab())
+  robot.listen(/^next tab$/, "Focus tab to the right", () => robot.focusNextTab())
+  robot.listen(/^move tab left$/, "Move tab to the right", () => robot.moveTabToTheLeft())
+  robot.listen(/^move tab right$/, "Move tab to the right", () => robot.moveTabToTheRight())
+  robot.listen(/^prev tab (\d*)$/, "Focus tab to the left", res => robot.focusPrevTab(res.matches[1]))
+  robot.listen(/^next tab (\d*)$/, "Focus tab to the right", res => robot.focusNextTab(res.matches[1]))
+}

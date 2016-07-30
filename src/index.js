@@ -25,6 +25,7 @@ window.Robot = robot
 import pluginManager from 'PluginSystem/PluginManager'
 pluginManager.register('help', require('plugins/help'));
 pluginManager.register('settings', require('plugins/settings'));
+pluginManager.register('tabs', require('plugins/tabs'));
 
 // Listen for notifications
 import notifications from './Notifications'
