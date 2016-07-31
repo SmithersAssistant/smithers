@@ -30,6 +30,12 @@ const isTextSelected = (input) => {
 };
 
 const Navbar = React.createClass({
+  getInitialState() {
+    return {
+      value: ''
+    }
+  },
+
   getDefaultProps() {
     return {
       canGoBack: false,
@@ -37,19 +43,23 @@ const Navbar = React.createClass({
     };
   },
 
-  componentDidMount() {
-    this.refs.input.focus();
+  getInput() {
+    return this.refs.input;
+  },
 
-    Event.on(FOCUS_INPUT, () => this.refs.input.focus());
+  componentDidMount() {
+    this.getInput().focus();
+
+    Event.on(FOCUS_INPUT, () => this.getInput().focus());
     Event.on(PUT_INPUT, ({
       text,
       selectStart,
       selectEnd
     }) => {
-      this.refs.input.value = text;
-      this.refs.input.focus();
+      this.getInput().value = text;
+      this.getInput().focus();
       if (selectStart && selectEnd) {
-        this.refs.input.setSelectionRange(selectStart, selectEnd)
+        this.getInput().setSelectionRange(selectStart, selectEnd)
       }
     })
   },
@@ -69,7 +79,6 @@ const Navbar = React.createClass({
   handleKeyUp(e) {
     e.preventDefault();
 
-    const {input} = this.refs;
     const {handleInput, addTab} = this.props;
 
     switch (e.keyCode) {
@@ -81,7 +90,7 @@ const Navbar = React.createClass({
         const value = e.target.value;
         handleInput(value);
         pluginManager.execute(value);
-        input.value = "";
+        this.getInput().value = "";
         break;
       case Keys.ESC:
         this.selectInputText();
@@ -90,7 +99,7 @@ const Navbar = React.createClass({
         if (this.props.canGoBack) {
           this.props.previousCommand()
           setTimeout(() => {
-            this.refs.input.value = this.props.command
+            this.getInput().value = this.props.command
           }, 1)
         }
         break;
@@ -98,7 +107,7 @@ const Navbar = React.createClass({
         if (this.props.canGoForward) {
           this.props.nextCommand()
           setTimeout(() => {
-            this.refs.input.value = this.props.command
+            this.getInput().value = this.props.command
           }, 1)
         }
         break;
@@ -106,13 +115,13 @@ const Navbar = React.createClass({
   },
 
   selectInputText() {
-    const {input} = this.refs;
+    const input = this.getInput();
     input && input.setSelectionRange(isTextSelected(input) ? input.value.length : 0, input.value.length)
   },
 
   render() {
     return (
-      <div className={css(styles.headerStyles)} onClick={() => this.refs.input.focus()}>
+      <div className={css(styles.headerStyles)} onClick={() => this.getInput().focus()}>
         <div className={css(styles.inputWrapperStyles)}>
           <div className={css(styles.inputIconStyles)}>
             <Icon icon="terminal"/>
