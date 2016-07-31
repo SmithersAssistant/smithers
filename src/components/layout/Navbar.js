@@ -41,7 +41,7 @@ const Navbar = React.createClass({
   getInitialState() {
     return {
       suggestions: [],
-      currentSuggestion: 0
+      currentSuggestion: -1
     }
   },
   getDefaultProps() {
@@ -58,7 +58,7 @@ const Navbar = React.createClass({
   resetSuggestions() {
     this.setState({
       suggestions: [],
-      currentSuggestion: 0
+      currentSuggestion: -1
     })
   },
 
@@ -138,12 +138,6 @@ const Navbar = React.createClass({
     this.resetSuggestions();
   },
 
-  handleSuggestionKeyUp(e, suggestion) {
-    if (e.keyCode === Keys.TAB) {
-      this.handleSuggestion(suggestion);
-    }
-  },
-
   handleKeyUp(e) {
     e.preventDefault();
 
@@ -192,12 +186,32 @@ const Navbar = React.createClass({
     switch(e.keyCode) {
       case Keys.UP:
         if (this.state.suggestions.length >= 0) {
-          this.setState({currentSuggestion: (this.state.suggestions.length + this.state.currentSuggestion - 1) % this.state.suggestions.length})
+          this.setState({currentSuggestion: (this.state.suggestions.length + this.state.currentSuggestion - 1) % this.state.suggestions.length}, () => {
+            const suggestion = this.state.suggestions[this.state.currentSuggestion];
+
+            setTimeout(() => {
+              Event.fire(PUT_INPUT, {
+              text: suggestion.command.usage,
+              selectStart: suggestion.command.usage.indexOf('<'),
+              selectEnd: suggestion.command.usage.indexOf('>') + 1
+            });
+            })
+          });
         }
         break;
       case Keys.DOWN:
         if (this.state.suggestions.length >= 0) {
-          this.setState({currentSuggestion: (this.state.currentSuggestion + 1) % this.state.suggestions.length})
+          this.setState({currentSuggestion: (this.state.currentSuggestion + 1) % this.state.suggestions.length}, () => {
+            const suggestion = this.state.suggestions[this.state.currentSuggestion];
+
+            setTimeout(() => {
+              Event.fire(PUT_INPUT, {
+              text: suggestion.command.usage,
+              selectStart: suggestion.command.usage.indexOf('<'),
+              selectEnd: suggestion.command.usage.indexOf('>') + 1
+            });
+            })
+          });
         }
         break;
     }
@@ -238,7 +252,7 @@ const Navbar = React.createClass({
             onChange={(e) => {
               this.setState({
                 suggestions: this.getSuggestionsFor(e.target.value),
-                currentSuggestion: 0
+                currentSuggestion: -1
               });
             }}
             ref="input"
@@ -254,7 +268,6 @@ const Navbar = React.createClass({
                 className={css(styles.suggestion, currentSuggestion === i ? styles.activeSuggestion : undefined)}
                 scrollIntoView={currentSuggestion === i}
                 onClick={() => this.handleSuggestion(suggestion)}
-                onKeyUp={(e) => this.handleSuggestionKeyUp(e, suggestion)}
               >{suggestion.component}</CollectionItem>
             ))}
           </Collection>
