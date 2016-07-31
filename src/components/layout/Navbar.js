@@ -145,10 +145,6 @@ const Navbar = React.createClass({
 
     const {addTab} = this.props;
 
-    this.setState({
-      suggestions: this.getSuggestionsFor(e.target.value)
-    })
-
     switch (e.keyCode) {
       case Keys.ENTER:
         if (e.metaKey || e.ctrlKey) {
@@ -162,19 +158,19 @@ const Navbar = React.createClass({
         this.setState({suggestions: []})
         break;
       case Keys.UP:
-        if (this.props.canGoBack) {
+        if (this.props.canGoBack && this.state.suggestions.length <= 0) {
           this.props.previousCommand()
           setTimeout(() => {
             this.getInput().value = this.props.command
-          }, 1)
+          })
         }
         break;
       case Keys.DOWN:
-        if (this.props.canGoForward) {
+        if (this.props.canGoForward && this.state.suggestions.length <= 0) {
           this.props.nextCommand()
           setTimeout(() => {
             this.getInput().value = this.props.command
-          }, 1)
+          })
         }
         break;
     }
@@ -198,6 +194,11 @@ const Navbar = React.createClass({
             className={css(styles.inputStyles)}
             onKeyDown={this.handleKeyDown}
             onKeyUp={this.handleKeyUp}
+            onChange={(e) => {
+              this.setState({
+                suggestions: this.getSuggestionsFor(e.target.value)
+              });
+            }}
             ref="input"
             type="text"
             placeholder="Type your commands here..."
@@ -216,7 +217,7 @@ const Navbar = React.createClass({
                       selectStart: suggestion.command.usage.indexOf('<'),
                       selectEnd: suggestion.command.usage.indexOf('>') + 1
                     });
-                    
+
                     this.setState({
                       suggestions: []
                     });
