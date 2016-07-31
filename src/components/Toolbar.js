@@ -16,7 +16,6 @@ const Toolbar = ({title, actions, removeCard}) => {
       left: 0,
       paddingLeft: theme.cardHeaderPaddingLeft,
       borderBottom: '1px solid whitesmoke',
-      zIndex: 1,
       borderRadius: '3px 3px 0 0',
       backgroundColor: theme.cardBackground
     },
