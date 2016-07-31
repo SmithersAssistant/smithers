@@ -47,7 +47,7 @@ export default robot => {
           activeColor: theme.colorTheme
         },
         pluginsPageState: {
-
+          activeTab: 0
         }
       }
     },
@@ -77,6 +77,17 @@ export default robot => {
           setState={(pluginsPageState, cb = robot.noop) => {
             this.setState({pluginsPageState}, cb)
           }}
+          tabsProps={{
+            externalStyles: [styles.tabs, styles.nestedTabs],
+            selectedIndex: this.state.pluginsPageState.activeTab,
+            disableSorting: true
+          }}
+          tabProps={{
+            externalStyles: styles.tab,
+            externalStylesActive: styles.tabActive,
+            externalAnchorStyles: styles.a,
+            externalAnchorStylesActive: styles.aActive
+          }}
         />
       }]
     },
@@ -84,7 +95,7 @@ export default robot => {
       return (
         <Full {...this.props} title="Settings">
           <Tabs
-            externalStyles={styles.tabs}
+            externalStyles={[styles.tabs, styles.tabsInBar]}
             selectedIndex={this.state.activePage}
             disableSorting={true}
           >
@@ -97,13 +108,7 @@ export default robot => {
                 externalStylesActive={styles.tabActive}
                 externalAnchorStyles={styles.a}
                 externalAnchorStylesActive={styles.aActive}
-              >
-                <div style={{
-                  padding: 20
-                }}>
-                  {page.body}
-                </div>
-              </Tab>
+              >{page.body}</Tab>
             ))}
           </Tabs>
 
