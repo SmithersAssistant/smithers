@@ -1,4 +1,5 @@
-import store, {getState, dispatch} from 'store';
+import {getNotifications} from 'stateHelpers'
+import store, {dispatch} from 'store';
 import {dequeueNotification} from 'actions/index';
 
 let isActive = false;
@@ -8,7 +9,7 @@ const next = () => {
 };
 
 const showNotification = () => {
-  const {notifications} = getState();
+  const notifications = getNotifications()
 
   const hasMessage = notifications.length > 0;
   const body = notifications[notifications.length - 1];

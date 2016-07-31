@@ -29,7 +29,7 @@ pluginManager.register('settings', require('plugins/settings'));
 pluginManager.register('tabs', require('plugins/tabs'));
 
 // Listen for notifications
-import notifications from './Notifications'
+import notifications from './notifications'
 notifications.start();
 
 // Disable pinch zoom
