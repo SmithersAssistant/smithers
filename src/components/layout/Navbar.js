@@ -184,39 +184,34 @@ const Navbar = React.createClass({
     }
 
     if (this.state.suggestions.length > 0) {
-      switch(e.keyCode) {
-        case Keys.UP:
-          if (this.state.suggestions.length >= 0) {
-            this.setState({currentSuggestion: (this.state.suggestions.length + this.state.currentSuggestion - 1) % this.state.suggestions.length}, () => {
-              const suggestion = this.state.suggestions[this.state.currentSuggestion];
+      if (e.keyCode === Keys.UP || (e.keyCode === Keys.TAB && e.shiftKey)) {
+        if (this.state.suggestions.length >= 0) {
+          this.setState({currentSuggestion: (this.state.suggestions.length + this.state.currentSuggestion - 1) % this.state.suggestions.length}, () => {
+            this.updateInput();
+          });
+        }
+      }
 
-              setTimeout(() => {
-                Event.fire(PUT_INPUT, {
-                  text: suggestion.command.usage,
-                  selectStart: suggestion.command.usage.indexOf('<'),
-                  selectEnd: suggestion.command.usage.indexOf('>') + 1
-                });
-              })
-            });
-          }
-          break;
-        case Keys.DOWN:
-          if (this.state.suggestions.length >= 0) {
-            this.setState({currentSuggestion: (this.state.currentSuggestion + 1) % this.state.suggestions.length}, () => {
-              const suggestion = this.state.suggestions[this.state.currentSuggestion];
-
-              setTimeout(() => {
-                Event.fire(PUT_INPUT, {
-                  text: suggestion.command.usage,
-                  selectStart: suggestion.command.usage.indexOf('<'),
-                  selectEnd: suggestion.command.usage.indexOf('>') + 1
-                });
-              })
-            });
-          }
-          break;
+      if (e.keyCode === Keys.DOWN || (e.keyCode === Keys.TAB && !e.shiftKey)) {
+        if (this.state.suggestions.length >= 0) {
+          this.setState({currentSuggestion: (this.state.currentSuggestion + 1) % this.state.suggestions.length}, () => {
+            this.updateInput();
+          });
+        }
       }
     }
+  },
+
+  updateInput() {
+    const suggestion = this.state.suggestions[this.state.currentSuggestion];
+
+    setTimeout(() => {
+      Event.fire(PUT_INPUT, {
+        text: suggestion.command.usage,
+        selectStart: suggestion.command.usage.indexOf('<'),
+        selectEnd: suggestion.command.usage.indexOf('>') + 1
+      });
+    })
   },
 
   selectInputText() {
