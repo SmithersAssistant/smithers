@@ -11,12 +11,12 @@ export default robot => {
 
   robot.listen(/^hide tabs$/, {
     description: "Hide tabs",
-    usage: "hide tab"
+    usage: "hide tabs"
   }, () => robot.hideTabs());
 
   robot.listen(/^show tabs$/, {
     description: "Show tabs",
-    usage: "show tab"
+    usage: "show tabs"
   }, () => robot.showTabs());
 
   robot.listen(/^close tab$/, {
