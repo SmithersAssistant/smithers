@@ -1,11 +1,7 @@
-import {getState} from '../store'
+import {getThemeColor} from 'stateHelpers'
 import {color, rgba} from './functions'
 export * from './functions'
 import os from 'os'
-
-const getStoredColorTheme = (defaultTheme) => {
-  return getState().settings.theme || defaultTheme
-}
 
 const inputBar = colorTheme => ({
   barBackgroundColor: color(colorTheme, 700),
@@ -106,7 +102,7 @@ const helpers = {
   }
 }
 
-const themeFactory = (colorTheme = getStoredColorTheme('indigo')) => ({
+const themeFactory = (colorTheme = getThemeColor('indigo')) => ({
   colorTheme,
   ...colors(colorTheme),
   ...fonts,

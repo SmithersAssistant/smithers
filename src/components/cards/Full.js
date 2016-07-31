@@ -2,15 +2,13 @@ import React from 'react'
 import Base from './Base'
 import {theme, sum, px} from 'styles/theme'
 import {cardStyles, itemStyles} from './_styles'
-import {getState} from 'store'
+import {areTabsVisible} from 'stateHelpers'
 
 const calculateFullCardHeight = () => {
-  const areTabsVisible = getState().tabs.visible
-
   return sum(
     theme.inputHeight,
     theme.headerOffset,
-    (areTabsVisible ? theme.tabHeight : 0),
+    (areTabsVisible() ? theme.tabHeight : 0),
     sum(theme.cardSpace, theme.cardSpace, 0, 0), // top right bottom left
     theme.footerHeight
   )

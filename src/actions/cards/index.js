@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid'
-import {getState} from '../../store'
+import {getActiveTab} from 'stateHelpers'
 
 import {
   ADD_CARD,
@@ -8,11 +8,7 @@ import {
   CLEAR_CARD_HISTORY
 } from './types'
 
-const fetchActiveTab = () => {
-  return getState().tabs.active;
-};
-
-export const addCard = (card, props = {}, relation = fetchActiveTab()) => ({
+export const addCard = (card, props = {}, relation = getActiveTab()) => ({
   type: ADD_CARD,
   card,
   props,
@@ -27,7 +23,7 @@ export const saveCardStates = (data) => ({
 
 export const clearCards = () => ({
   type: CLEAR_CARD_HISTORY,
-  tab: fetchActiveTab()
+  tab: getActiveTab()
 });
 
 export const removeCard = (id) => ({

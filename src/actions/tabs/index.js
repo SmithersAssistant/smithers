@@ -1,5 +1,6 @@
 import {v4 as uuid} from 'uuid'
-import {getState, dispatch} from '../../store'
+import {dispatch} from 'store'
+import {getActiveTab, getTabsList} from 'stateHelpers'
 
 import {
   ADD_TAB,
@@ -15,9 +16,6 @@ import {
   FOCUS_NEXT_TAB
 } from './types'
 
-const fetchActiveTab = () => getState().tabs.active
-const fetchTabsList = () => getState().tabs.list
-
 const findTabIndex = (list, active) => {
   return list.findIndex(tab => tab.id == active)
 }
@@ -28,7 +26,7 @@ export const addTab = (title, id = uuid()) => ({
   id
 })
 
-export const editTab = (title, id = fetchActiveTab()) => ({
+export const editTab = (title, id = getActiveTab()) => ({
   type: EDIT_TAB,
   title,
   id
@@ -47,28 +45,28 @@ export const showTabs = () => ({
   type: SHOW_TABS
 })
 
-export const removeTab = (id = fetchActiveTab()) => ({
+export const removeTab = (id = getActiveTab()) => ({
   type: REMOVE_TAB,
   id
 })
 
-const removeTabs = (id = fetchActiveTab(), callback) => {
-  const list = fetchTabsList()
+const removeTabs = (id = getActiveTab(), callback) => {
+  const list = getTabsList()
   const activeTab = findTabIndex(list, id)
 
   list.filter((item, index) => callback(index, activeTab))
   .forEach(tab => dispatch(removeTab(tab.id)))
 }
 
-export const removeTabsToTheLeft = (id = fetchActiveTab()) => {
+export const removeTabsToTheLeft = (id = getActiveTab()) => {
   removeTabs(id, (index, activeTab) => index < activeTab)
 }
 
-export const removeTabsToTheRight = (id = fetchActiveTab()) => {
+export const removeTabsToTheRight = (id = getActiveTab()) => {
   removeTabs(id, (index, activeTab) => index > activeTab)
 }
 
-export const removeOtherTabs = (id = fetchActiveTab()) => {
+export const removeOtherTabs = (id = getActiveTab()) => {
   removeTabs(id, (index, activeTab) => index !== activeTab)
 }
 
@@ -78,12 +76,12 @@ export const moveTab = (oldIndex, newIndex) => ({
   newIndex
 })
 
-export const moveTabToTheLeft = (id = fetchActiveTab()) => ({
+export const moveTabToTheLeft = (id = getActiveTab()) => ({
   type: MOVE_TAB_TO_THE_LEFT,
   id
 })
 
-export const moveTabToTheRight = (id = fetchActiveTab()) => ({
+export const moveTabToTheRight = (id = getActiveTab()) => ({
   type: MOVE_TAB_TO_THE_RIGHT,
   id
 })

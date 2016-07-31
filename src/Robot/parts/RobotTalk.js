@@ -1,4 +1,5 @@
-import {dispatch, getState} from 'store'
+import {dispatch} from 'store'
+import {getVoice} from 'stateHelpers'
 import {setVoice} from 'actions/index'
 import speechRecognition from 'SpeechRecognition'
 
@@ -46,7 +47,7 @@ export default {
       voices = window.speechSynthesis.getVoices().filter(s => s.localService == true)
 
       if (voices.length > 0) {
-        const savedVoice = getState().settings.voice
+        const savedVoice = getVoice()
         voice = voices.find(v => v.name === savedVoice)
 
         if (voice === null || voice === undefined) {

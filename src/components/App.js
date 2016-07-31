@@ -6,17 +6,18 @@ import Navbar from './layout/NavbarContainer';
 import Tools from './layout/ToolsContainer';
 import Tabs from './layout/TabsContainer';
 
-import store, {getState} from 'store';
+import store from 'store';
+import {areTabsVisible} from 'stateHelpers';
 
 export default React.createClass({
   getInitialState() {
     return {
-      visibleTabs: getState().tabs.visible
+      visibleTabs: areTabsVisible()
     }
   },
   componentDidMount() {
     this._unsubscribe = store.subscribe(() => {
-      this.setState({ visibleTabs: getState().tabs.visible });
+      this.setState({ visibleTabs: areTabsVisible() });
     });
   },
   componentWillUnmount() {

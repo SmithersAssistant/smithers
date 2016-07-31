@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 
 import pluginManager from 'PluginSystem/PluginManager'
 
-import {dispatch, getState} from 'store'
+import {dispatch} from 'store'
 import {removeCard} from 'actions/index'
 
 import {StyleSheet, css} from 'aphrodite'
@@ -23,12 +23,6 @@ const styles = StyleSheet.create({
     cursor: 'default'
   }
 })
-
-const getCardData = (id) => {
-  const {cards} = getState().cards
-
-  return cards.find((card) => card.id === id)
-}
 
 const RestorableComponent = React.createClass({
   getDefaultProps() {
