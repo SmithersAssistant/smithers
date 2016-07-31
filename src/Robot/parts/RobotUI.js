@@ -13,7 +13,7 @@ import Webview from 'components/UI/Webview'
 import TextField from 'components/UI/TextField'
 import SelectField from 'components/UI/SelectField'
 import CheckBoxField from 'components/UI/CheckBoxField'
-import {Collection, Item as CollectionItem} from 'components/UI/Collection'
+import {Collection, CollectionItem} from 'components/UI/Collection'
 
 export default {
   UI: {

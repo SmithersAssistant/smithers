@@ -10,7 +10,7 @@ export const Collection = ({className = false, ...other}) => (
   })}/>
 )
 
-export const Item = ({className = false, ...other}) => (
+export const CollectionItem = ({className = false, ...other}) => (
   <li {...other} className={cx({
     [css(styles.collectionItemStyles)]: true,
     [className]: className
