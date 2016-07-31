@@ -7,9 +7,11 @@ import RobotPlugins from './parts/RobotPlugins'
 import RobotUtils from './parts/RobotUtils'
 import RobotEvents from './parts/RobotEvents'
 import RobotActions from './parts/RobotActions'
+import RobotState from './parts/RobotState'
 
 const Robot = {
   ...RobotActions,
+  ...RobotState,
   ...RobotTabs,
   ...RobotCards,
   ...RobotUI,
