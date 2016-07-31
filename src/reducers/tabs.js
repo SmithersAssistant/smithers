@@ -74,6 +74,7 @@ const tab = (state, action) => {
 
 const tabs = (state = [], action) => {
   let activeIndex
+  let id
 
   switch (action.type) {
     case ADD_TAB:
@@ -100,9 +101,23 @@ const tabs = (state = [], action) => {
       }
     case SHOW_TABS:
       // You can only make the tabs bar visible, when there are tabs
+      if (state.list.length > 0) {
+        return {
+          ...state,
+          visible: state.list.length > 0
+        };
+      }
+
+      id = uuid()
+
       return {
         ...state,
-        visible: state.list.length > 0 ? true : false
+        list: [{
+          title: userInfo().username,
+          id: id
+        }],
+        active: id,
+        visible: true
       }
     case REMOVE_TAB:
       const list = state.list.filter(item => item.id !== action.id)
