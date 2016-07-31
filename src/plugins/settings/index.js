@@ -1,8 +1,7 @@
 import React from 'react'
 import {remote} from 'electron'
-const {app, dialog} = remote
+const {app} = remote
 import {StyleSheet, css} from 'aphrodite'
-import {getState} from 'store'
 import styles from './indexStyles'
 
 // Pages
@@ -47,7 +46,7 @@ export default robot => {
         }
       }
     },
-    pages(theme) {
+    pages() {
       return [{
         label: 'General',
         body: (
@@ -76,7 +75,7 @@ export default robot => {
             selectedIndex={this.state.activePage}
             disableSorting={true}
           >
-            {this.pages(theme).map((page, i) => (
+            {this.pages().map((page, i) => (
               <Tab
                 label={page.label}
                 key={page.label}
