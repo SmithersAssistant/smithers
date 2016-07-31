@@ -87,23 +87,17 @@ export const Tabs = React.createClass({
         )
       )
 
-      this.pushedTabs = this.pushedTabs || []
-      const hasBeenPushed = this.pushedTabs.includes(`tab-${i}`)
-
-      if (isActive || hasBeenPushed) {
-        panels.push(
-          <div key={i} className={cx({
+      panels.push(
+        <div
+          key={i}
+           className={cx({
             [css(styles.tabsPane)]: true,
             [css(styles.tabsPaneActive)]: isActive
-          })}>
-            {item}
-          </div>
-        )
-
-        if (!hasBeenPushed) {
-          this.pushedTabs = [...this.pushedTabs, `tab-${i}`]
-        }
-      }
+          })}
+        >
+          {item}
+        </div>
+      )
     }
 
     return (
