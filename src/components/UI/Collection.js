@@ -10,11 +10,14 @@ export const Collection = ({className = false, ...other}) => (
   })}/>
 )
 
-export const CollectionItem = ({className = false, ...other}) => (
-  <li {...other} className={cx({
-    [css(styles.collectionItemStyles)]: true,
-    [className]: className
-  })}/>
+export const CollectionItem = ({className = false, scrollIntoView = false, ...other}) => (
+  <li
+    {...other}
+    ref={e => e !== null && scrollIntoView ? e.scrollIntoView(false) : null}
+    className={cx({
+      [css(styles.collectionItemStyles)]: true,
+      [className]: className
+    })}/>
 )
 
 export default Collection

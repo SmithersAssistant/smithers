@@ -10,7 +10,6 @@ export default StyleSheet.create({
     position: 'absolute',
     top: -48,
     left: 120,
-    zIndex: 1,
     right: 48,
   },
   tab: {

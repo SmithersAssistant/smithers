@@ -40,7 +40,8 @@ setTimeout(() => {
 const Navbar = React.createClass({
   getInitialState() {
     return {
-      suggestions: []
+      suggestions: [],
+      currentSuggestion: 0
     }
   },
   getDefaultProps() {
@@ -52,6 +53,13 @@ const Navbar = React.createClass({
 
   getInput() {
     return this.refs.input;
+  },
+
+  resetSuggestions() {
+    this.setState({
+      suggestions: [],
+      currentSuggestion: 0
+    })
   },
 
   componentDidMount() {
@@ -69,16 +77,6 @@ const Navbar = React.createClass({
         this.getInput().setSelectionRange(selectStart, selectEnd)
       }
     })
-  },
-
-  handleKeyDown(e) {
-    if (e.keyCode == Keys.TAB && this.state.suggestions.length <= 0) {
-      e.preventDefault();
-
-      e.shiftKey
-        ? this.props.focusPrevTab()
-        : this.props.focusNextTab();
-    }
   },
 
   parseUsage({usage, arguments: args, optionals}) {
@@ -118,26 +116,32 @@ const Navbar = React.createClass({
   },
 
   getSuggestionsFor(text) {
-    if (text.trim().length <= 0 ) {
+    if (text.trim().length <= 0) {
       return [];
     }
 
-    return commands.filter(command => {
-      return fuzzysearch(text.trim(), command.usage);
-    }).map(command => ({
-      command,
-      component: this.parseUsage(command)
-    }));
+    return commands
+      .filter(command => fuzzysearch(text.trim(), command.usage))
+      .map(command => ({
+        command,
+        component: this.parseUsage(command)
+      }));
   },
 
   executeCommand(value) {
-    this.setState({suggestions: []})
-
     const {handleInput} = this.props;
 
     handleInput(value);
     pluginManager.execute(value);
     this.getInput().value = "";
+
+    this.resetSuggestions();
+  },
+
+  handleSuggestionKeyUp(e, suggestion) {
+    if (e.keyCode === Keys.TAB) {
+      this.handleSuggestion(suggestion);
+    }
   },
 
   handleKeyUp(e) {
@@ -155,7 +159,7 @@ const Navbar = React.createClass({
         break;
       case Keys.ESC:
         this.selectInputText();
-        this.setState({suggestions: []})
+        this.resetSuggestions()
         break;
       case Keys.UP:
         if (this.props.canGoBack && this.state.suggestions.length <= 0) {
@@ -176,13 +180,50 @@ const Navbar = React.createClass({
     }
   },
 
+  handleKeyDown(e) {
+    if (e.keyCode == Keys.TAB && this.state.suggestions.length <= 0) {
+      e.preventDefault();
+
+      e.shiftKey
+        ? this.props.focusPrevTab()
+        : this.props.focusNextTab();
+    }
+
+    switch(e.keyCode) {
+      case Keys.UP:
+        if (this.state.suggestions.length >= 0) {
+          this.setState({currentSuggestion: (this.state.suggestions.length + this.state.currentSuggestion - 1) % this.state.suggestions.length})
+        }
+        break;
+      case Keys.DOWN:
+        if (this.state.suggestions.length >= 0) {
+          this.setState({currentSuggestion: (this.state.currentSuggestion + 1) % this.state.suggestions.length})
+        }
+        break;
+    }
+  },
+
   selectInputText() {
     const input = this.getInput();
     input && input.setSelectionRange(isTextSelected(input) ? input.value.length : 0, input.value.length)
   },
 
+  handleSuggestion(suggestion) {
+    if (suggestion.command.arguments.length > 0 || suggestion.command.optionals.length > 0) {
+      Event.fire(PUT_INPUT, {
+        text: suggestion.command.usage,
+        selectStart: suggestion.command.usage.indexOf('<'),
+        selectEnd: suggestion.command.usage.indexOf('>') + 1
+      });
+
+      this.resetSuggestions();
+    } else {
+      this.executeCommand(suggestion.command.usage);
+    }
+  },
+
   render() {
-    const {suggestions} = this.state
+    const {suggestions, currentSuggestion} = this.state
 
     return (
       <div className={css(styles.headerStyles)} onClick={() => this.getInput().focus()}>
@@ -196,35 +237,24 @@ const Navbar = React.createClass({
             onKeyUp={this.handleKeyUp}
             onChange={(e) => {
               this.setState({
-                suggestions: this.getSuggestionsFor(e.target.value)
+                suggestions: this.getSuggestionsFor(e.target.value),
+                currentSuggestion: 0
               });
             }}
             ref="input"
             type="text"
             placeholder="Type your commands here..."
           />
-          
+
           {/* SUGGESTIONS */}
           <Collection className={css(styles.suggestions)}>
             {suggestions.map((suggestion, i) => (
               <CollectionItem
                 key={`suggestion_${i}`}
-                className={css(styles.suggestion)}
-                onClick={() => {
-                  if (suggestion.command.arguments.length > 0 || suggestion.command.optionals.length > 0) {
-                    Event.fire(PUT_INPUT, {
-                      text: suggestion.command.usage,
-                      selectStart: suggestion.command.usage.indexOf('<'),
-                      selectEnd: suggestion.command.usage.indexOf('>') + 1
-                    });
-
-                    this.setState({
-                      suggestions: []
-                    });
-                  } else {
-                    this.executeCommand(suggestion.command.usage);
-                  }
-                }}
+                className={css(styles.suggestion, currentSuggestion === i ? styles.activeSuggestion : undefined)}
+                scrollIntoView={currentSuggestion === i}
+                onClick={() => this.handleSuggestion(suggestion)}
+                onKeyUp={(e) => this.handleSuggestionKeyUp(e, suggestion)}
               >{suggestion.component}</CollectionItem>
             ))}
           </Collection>

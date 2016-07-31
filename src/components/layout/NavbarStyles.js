@@ -64,6 +64,9 @@ export default StyleSheet.create({
   suggestion: {
     cursor: 'default'
   },
+  activeSuggestion: {
+    boxShadow: `inset 0 51px ${color('grey', 100)}` 
+  },
   argument: {
     backgroundColor: color(theme.colorTheme),
     color: 'white',
