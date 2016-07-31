@@ -1,5 +1,5 @@
 import {StyleSheet} from 'aphrodite';
-import {color, rgba, theme} from 'styles/theme';
+import {color, rgba, theme, px} from 'styles/theme';
 
 export default StyleSheet.create({
   toolbar: {
@@ -12,5 +12,11 @@ export default StyleSheet.create({
     height: theme.footerHeight,
     padding: (theme.padding * 1.8) / 4.5,
     zIndex: 998
+  },
+  info: {
+    float: 'right',
+    height: 30,
+    lineHeight: px(30),
+    color: color('grey')
   }
 })
