@@ -187,7 +187,7 @@ const Navbar = React.createClass({
       if (e.keyCode === Keys.UP || (e.keyCode === Keys.TAB && e.shiftKey)) {
         if (this.state.suggestions.length >= 0) {
           this.setState({currentSuggestion: (this.state.suggestions.length + this.state.currentSuggestion - 1) % this.state.suggestions.length}, () => {
-            this.updateInput();
+            this.setSuggestionInInput();
           });
         }
       }
@@ -195,14 +195,14 @@ const Navbar = React.createClass({
       if (e.keyCode === Keys.DOWN || (e.keyCode === Keys.TAB && !e.shiftKey)) {
         if (this.state.suggestions.length >= 0) {
           this.setState({currentSuggestion: (this.state.currentSuggestion + 1) % this.state.suggestions.length}, () => {
-            this.updateInput();
+            this.setSuggestionInInput();
           });
         }
       }
     }
   },
 
-  updateInput() {
+  setSuggestionInInput() {
     const suggestion = this.state.suggestions[this.state.currentSuggestion];
 
     setTimeout(() => {
