@@ -130,10 +130,20 @@ const Navbar = React.createClass({
     }));
   },
 
+  executeCommand(value) {
+    this.setState({suggestions: []})
+
+    const {handleInput} = this.props;
+
+    handleInput(value);
+    pluginManager.execute(value);
+    this.getInput().value = "";
+  },
+
   handleKeyUp(e) {
     e.preventDefault();
 
-    const {handleInput, addTab} = this.props;
+    const {addTab} = this.props;
 
     this.setState({
       suggestions: this.getSuggestionsFor(e.target.value)
@@ -145,12 +155,7 @@ const Navbar = React.createClass({
           addTab()
         }
 
-        this.setState({suggestions: []})
-
-        const value = e.target.value;
-        handleInput(value);
-        pluginManager.execute(value);
-        this.getInput().value = "";
+        this.executeCommand(e.target.value);
         break;
       case Keys.ESC:
         this.selectInputText();
@@ -205,15 +210,19 @@ const Navbar = React.createClass({
                 key={`suggestion_${i}`}
                 className={css(styles.suggestion)}
                 onClick={() => {
-                  Event.fire(PUT_INPUT, {
-                    text: suggestion.command.usage,
-                    selectStart: suggestion.command.usage.indexOf('<'),
-                    selectEnd: suggestion.command.usage.indexOf('>') + 1
-                  });
-
-                  this.setState({
-                    suggestions: []
-                  })
+                  if (suggestion.command.arguments.length > 0 || suggestion.command.optionals.length > 0) {
+                    Event.fire(PUT_INPUT, {
+                      text: suggestion.command.usage,
+                      selectStart: suggestion.command.usage.indexOf('<'),
+                      selectEnd: suggestion.command.usage.indexOf('>') + 1
+                    });
+                    
+                    this.setState({
+                      suggestions: []
+                    });
+                  } else {
+                    this.executeCommand(suggestion.command.usage);
+                  }
                 }}
               >{suggestion.component}</CollectionItem>
             ))}
