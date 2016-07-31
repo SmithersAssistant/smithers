@@ -72,7 +72,7 @@ const Navbar = React.createClass({
   },
 
   handleKeyDown(e) {
-    if (e.keyCode == Keys.TAB) {
+    if (e.keyCode == Keys.TAB && this.state.suggestions.length <= 0) {
       e.preventDefault();
 
       e.shiftKey
