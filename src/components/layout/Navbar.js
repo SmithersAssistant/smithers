@@ -30,12 +30,6 @@ const isTextSelected = (input) => {
 };
 
 const Navbar = React.createClass({
-  getInitialState() {
-    return {
-      value: ''
-    }
-  },
-
   getDefaultProps() {
     return {
       canGoBack: false,
@@ -68,11 +62,9 @@ const Navbar = React.createClass({
     if (e.keyCode == Keys.TAB) {
       e.preventDefault();
 
-      if (e.shiftKey) {
-        this.props.focusPrevTab()
-      } else {
-        this.props.focusNextTab()
-      }
+      e.shiftKey
+        ? this.props.focusPrevTab()
+        : this.props.focusNextTab();
     }
   },
 

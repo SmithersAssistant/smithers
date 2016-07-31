@@ -22,7 +22,8 @@ export default robot => {
             if (item === arg.match) {
               return <span style={{
                 borderBottom: `2px solid ${color(Robot.getThemeColor())}`,
-                borderRadius: 4
+                borderRadius: 4,
+                padding: 2
               }}>{arg.humanized}</span>
             }
 
@@ -37,7 +38,8 @@ export default robot => {
             if (item === arg.match) {
               return <span style={{
                 borderBottom: `2px solid ${color(Robot.getThemeColor(), 100)}`,
-                borderRadius: 4
+                borderRadius: 4,
+                padding: 2
               }}>{arg.humanized}</span>
             }
 

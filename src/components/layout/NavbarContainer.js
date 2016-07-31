@@ -16,7 +16,6 @@ import {
 import Navbar from './Navbar'
 
 const mapStateToProps = (state) => ({
-  random: Math.random(),
   command: state.commands.command,
   canGoBack: state.commands.currentCommand !== 0,
   canGoForward: state.commands.currentCommand < (state.commands.past || []).length
@@ -28,8 +27,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addTab(title));
     Event.fire(FOCUS_INPUT)
   },
-  focusNextTab: () => dispatch(focusNextTab()),
-  focusPrevTab: () => dispatch(focusPrevTab()),
+  focusNextTab: (places) => dispatch(focusNextTab(places)),
+  focusPrevTab: (places) => dispatch(focusPrevTab(places)),
   previousCommand: () => dispatch(previousCommand()),
   nextCommand: () => dispatch(nextCommand())
 });
