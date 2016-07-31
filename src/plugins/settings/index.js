@@ -7,6 +7,7 @@ import styles from './indexStyles'
 // Pages
 import generalPage from './GeneralPage'
 import themePage from './ThemePage'
+import pluginsPage from './PluginsPage'
 
 const SETTINGS_COMPONENT = 'com.robinmalfait.settings';
 
@@ -25,6 +26,7 @@ export default robot => {
 
   const GeneralPage = generalPage(robot);
   const ThemePage = themePage(robot);
+  const PluginsPage = pluginsPage(robot);
 
   const restart = () => {
     app.relaunch();
@@ -43,6 +45,9 @@ export default robot => {
         },
         themePageState: {
           activeColor: theme.colorTheme
+        },
+        pluginsPageState: {
+
         }
       }
     },
@@ -63,6 +68,14 @@ export default robot => {
           state={this.state.themePageState}
           setState={(themePageState, cb = robot.noop) => {
             this.setState({themePageState}, cb)
+          }}
+        />
+      }, {
+        label: 'Plugins',
+        body: <PluginsPage
+          state={this.state.pluginsPageState}
+          setState={(pluginsPageState, cb = robot.noop) => {
+            this.setState({pluginsPageState}, cb)
           }}
         />
       }]
