@@ -2,6 +2,9 @@ import React from 'react'
 import {css} from 'aphrodite'
 import Event, {FOCUS_INPUT, PUT_INPUT} from 'Event'
 import styles from './NavbarStyles'
+import {Collection, CollectionItem} from 'components/UI/Collection'
+import flatMap from 'lodash/flatMap'
+import {fuzzysearch} from 'components/functions'
 
 // UI Elements
 import Icon from 'components/UI/Icon'
@@ -29,7 +32,17 @@ const isTextSelected = (input) => {
   return false
 };
 
+let commands = [];
+setTimeout(() => {
+  commands = flatMap(pluginManager.list().map(plugin => plugin.commands));
+});
+
 const Navbar = React.createClass({
+  getInitialState() {
+    return {
+      suggestions: []
+    }
+  },
   getDefaultProps() {
     return {
       canGoBack: false,
@@ -68,16 +81,71 @@ const Navbar = React.createClass({
     }
   },
 
+  parseUsage({usage, arguments: args, optionals}) {
+    let result = usage.split(' ');
+
+    if (args.length > 0) {
+      args.forEach(arg => {
+        result = result.map(item => {
+          if (item === arg.match) {
+            return <span className={css(styles.argument)}>{arg.humanized}</span>
+          }
+
+          return item;
+        });
+      });
+    }
+
+    if (optionals.length > 0) {
+      optionals.forEach(arg => {
+        result = result.map(item => {
+          if (item === arg.match) {
+            return <span className={css(styles.optional)}>{arg.humanized}</span>
+          }
+
+          return item;
+        });
+      });
+    }
+
+    return (
+      <span>
+          {result.map((item, i) => <span key={i} style={{
+            marginRight: 4
+          }}>{item}</span>)}
+        </span>
+    )
+  },
+
+  getSuggestionsFor(text) {
+    if (text.trim().length <= 0 ) {
+      return [];
+    }
+
+    return commands.filter(command => {
+      return fuzzysearch(text.trim(), command.usage);
+    }).map(command => ({
+      command,
+      component: this.parseUsage(command)
+    }));
+  },
+
   handleKeyUp(e) {
     e.preventDefault();
 
     const {handleInput, addTab} = this.props;
+
+    this.setState({
+      suggestions: this.getSuggestionsFor(e.target.value)
+    })
 
     switch (e.keyCode) {
       case Keys.ENTER:
         if (e.metaKey || e.ctrlKey) {
           addTab()
         }
+
+        this.setState({suggestions: []})
 
         const value = e.target.value;
         handleInput(value);
@@ -112,6 +180,8 @@ const Navbar = React.createClass({
   },
 
   render() {
+    const {suggestions} = this.state
+
     return (
       <div className={css(styles.headerStyles)} onClick={() => this.getInput().focus()}>
         <div className={css(styles.inputWrapperStyles)}>
@@ -126,6 +196,27 @@ const Navbar = React.createClass({
             type="text"
             placeholder="Type your commands here..."
           />
+          
+          {/* SUGGESTIONS */}
+          <Collection className={css(styles.suggestions)}>
+            {suggestions.map((suggestion, i) => (
+              <CollectionItem
+                key={`suggestion_${i}`}
+                className={css(styles.suggestion)}
+                onClick={() => {
+                  Event.fire(PUT_INPUT, {
+                    text: suggestion.command.usage,
+                    selectStart: suggestion.command.usage.indexOf('<'),
+                    selectEnd: suggestion.command.usage.indexOf('>') + 1
+                  });
+
+                  this.setState({
+                    suggestions: []
+                  })
+                }}
+              >{suggestion.component}</CollectionItem>
+            ))}
+          </Collection>
         </div>
       </div>
     )

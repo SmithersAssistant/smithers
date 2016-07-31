@@ -52,5 +52,29 @@ export default StyleSheet.create({
     '::-webkit-input-placeholder': {
       color: 'rgba(255, 255, 255, 0.87)'
     }
+  },
+  suggestions: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: theme.inputHeight + theme.headerOffset - 8,
+    maxHeight: 'calc(100vh / 2)',
+    overflowY: 'scroll'
+  },
+  suggestion: {
+    cursor: 'default'
+  },
+  argument: {
+    backgroundColor: color(theme.colorTheme),
+    color: 'white',
+    padding: 5,
+    borderRadius: 3,
+    ...theme.shadow1
+  },
+  optional: {
+    backgroundColor: color(theme.colorTheme, 100),
+    padding: 5,
+    borderRadius: 3,
+    ...theme.shadow1
   }
 });
