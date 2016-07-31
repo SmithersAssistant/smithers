@@ -154,6 +154,7 @@ const Navbar = React.createClass({
         break;
       case Keys.ESC:
         this.selectInputText();
+        this.setState({suggestions: []})
         break;
       case Keys.UP:
         if (this.props.canGoBack) {
