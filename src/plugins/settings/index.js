@@ -131,6 +131,20 @@ export default robot => {
     getCurrentWindow().openDevTools();
   });
 
+  robot.listen(/^quit$/, {
+    description: 'Close the application',
+    usage: 'quit'
+  }, () => {
+    app.quit();
+  });
+
+  robot.listen(/^refresh$/, {
+    description: 'Refresh the window',
+    usage: 'refresh'
+  }, () => {
+    window.location.reload();
+  });
+
   robot.on(robot.events.OPEN_SETTINGS, () => {
     robot.addCard('com.robinmalfait.settings');
   });
