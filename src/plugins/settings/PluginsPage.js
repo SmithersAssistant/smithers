@@ -42,11 +42,7 @@ export default (robot) => ({state, setState, tabsProps, tabProps}) => {
             activeTab: i
           })}
           label={page.label}
-        >
-          <div style={{
-            padding: 20
-          }}>{page.body}</div>
-        </Tab>
+        >{page.body}</Tab>
       ))}
     </Tabs>
   )
