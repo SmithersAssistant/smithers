@@ -56,8 +56,6 @@
     "test": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
     "test:watch": "npm test -- --watch",
     "start": "electron app",
-    "prepublish": "npm test",
-    "prepush": "npm test",
     "postinstall": "install-app-deps",
     "pack": "npm run build && build --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
     "dist": "npm run build && build",
