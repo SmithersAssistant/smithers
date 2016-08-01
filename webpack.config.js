@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const path = require('path');
-
+const _ = require('lodash');
 const packageJson = require('./package.json');
 
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -12,7 +12,7 @@ module.exports = {
   devtool: isProduction ? 'hidden-source-map' : 'devtool',
   entry: {
     app: './src/index.js',
-    vendor: Object.keys(packageJson.dependencies).filter(item => ! ['lodash'].includes(item))
+    vendor: Object.keys(packageJson.dependencies).filter(item => ! _.includes(['lodash'], item))
   },
   output: {
     path: path.join(__dirname, 'app', 'dist'),
