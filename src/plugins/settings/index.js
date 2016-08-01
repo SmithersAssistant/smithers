@@ -1,6 +1,6 @@
 import React from 'react'
 import {remote} from 'electron'
-const {app} = remote
+const {app, getCurrentWindow} = remote
 import {StyleSheet, css} from 'aphrodite'
 import styles from './indexStyles'
 
@@ -122,6 +122,13 @@ export default robot => {
     usage: 'restart'
   }, () => {
     restart();
+  });
+
+  robot.listen(/^open devtools$/, {
+    description: 'Open the chrome dev tools',
+    usage: 'open devtools'
+  }, () => {
+    getCurrentWindow().openDevTools();
   });
 
   robot.on(robot.events.OPEN_SETTINGS, () => {
