@@ -2,20 +2,27 @@ import React from 'react'
 import cx from 'classnames'
 import {css} from 'aphrodite'
 import styles from './CollectionStyles'
+import flatten from 'lodash/flatten'
 
-export const Collection = ({className = false, ...other}) => (
+export const Collection = ({externalStyles, className = false, ...other}) => (
   <ul {...other} className={cx({
-    [css(styles.collectionStyles)]: true,
+    [css(...flatten([
+      styles.collectionStyles,
+      externalStyles
+    ]))]: true,
     [className]: className
   })}/>
 )
 
-export const CollectionItem = ({className = false, scrollIntoView = false, ...other}) => (
+export const CollectionItem = ({externalStyles, className = false, scrollIntoView = false, ...other}) => (
   <li
     {...other}
     ref={e => e !== null && scrollIntoView ? e.scrollIntoView(false) : null}
     className={cx({
-      [css(styles.collectionItemStyles)]: true,
+      [css(...flatten([
+        styles.collectionItemStyles,
+        externalStyles
+      ]))]: true,
       [className]: className
     })}/>
 )

@@ -9,7 +9,7 @@ const isProduction = nodeEnv === 'production';
 const noop = () => {};
 
 module.exports = {
-  devtool: isProduction ? 'hidden-source-map' : 'devtool',
+  devtool: isProduction ? 'hidden-source-map' : null,
   entry: {
     app: './src/index.js',
     vendor: Object.keys(packageJson.dependencies).filter(item => ! _.includes(['lodash'], item))
@@ -46,10 +46,12 @@ module.exports = {
         'NODE_ENV': JSON.stringify(nodeEnv)
       }
     }),
+    new webpack.NoErrorsPlugin(),
     isProduction ? new webpack.optimize.UglifyJsPlugin({
       compressor: {
         warnings: false
-      }
+      },
+      sourceMap: false,
     }) : noop
   ],
   target: 'electron-renderer'

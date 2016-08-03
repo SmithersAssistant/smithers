@@ -53,13 +53,23 @@ export default StyleSheet.create({
       color: 'rgba(255, 255, 255, 0.87)'
     }
   },
-  suggestions: {
+  variables: {
+    zIndex: 1
+  },
+  variablesWrapper: {
+    display: 'inline-flex'
+  },
+  positionSuggestions: {
     position: 'absolute',
     left: 0,
     right: 0,
     top: theme.inputHeight + theme.headerOffset - 8,
+  },
+  suggestions: {
     maxHeight: 'calc(100vh / 2)',
-    overflowY: 'scroll'
+    overflowY: 'scroll',
+    margin: '0.3rem 10px 1rem 10px',
+    width: '100%'
   },
   suggestion: {
     cursor: 'default'

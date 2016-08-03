@@ -61,12 +61,11 @@ export default robot => {
 
   robot.listen(/^prev tab (\d*)$/, {
     description: "Focus tab to the left",
-    usage: "prev tab <places_to_the_left>"
+    usage: "prev tab <places_to_the_left>",
   }, res => robot.focusPrevTab(res.matches[1]));
 
   robot.listen(/^next tab (\d*)$/, {
     description: "Focus tab to the right",
-    usage: "next tab <places_to_the_right>"
+    usage: "next tab <places_to_the_right>",
   }, res => robot.focusNextTab(res.matches[1]));
-
 }

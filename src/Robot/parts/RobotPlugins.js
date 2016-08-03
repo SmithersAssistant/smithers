@@ -1,5 +1,8 @@
 import pluginManager from 'PluginSystem/PluginManager'
 
+// Return an array
+const NOOP = () => ([])
+
 let plugins = [];
 let currentPlugin;
 
@@ -28,13 +31,19 @@ const execAll = (regex, str) => {
   return matches;
 }
 
-const parseUsage = (usageString) => {
+const parseUsage = (usageString, args) => {
   const ARGUMENTS_REGEX = /<([a-zA-Z0-9_]*)>/gi; // <name>
   const OPTIONALS_REGEX = /<([a-zA-Z0-9_]*)\?>/gi; // <name?>
 
   return {
-    arguments: [].concat(execAll(ARGUMENTS_REGEX, usageString)),
-    optionals: [].concat(execAll(OPTIONALS_REGEX, usageString))
+    arguments: [].concat(execAll(ARGUMENTS_REGEX, usageString)).map((variable) => ({
+      ...variable,
+      data: args && args[variable.contents] || NOOP
+    })),
+    optionals: [].concat(execAll(OPTIONALS_REGEX, usageString)).map((variable) => ({
+      ...variable,
+      data: args && args[variable.contents] || NOOP
+    }))
   }
 };
 
@@ -50,14 +59,14 @@ export default {
     currentPlugin = plugin
   },
 
-  listen(regex, {description, usage, args, optionals}, cb) {
+  listen(regex, {description, usage, args}, cb) {
     plugins = plugins.map((plugin) => {
       if (plugin.name === currentPlugin.name) {
         plugin = {
           ...plugin,
           commands: [
             ...plugin.commands,
-            {regex, description, usage, args, optionals, cb}
+            {regex, description, usage, args, cb}
           ]
         };
       }
@@ -73,7 +82,7 @@ export default {
       .filter(cmd => cmd.regex.test(command))
       .forEach(plugin => plugin.cb({
         command,
-        matches: plugin.regex.exec(command)
+        matches:  plugin.regex.exec(command)
       }));
   },
 
@@ -81,7 +90,7 @@ export default {
     return plugins
       .find(p => p.name === plugin.name)
       .commands
-      .map(({regex: name, description, usage, args, optionals}) => ({name, description, usage, args, optionals, ...parseUsage(usage)}));
+      .map(({regex: name, description, usage, args}) => ({name, description, usage, ...parseUsage(usage, args)}));
   },
 
   plugins() {
