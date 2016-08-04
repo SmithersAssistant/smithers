@@ -388,7 +388,6 @@ const Navbar = React.createClass({
       <Suggestions
         ref="variables"
         suggestions={command.data(flatVariables)}
-        active={true}
         title={command.humanized.toUpperCase()}
         externalStyles={[styles.suggestions, styles.positionSuggestions]}
         externalSuggestionStyles={styles.suggestion}
@@ -427,16 +426,17 @@ const Navbar = React.createClass({
           {showVariables && this.renderVariables()}
 
           {/* SUGGESTIONS */}
-          <Suggestions
-            ref="suggestions"
-            active={suggestions.length > 0 && !showVariables}
-            suggestions={suggestions}
-            externalStyles={[styles.suggestions, styles.positionSuggestions]}
-            externalSuggestionStyles={styles.suggestion}
-            externalActiveSuggestionStyles={(isActive) => isActive ? styles.activeSuggestion : undefined}
-            onActive={(suggestion, currIndex) => this.setSuggestionInInput(suggestion, currIndex)}
-            onSelect={(suggestion, currIndex) => this.handleSuggestionSelection(suggestion, currIndex)}
-          />
+          {suggestions.length > 0 && !showVariables && (
+            <Suggestions
+              ref="suggestions"
+              suggestions={suggestions}
+              externalStyles={[styles.suggestions, styles.positionSuggestions]}
+              externalSuggestionStyles={styles.suggestion}
+              externalActiveSuggestionStyles={(isActive) => isActive ? styles.activeSuggestion : undefined}
+              onActive={(suggestion, currIndex) => this.setSuggestionInInput(suggestion, currIndex)}
+              onSelect={(suggestion, currIndex) => this.handleSuggestionSelection(suggestion, currIndex)}
+            />
+          )}
         </div>
       </div>
     )

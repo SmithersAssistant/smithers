@@ -18,7 +18,6 @@ const Suggestions = React.createClass({
     return {
       onSelect: noop,
       onActive: noop,
-      active: false,
     }
   },
   componentWillReceiveProps(newProps) {
@@ -64,10 +63,10 @@ const Suggestions = React.createClass({
     });
   },
   render() {
-    let {active, title, onSelect, externalStyles, externalSuggestionStyles, externalActiveSuggestionStyles} = this.props;
+    let {title, onSelect, externalStyles, externalSuggestionStyles, externalActiveSuggestionStyles} = this.props;
     let {currentSuggestion, suggestions, resolved} = this.state;
 
-    return active && (!(resolved && suggestions.length <= 0)) && (
+    return (!(resolved && suggestions.length <= 0)) && (
       <Collection externalStyles={externalStyles}>
         {title && (
           <CollectionItem>
