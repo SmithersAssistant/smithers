@@ -48,7 +48,10 @@ export default robot => {
           activeColor: theme.colorTheme
         },
         pluginsPageState: {
-          activeTab: 0
+          activeTab: 0,
+          addLocalPluginDialogOpen: false,
+          addLocalPluginLocation: '',
+          addLocalPluginErrorText: '',
         }
       }
     },
@@ -59,7 +62,10 @@ export default robot => {
           <GeneralPage
             state={this.state.generalPageState}
             setState={(generalPageState, cb = robot.noop) => {
-              this.setState({generalPageState}, cb)
+              this.setState({generalPageState: {
+                ...this.state.generalPageState,
+                ...generalPageState,
+              }}, cb)
             }}
           />
         )
@@ -68,7 +74,10 @@ export default robot => {
         body: <ThemePage
           state={this.state.themePageState}
           setState={(themePageState, cb = robot.noop) => {
-            this.setState({themePageState}, cb)
+            this.setState({themePageState: {
+              ...this.state.themePageState,
+              ...themePageState,
+            }}, cb)
           }}
         />
       }, {
@@ -76,7 +85,10 @@ export default robot => {
         body: <PluginsPage
           state={this.state.pluginsPageState}
           setState={(pluginsPageState, cb = robot.noop) => {
-            this.setState({pluginsPageState}, cb)
+            this.setState({pluginsPageState: {
+              ...this.state.pluginsPageState,
+              ...pluginsPageState
+            }}, cb)
           }}
           tabsProps={{
             externalStyles: [styles.tabs, styles.nestedTabs],

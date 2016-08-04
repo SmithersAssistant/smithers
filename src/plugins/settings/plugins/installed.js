@@ -1,5 +1,7 @@
 import React from 'react';
 import {StyleSheet, css} from 'aphrodite';
+import {homedir} from 'os';
+import fs from 'fs';
 
 import {
   DEFAULT_PLUGIN,
@@ -7,13 +9,20 @@ import {
   EXTERNAL_PLUGIN
 } from 'pluginSystem/sources';
 
+import IconButton from 'material-ui/IconButton/IconButton';
+import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import Dialog from 'material-ui/Dialog';
+
 export default ({state, setState, robot}) => {
   const {
     color,
+    theme,
 
     Icon,
+    FlattButton,
     Collection,
-    CollectionItem
+    CollectionItem,
+    TextField
   } = robot.UI;
 
   const styles = StyleSheet.create({
@@ -29,58 +38,46 @@ export default ({state, setState, robot}) => {
     title: {
       borderBottom: '1px solid #ccc',
       fontWeight: 100,
+      height: 48,
+      lineHeight: theme.px(48),
     },
     subTitle: {
       float: 'right',
       color: '#ccc',
+    },
+    addPluginButton: {
+      float: 'right',
     }
   });
 
-  const renderPlugin = (plugin, i) => {
-    switch(plugin.source) {
-      case DEFAULT_PLUGIN:
-        return (
-          <CollectionItem key={i}>
-            {plugin.name}
+  const renderPlugin = (plugin, i) => (
+    <CollectionItem key={i}>
+      {plugin.name}
 
-            <span className={css(styles.info)}>
-              ({plugin.version})
-              <Icon
-                className={css(styles.icon)}
-                icon="home"
-              />
-            </span>
-          </CollectionItem>
-        )
-      case LOCAL_PLUGIN:
-        return (
-          <CollectionItem key={i}>
-            {plugin.name}
+      <span className={css(styles.info)}>(v{plugin.version})</span>
+    </CollectionItem>
+  );
 
-            <span className={css(styles.info)}>
-              ({plugin.version})
-              <Icon
-                className={css(styles.icon)}
-                icon="plug"
-              />
-            </span>
-          </CollectionItem>
-        )
-      case EXTERNAL_PLUGIN:
-        return (
-          <CollectionItem key={i}>
-            {plugin.name}
+  const resetAddLocalPlugin = () => {
+    setState({
+      addLocalPluginDialogOpen: false,
+      addLocalPluginLocation: ''
+    });
+  };
 
-            <span className={css(styles.info)}>
-              ({plugin.version})
-              <Icon
-                className={css(styles.icon)}
-                icon="link"
-              />
-            </span>
-          </CollectionItem>
-        )
+  const handlePluginLocationPath = (event) => {
+    const addLocalPluginLocation = event.target.value
+    let addLocalPluginErrorText = '';
+
+    if (!fs.existsSync(addLocalPluginLocation)) {
+      addLocalPluginErrorText = 'Plugin path does not exist';
+    } else if (!fs.statSync(addLocalPluginLocation).isDirectory()) {
+      addLocalPluginErrorText = 'Plugin path is not a directory';
+    } else if (!fs.existsSync(`${addLocalPluginLocation}/package.json`)) {
+      addLocalPluginErrorText = 'Plugin path does not have a package.json file';
     }
+
+    setState({addLocalPluginLocation, addLocalPluginErrorText});
   };
 
   const plugins = robot.plugins();
@@ -91,20 +88,66 @@ export default ({state, setState, robot}) => {
 
   return (
     <div>
-      <h3 className={css(styles.title)}>Local Plugins <small className={css(styles.subTitle)}>({localPlugins.length}/{plugins.length})</small></h3>
+      <h3 className={css(styles.title)}>
+        Local Plugins
+        <small className={css(styles.subTitle)}>
+          ({localPlugins.length}/{plugins.length})
+        </small>
+        <IconButton
+          className={css(styles.addPluginButton)}
+          onClick={() => setState({addLocalPluginDialogOpen: true})}
+        ><AddIcon/></IconButton>
+      </h3>
       <Collection>
         {localPlugins.map((plugin, i) => renderPlugin(plugin, i))}
       </Collection>
 
-      <h3 className={css(styles.title)}>External Plugins <small className={css(styles.subTitle)}>({externalPlugins.length}/{plugins.length})</small></h3>
+      <h3 className={css(styles.title)}>
+        External Plugins
+        <small className={css(styles.subTitle)}>({externalPlugins.length}/{plugins.length})</small>
+      </h3>
       <Collection>
         {externalPlugins.map((plugin, i) => renderPlugin(plugin, i))}
       </Collection>
 
-      <h3 className={css(styles.title)}>Default Plugins <small className={css(styles.subTitle)}>({defaultPlugins.length}/{plugins.length})</small></h3>
+      <h3 className={css(styles.title)}>
+        Default Plugins
+        <small className={css(styles.subTitle)}>({defaultPlugins.length}/{plugins.length})</small>
+      </h3>
       <Collection>
         {defaultPlugins.map((plugin, i) => renderPlugin(plugin, i))}
       </Collection>
+
+      {/* DIALOGS */}
+      <Dialog
+        title="Add a Local Plugin"
+        actions={[
+          <FlattButton onClick={resetAddLocalPlugin}>CANCEL</FlattButton>,
+          <FlattButton
+            disabled={state.addLocalPluginLocation === '' || state.addLocalPluginErrorText !== ''}
+            onClick={() => {
+              console.log(`Loading plugin (${state.addLocalPluginLocation})`);
+              resetAddLocalPlugin();
+            }}
+          >
+            ADD
+          </FlattButton>
+        ]}
+        modal={false}
+        open={state.addLocalPluginDialogOpen}
+        onRequestClose={resetAddLocalPlugin}
+      >
+        <TextField
+          autoFocus={true}
+          type="text"
+          value={state.addLocalPluginLocation}
+          floatingLabelText="Path To Plugin"
+          fullWidth={true}
+          hintText={homedir()}
+          errorText={state.addLocalPluginErrorText}
+          onChange={handlePluginLocationPath}
+        ></TextField>
+      </Dialog>
     </div>
   )
 }

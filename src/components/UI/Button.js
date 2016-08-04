@@ -1,8 +1,9 @@
 import React from 'react'
 import {css} from 'aphrodite'
-import {theme}  from 'styles/theme'
+import {theme, color as getColor}  from 'styles/theme'
 import cx from 'classnames'
 import styles from './ButtonStyles'
+import MaterialFlatButton from 'material-ui/FlatButton/FlatButton';
 import TouchRipple from 'material-ui/internal/TouchRipple'
 
 export const ButtonColors = {
@@ -38,6 +39,18 @@ const Button = ({color = ButtonColors.THEME, children, className, ...other}) => 
   })}>
     <TouchRipple>{children}</TouchRipple>
   </button>
+)
+
+export const FlattButton = ({disabled = false, color = ButtonColors.THEME, children, ...other}) => (
+  <MaterialFlatButton
+    disabled={disabled}
+    {...other}
+    style={disabled ? {} : {
+      color: getColor(color === ButtonColors.THEME ? theme.colorTheme : color)
+    }}
+  >
+    {children}
+  </MaterialFlatButton>
 )
 
 export default Button
