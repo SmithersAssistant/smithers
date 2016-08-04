@@ -4,6 +4,9 @@ const {app, getCurrentWindow} = remote
 import {StyleSheet, css} from 'aphrodite'
 import styles from './indexStyles'
 
+import IconButton from 'material-ui/IconButton/IconButton';
+import SaveIcon from 'material-ui/svg-icons/content/save';
+
 // Pages
 import generalPage from './GeneralPage'
 import themePage from './ThemePage'
@@ -17,8 +20,6 @@ export default robot => {
   const {
     theme,
 
-    Button,
-    Icon,
     Tabs,
     Tab,
   } = robot.UI
@@ -112,15 +113,14 @@ export default robot => {
             ))}
           </Tabs>
 
-          <div className={css(styles.saveButtonStyles)}>
-            <Button onClick={() => {
+          <IconButton
+            className={css(styles.saveButtonStyles)}
+            onClick={() => {
               robot.notify('Saved settings!');
 
               window.location.reload();
-            }}>
-              <Icon icon="save"/> Save
-            </Button>
-          </div>
+            }}
+          ><SaveIcon/></IconButton>
         </Full>
       )
     }

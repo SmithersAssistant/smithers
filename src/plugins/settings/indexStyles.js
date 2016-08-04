@@ -12,7 +12,7 @@ export default StyleSheet.create({
     position: 'absolute',
     top: -48,
     left: 120,
-    right: 48,
+    right: 96,
   },
   nestedTabs: {
     marginTop: 1
@@ -31,7 +31,7 @@ export default StyleSheet.create({
   },
   saveButtonStyles: {
     position: 'absolute',
-    right: 15,
-    bottom: 15
+    right: 48,
+    top: -48
   }
 })
