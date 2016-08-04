@@ -7,14 +7,14 @@ class PluginManager {
     this.plugins = [];
   }
 
-  register(name, cb) {
+  register(info, cb) {
     if ("default" in cb) {
       cb = cb.default
     }
 
     this.plugins = [
       ...this.plugins,
-      new Plugin(name, cb)
+      new Plugin(info, cb)
     ]
   }
 

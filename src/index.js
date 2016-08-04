@@ -1,4 +1,4 @@
-import {webFrame} from 'electron'
+import {webFrame, remote} from 'electron';
 import React from 'react';
 import {render} from 'react-dom';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -6,6 +6,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
+
+const {app} = remote;
 
 // Import global CSS
 import './styles/global.css'
@@ -23,11 +25,18 @@ import robot from './Robot'
 window.Robot = robot
 
 // Load inhouse plugins
+import {DEFAULT_PLUGIN} from 'pluginSystem/sources';
 import pluginManager from 'pluginSystem/pluginManager'
 
-pluginManager.register('help', require('plugins/help'));
-pluginManager.register('settings', require('plugins/settings'));
-pluginManager.register('tabs', require('plugins/tabs'));
+const defaultPluginInfo = (name) => ({
+  name,
+  source: DEFAULT_PLUGIN,
+  version: app.getVersion(),
+});
+
+pluginManager.register(defaultPluginInfo('help'), require('plugins/help'));
+pluginManager.register(defaultPluginInfo('settings'), require('plugins/settings'));
+pluginManager.register(defaultPluginInfo('tabs'), require('plugins/tabs'));
 
 // Listen for notifications
 import notifications from './notifications'
