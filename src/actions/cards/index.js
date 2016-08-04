@@ -1,5 +1,5 @@
 import {v4 as uuid} from 'uuid'
-import {getActiveTab} from 'stateHelpers'
+import {getActiveTab} from 'state'
 
 import {
   ADD_CARD,

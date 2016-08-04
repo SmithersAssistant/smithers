@@ -7,7 +7,7 @@ import Tools from './layout/ToolsContainer';
 import Tabs from './layout/TabsContainer';
 
 import store from 'store';
-import {areTabsVisible} from 'stateHelpers';
+import {areTabsVisible} from 'state';
 
 export default React.createClass({
   getInitialState() {

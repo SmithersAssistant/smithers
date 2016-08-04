@@ -1,4 +1,4 @@
-import {getNotifications} from 'stateHelpers'
+import {getNotifications} from 'state'
 import store, {dispatch} from 'store';
 import {dequeueNotification} from 'actions/index';
 

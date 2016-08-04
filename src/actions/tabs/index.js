@@ -1,6 +1,6 @@
 import {v4 as uuid} from 'uuid'
 import {dispatch} from 'store'
-import {getActiveTab, getTabsList} from 'stateHelpers'
+import {getActiveTab, getTabsList} from 'state'
 
 import {
   ADD_TAB,

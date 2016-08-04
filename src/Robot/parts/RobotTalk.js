@@ -1,5 +1,5 @@
 import {dispatch} from 'store'
-import {getVoice} from 'stateHelpers'
+import {getVoice} from 'state'
 import {setVoice} from 'actions/index'
 import speechRecognition from 'SpeechRecognition'
 

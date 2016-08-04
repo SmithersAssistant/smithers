@@ -6,7 +6,7 @@ import {Collection, CollectionItem} from 'components/UI/Collection'
 import flatMap from 'lodash/flatMap'
 import {fuzzysearch} from 'components/functions'
 import debounce from 'lodash/debounce'
-import {areTabsVisible} from 'stateHelpers'
+import {areTabsVisible} from 'state'
 import Suggestions from './Suggestions';
 
 // UI Elements

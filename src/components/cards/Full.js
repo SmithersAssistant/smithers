@@ -2,7 +2,7 @@ import React from 'react'
 import Base from './Base'
 import {theme, sum, px} from 'styles/theme'
 import {cardStyles, itemStyles} from './_styles'
-import {areTabsVisible} from 'stateHelpers'
+import {areTabsVisible} from 'state'
 
 const calculateFullCardHeight = () => {
   return sum(

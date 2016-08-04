@@ -1,4 +1,4 @@
-import {getThemeColor} from 'stateHelpers'
+import {getThemeColor} from 'state'
 import {color, rgba} from './functions'
 export * from './functions'
 import os from 'os'
