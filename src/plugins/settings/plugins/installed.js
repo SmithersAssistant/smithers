@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, css} from 'aphrodite';
 import {homedir} from 'os';
 import fs from 'fs';
+import {clipboard} from 'electron';
 
 import {
   DEFAULT_PLUGIN,
@@ -18,7 +19,6 @@ export default ({state, setState, robot}) => {
     color,
     theme,
 
-    Icon,
     FlattButton,
     Collection,
     CollectionItem,
@@ -65,6 +65,18 @@ export default ({state, setState, robot}) => {
     });
   };
 
+  const isValidPluginPath = (path) => {
+    if (!fs.existsSync(path)) {
+      return false;
+    } else if (!fs.statSync(path).isDirectory()) {
+      return false;
+    } else if (!fs.existsSync(`${path}/package.json`)) {
+      return false;
+    }
+
+    return true;
+  };
+
   const handlePluginLocationPath = (event) => {
     const addLocalPluginLocation = event.target.value
     let addLocalPluginErrorText = '';
@@ -95,7 +107,16 @@ export default ({state, setState, robot}) => {
         </small>
         <IconButton
           className={css(styles.addPluginButton)}
-          onClick={() => setState({addLocalPluginDialogOpen: true})}
+          onClick={() => {
+            const clipboardText = clipboard.readText();
+
+            setState({
+              addLocalPluginDialogOpen: true,
+              addLocalPluginLocation: isValidPluginPath(clipboardText)
+                ? clipboardText
+                : ''
+            })
+          }}
         ><AddIcon/></IconButton>
       </h3>
       <Collection>
