@@ -1,7 +1,7 @@
 import React from 'react'
 import isEmpty from 'lodash/isEmpty'
 
-import pluginManager from 'PluginSystem/PluginManager'
+import pluginManager from 'pluginSystem/pluginManager'
 
 import {dispatch} from 'store'
 import {removeCard} from 'actions/index'

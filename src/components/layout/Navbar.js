@@ -11,7 +11,7 @@ import Suggestions from './Suggestions';
 
 // UI Elements
 import Icon from 'components/UI/Icon'
-import pluginManager from 'PluginSystem/PluginManager'
+import pluginManager from 'pluginSystem/pluginManager'
 
 const Keys = {
   ENTER: 13,

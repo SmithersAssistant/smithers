@@ -1,4 +1,4 @@
-import pluginManager from 'PluginSystem/PluginManager'
+import pluginManager from 'pluginSystem/pluginManager'
 
 // Return an array
 const NOOP = () => ([])

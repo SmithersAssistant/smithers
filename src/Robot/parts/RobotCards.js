@@ -1,4 +1,4 @@
-import pluginManager from 'PluginSystem/PluginManager'
+import pluginManager from 'pluginSystem/pluginManager'
 
 import {dispatch} from 'store'
 import {addCard, removeCard} from 'actions/index'

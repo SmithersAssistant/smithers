@@ -23,7 +23,8 @@ import robot from './Robot'
 window.Robot = robot
 
 // Load inhouse plugins
-import pluginManager from 'PluginSystem/PluginManager'
+import pluginManager from 'pluginSystem/pluginManager'
+
 pluginManager.register('help', require('plugins/help'));
 pluginManager.register('settings', require('plugins/settings'));
 pluginManager.register('tabs', require('plugins/tabs'));
