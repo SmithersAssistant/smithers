@@ -13,6 +13,7 @@ import {
 
 import IconButton from 'material-ui/IconButton/IconButton';
 import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
 import Dialog from 'material-ui/Dialog';
 
 export default ({state, setState, robot}) => {
@@ -48,12 +49,31 @@ export default ({state, setState, robot}) => {
     },
     addPluginButton: {
       float: 'right',
+    },
+    removePluginButton: {
+      position: 'absolute',
+      top: 0,
+      right: 65
+    },
+    pluginItem: {
+      position: 'relative',
     }
   });
 
-  const renderPlugin = (plugin, i) => (
-    <CollectionItem key={i}>
+  const renderPlugin = (plugin, i, type) => (
+    <CollectionItem className={css(styles.pluginItem)} key={i}>
       {plugin.name}
+
+      {type !== DEFAULT_PLUGIN && (
+        <IconButton
+          className={css(styles.removePluginButton)}
+          onClick={() => {
+            pluginManager.removeLocalPlugin(plugin);
+            resetAddLocalPlugin();
+            robot.notify(`Plugin '${plugin.name}' has been uninstalled!`);
+          }}
+        ><RemoveIcon/></IconButton>
+      )}
 
       <span className={css(styles.info)}>(v{plugin.version})</span>
     </CollectionItem>
@@ -110,7 +130,7 @@ export default ({state, setState, robot}) => {
         ><AddIcon/></IconButton>
       </h3>
       <Collection>
-        {localPlugins.map((plugin, i) => renderPlugin(plugin, i))}
+        {localPlugins.map((plugin, i) => renderPlugin(plugin, i, LOCAL_PLUGIN))}
       </Collection>
 
       <h3 className={css(styles.title)}>
@@ -118,7 +138,7 @@ export default ({state, setState, robot}) => {
         <small className={css(styles.subTitle)}>({externalPlugins.length}/{plugins.length})</small>
       </h3>
       <Collection>
-        {externalPlugins.map((plugin, i) => renderPlugin(plugin, i))}
+        {externalPlugins.map((plugin, i) => renderPlugin(plugin, i, EXTERNAL_PLUGIN))}
       </Collection>
 
       <h3 className={css(styles.title)}>
@@ -126,7 +146,7 @@ export default ({state, setState, robot}) => {
         <small className={css(styles.subTitle)}>({defaultPlugins.length}/{plugins.length})</small>
       </h3>
       <Collection>
-        {defaultPlugins.map((plugin, i) => renderPlugin(plugin, i))}
+        {defaultPlugins.map((plugin, i) => renderPlugin(plugin, i, DEFAULT_PLUGIN))}
       </Collection>
 
       {/* DIALOGS */}

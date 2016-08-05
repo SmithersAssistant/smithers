@@ -30,9 +30,10 @@ window.Robot = robot
 import {DEFAULT_PLUGIN, LOCAL_PLUGIN, EXTERNAL_PLUGIN} from 'pluginSystem/sources';
 import pluginManager from 'pluginSystem/pluginManager'
 
-const pluginInfo = ({name, version}, source = DEFAULT_PLUGIN) => ({
+const pluginInfo = ({name, version, location}, source = DEFAULT_PLUGIN) => ({
   name,
   source,
+  location,
   version: version || app.getVersion(),
 });
 

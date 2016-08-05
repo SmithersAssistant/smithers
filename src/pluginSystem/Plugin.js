@@ -5,11 +5,12 @@ const mandatory = () => {
 }
 
 class Plugin {
-  constructor({name, version, source}, cb = mandatory()) {
+  constructor({name, version, source, location}, cb = mandatory()) {
     this.name = name
     this.version = version;
     this.source = source;
-    
+    this.location = location;
+
     robot.registerPlugin(this)
     cb(robot)
     this.commands = robot.commands(this)

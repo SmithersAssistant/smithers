@@ -37,6 +37,28 @@ class PluginManager {
     return plugin;
   }
 
+  removeLocalPlugin({location}) {
+    let installedPlugins = config.get('plugins.local');
+
+    installedPlugins = installedPlugins.map(plugin => {
+      if (plugin.location === location) {
+        return null;
+      }
+
+      return plugin;
+    }).filter(x => !!x);
+
+    this.plugins = this.plugins.map(plugin => {
+      if (plugin.location === location) {
+        return null;
+      }
+
+      return plugin;
+    }).filter(x => !!x);
+
+    config.set('plugins.local', installedPlugins);
+  }
+
   loadPlugin(path) {
     try {
       return window.require(resolve(path));
