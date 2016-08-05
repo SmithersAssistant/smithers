@@ -55,7 +55,7 @@ class PluginManager {
 
       return plugin;
     }).filter(x => !!x);
-
+    
     config.set('plugins.local', installedPlugins);
   }
 

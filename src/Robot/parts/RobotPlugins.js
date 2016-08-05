@@ -48,6 +48,20 @@ const parseUsage = (usageString, args) => {
 };
 
 export default {
+  removePlugin(pluginToBeUninstalled) {
+    pluginManager.removeLocalPlugin(pluginToBeUninstalled);
+
+    plugins = plugins.filter(plugin => {
+      const isMe = (plugin.name === pluginToBeUninstalled.name && (JSON.stringify(plugin.commands.map(x => x.usage)) == JSON.stringify(pluginToBeUninstalled.commands.map(x => x.usage))));
+
+      if (isMe) {
+        return null;
+      }
+
+      return plugin;
+    }).filter(x => !!x);
+  },
+
   registerPlugin(plugin) {
     plugins = [
       ...plugins,

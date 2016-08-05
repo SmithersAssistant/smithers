@@ -49,7 +49,6 @@ class Config {
   }
 
   persist() {
-    console.log('PERSISTING', CONFIG_PATH, this.config);
     fs.writeFile(CONFIG_PATH, JSON.stringify(this.config, null, '  '));
   }
 }

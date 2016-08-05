@@ -68,7 +68,7 @@ export default ({state, setState, robot}) => {
         <IconButton
           className={css(styles.removePluginButton)}
           onClick={() => {
-            pluginManager.removeLocalPlugin(plugin);
+            robot.removePlugin(plugin);
             resetAddLocalPlugin();
             robot.notify(`Plugin '${plugin.name}' has been uninstalled!`);
           }}
