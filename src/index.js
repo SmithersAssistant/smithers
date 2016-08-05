@@ -1,6 +1,8 @@
+import {resolve} from 'path';
 import {webFrame, remote} from 'electron';
 import React from 'react';
 import {render} from 'react-dom';
+import config from 'config';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -25,18 +27,35 @@ import robot from './Robot'
 window.Robot = robot
 
 // Load inhouse plugins
-import {DEFAULT_PLUGIN} from 'pluginSystem/sources';
+import {DEFAULT_PLUGIN, LOCAL_PLUGIN, EXTERNAL_PLUGIN} from 'pluginSystem/sources';
 import pluginManager from 'pluginSystem/pluginManager'
 
-const defaultPluginInfo = (name) => ({
+const pluginInfo = ({name, version}, source = DEFAULT_PLUGIN) => ({
   name,
-  source: DEFAULT_PLUGIN,
-  version: app.getVersion(),
+  source,
+  version: version || app.getVersion(),
 });
 
-pluginManager.register(defaultPluginInfo('help'), require('plugins/help'));
-pluginManager.register(defaultPluginInfo('settings'), require('plugins/settings'));
-pluginManager.register(defaultPluginInfo('tabs'), require('plugins/tabs'));
+// Load Default Plugins
+pluginManager.register(pluginInfo({name: 'help'}), require('plugins/help'));
+pluginManager.register(pluginInfo({name: 'settings'}), require('plugins/settings'));
+pluginManager.register(pluginInfo({name: 'tabs'}), require('plugins/tabs'));
+
+// Load Local Plugins
+config.get('plugins.local').map((plugin) => {
+  pluginManager.register(
+    pluginInfo(plugin, LOCAL_PLUGIN),
+    pluginManager.loadPlugin(plugin.location)
+  );
+});
+
+// Load External Plugins
+config.get('plugins.external').map((plugin) => {
+  pluginManager.register(
+    pluginInfo(plugin, EXTERNAL_PLUGIN),
+    pluginManager.loadPlugin(plugin.location)
+  );
+});
 
 // Listen for notifications
 import notifications from './notifications'

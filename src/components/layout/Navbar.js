@@ -39,10 +39,6 @@ const isTextSelected = (input) => {
   return false
 };
 
-let commands = [];
-setTimeout(() => {
-  commands = flatMap(pluginManager.list().map(plugin => plugin.commands));
-});
 
 const Navbar = React.createClass({
   getInitialState() {
@@ -149,7 +145,7 @@ const Navbar = React.createClass({
       return [];
     }
 
-    return commands
+    return flatMap(pluginManager.list().map(plugin => plugin.commands))
       .filter(command => fuzzysearch(text.trim(), command.usage) || command.name.test(text))
       .map(command => {
         return ({

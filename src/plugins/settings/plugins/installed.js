@@ -3,6 +3,7 @@ import {StyleSheet, css} from 'aphrodite';
 import {homedir} from 'os';
 import fs from 'fs';
 import {clipboard} from 'electron';
+import pluginManager from 'pluginSystem/pluginManager';
 
 import {
   DEFAULT_PLUGIN,
@@ -61,20 +62,9 @@ export default ({state, setState, robot}) => {
   const resetAddLocalPlugin = () => {
     setState({
       addLocalPluginDialogOpen: false,
-      addLocalPluginLocation: ''
+      addLocalPluginLocation: '',
+      addLocalPluginErrorText: '',
     });
-  };
-
-  const isValidPluginPath = (path) => {
-    if (!fs.existsSync(path)) {
-      return false;
-    } else if (!fs.statSync(path).isDirectory()) {
-      return false;
-    } else if (!fs.existsSync(`${path}/package.json`)) {
-      return false;
-    }
-
-    return true;
   };
 
   const handlePluginLocationPath = (event) => {
@@ -112,7 +102,7 @@ export default ({state, setState, robot}) => {
 
             setState({
               addLocalPluginDialogOpen: true,
-              addLocalPluginLocation: isValidPluginPath(clipboardText)
+              addLocalPluginLocation: pluginManager.isValidPluginPath(clipboardText)
                 ? clipboardText
                 : ''
             })
@@ -148,7 +138,15 @@ export default ({state, setState, robot}) => {
             disabled={state.addLocalPluginLocation === '' || state.addLocalPluginErrorText !== ''}
             onClick={() => {
               console.log(`Loading plugin (${state.addLocalPluginLocation})`);
-              resetAddLocalPlugin();
+              let plugin = pluginManager.addLocalPlugin(state.addLocalPluginLocation);
+
+              if (plugin) {
+                resetAddLocalPlugin();
+                robot.notify(`Plugin '${plugin.name}' has been installed!`);
+              } else {
+                console.log(`Plugin already installed`);
+                setState({addLocalPluginErrorText: 'Plugin already installed'});
+              }
             }}
           >
             ADD
