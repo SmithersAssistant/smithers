@@ -10,7 +10,7 @@ export default StyleSheet.create({
   },
   tabsInBar: {
     position: 'absolute',
-    top: -48,
+    top: 0,
     left: 120,
     right: 96,
   },
@@ -32,6 +32,6 @@ export default StyleSheet.create({
   saveButtonStyles: {
     position: 'absolute',
     right: 48,
-    top: -48
+    top: 0
   }
 })

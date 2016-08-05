@@ -16,7 +16,7 @@ const SETTINGS_COMPONENT = 'com.robinmalfait.settings';
 
 export default robot => {
 
-  const {Full} = robot.cards
+  const {Blank} = robot.cards
   const {
     theme,
 
@@ -106,7 +106,7 @@ export default robot => {
     },
     render() {
       return (
-        <Full {...this.props} title="Settings">
+        <Blank {...this.props} title="Settings">
           <Tabs
             externalStyles={[styles.tabs, styles.tabsInBar]}
             selectedIndex={this.state.activePage}
@@ -133,7 +133,7 @@ export default robot => {
               window.location.reload();
             }}
           ><SaveIcon/></IconButton>
-        </Full>
+        </Blank>
       )
     }
   })
