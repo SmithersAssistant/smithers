@@ -1,5 +1,5 @@
 import React from 'react'
-
+import orderBy from 'lodash/orderBy';
 const HELP_COMPONENT = 'com.robinmalfait.help';
 
 export default robot => {
@@ -58,10 +58,10 @@ export default robot => {
     },
     renderPlugins() {
       const plugins = [];
-      robot.plugins().forEach(plugin => {
+      orderBy(robot.plugins(), ['name']).forEach(plugin => {
         let showed = false;
 
-        plugin.commands.forEach(command => {
+        orderBy(plugin.commands, ['usage']).forEach(command => {
           plugins.push([
             showed ? '' : String(plugin.name),
             this.parseUsage(command),
