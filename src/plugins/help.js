@@ -58,7 +58,11 @@ export default robot => {
     },
     renderPlugins() {
       const plugins = [];
-      orderBy(robot.plugins(), ['name']).forEach(plugin => {
+      const installedPlugins = this.props.plugin !== undefined
+        ? robot.plugins().filter(plugin => this.props.plugin === plugin.name)
+        : robot.plugins();
+
+      orderBy(installedPlugins, ['name']).forEach(plugin => {
         let showed = false;
 
         orderBy(plugin.commands, ['usage']).forEach(command => {
@@ -75,7 +79,7 @@ export default robot => {
       return plugins
     },
     render() {
-      const {...other} = this.props
+      const {plugin, ...other} = this.props
 
       return (
         <Table
@@ -99,6 +103,20 @@ export default robot => {
     usage: 'help'
   }, () => {
     robot.addCard(HELP_COMPONENT);
+  });
+
+  robot.listen(/^help (.*)$/, {
+    description: 'Get help for a specific plugin',
+    usage: 'help <plugin>',
+    args: {
+      plugin: () => {
+        return robot.plugins().map(plugin => plugin.name);
+      }
+    }
+  }, (res) => {
+    robot.addCard(HELP_COMPONENT, {
+      plugin: res.matches[1]
+    });
   });
 
   robot.on(robot.events.OPEN_HELP, () => {
