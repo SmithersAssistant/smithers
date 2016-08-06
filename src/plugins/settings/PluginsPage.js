@@ -1,7 +1,8 @@
 import React from 'react';
 
-import InstalledPage from './plugins/installed'
-import SearchPage from './plugins/search'
+import LocalPage from './plugins/local';
+import ExternalPage from './plugins/external';
+import DefaultPage from './plugins/default';
 
 export default (robot) => ({state, setState, tabsProps, tabProps}) => {
 
@@ -11,18 +12,27 @@ export default (robot) => ({state, setState, tabsProps, tabProps}) => {
   } = Robot.UI;
 
   const pages = [{
-    label: 'Installed',
+    label: 'Local plugins',
     body: (
-      <InstalledPage
+      <LocalPage
         robot={robot}
         setState={setState}
         state={state}
       />
     )
   }, {
-    label: 'Search',
+    label: 'External plugins',
     body: (
-      <SearchPage
+      <ExternalPage
+        robot={robot}
+        setState={setState}
+        state={state}
+      />
+    )
+  }, {
+    label: 'Default plugins',
+    body: (
+      <DefaultPage
         robot={robot}
         setState={setState}
         state={state}
