@@ -24,7 +24,6 @@ export default robot => {
     Tab,
   } = robot.UI
 
-
   const GeneralPage = generalPage(robot);
   const ThemePage = themePage(robot);
   const PluginsPage = pluginsPage(robot);
@@ -54,6 +53,27 @@ export default robot => {
           addLocalPluginErrorText: '',
         }
       }
+    },
+    componentDidMount() {
+      this.listeners = [
+        robot.on(robot.events.PLUGIN_INSTALLED, ({module}) => {
+          robot.notify(`'${module}' installed`);
+          this.setState({pluginsPageState: {
+            ...this.state.pluginsPageState,
+            updated_at: +new Date()
+          }});
+        }),
+        robot.on(robot.events.PLUGIN_DELETED, ({module}) => {
+          robot.notify(`'${module}' deleted`);
+          this.setState({pluginsPageState: {
+            ...this.state.pluginsPageState,
+            updated_at: +new Date()
+          }});
+        })
+      ];
+    },
+    componentWillUnmount() {
+      (this.listeners || []).forEach(x => x());
     },
     pages() {
       return [{
@@ -101,6 +121,7 @@ export default robot => {
             externalAnchorStyles: styles.a,
             externalAnchorStylesActive: styles.aActive
           }}
+          updatedAt={this.state.pluginsPageState.updated_at}
         />
       }]
     },

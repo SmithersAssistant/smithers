@@ -3,8 +3,10 @@ import {resolve} from 'path';
 import config from 'config';
 import mkdirp from 'mkdirp';
 import {exec} from 'child_process';
+import rimraf from 'rimraf';
 import {LOCAL_PLUGIN} from './sources';
 import Plugin from './Plugin';
+import Event, {PLUGIN_INSTALLING, PLUGIN_INSTALLED, PLUGIN_UPDATING, PLUGIN_UPDATED, PLUGIN_DELETING, PLUGIN_DELETED} from 'Event';
 
 class PluginManager {
 
@@ -13,8 +15,12 @@ class PluginManager {
     this.plugins = [];
   }
 
-  installExternalPlugins() {
+  syncExternalPlugins(cb) {
     const externalPlugins = config.get('plugins.external');
+    const externalPluginModuleNames = config.get('plugins.external').map(module => {
+      const [moduleName] = module.split('@');
+      return moduleName;
+    });
     const basePath = config.getExternalPluginsPath();
 
     externalPlugins.forEach((module) => {
@@ -22,32 +28,65 @@ class PluginManager {
       const path = resolve(basePath, moduleName);
 
       if (!fs.existsSync(path)) {
-        mkdirp(path, () => {
-          fs.writeFile(resolve(path, 'package.json'), JSON.stringify({
-            name: `plugin-${moduleName}`,
-            dependencies: {},
-            private: true
-          }, null, '  '), (err) => {
-            if (err) {
-              console.error(`Could not install ${moduleName}`);
-              return;
-            }
+        this._installExternalPlugin(path, moduleName, module);
+      }
+    });
 
-            exec(`npm install ${module} --production --save`, {
-              cwd: path,
-            }, (err, stdout, stderr) => {
-              if (err) {
-                console.error(`Could not install ${moduleName}`);
-              }
+    fs.readdir(config.getExternalPluginsPath(), (err, files) => {
+      files.filter(plugin => !externalPluginModuleNames.includes(plugin))
+        .map((moduleName) => this._uninstallExternalPlugin(resolve(basePath, moduleName), moduleName));
+    });
+  }
 
-              fs.writeFile(resolve(path, 'index.js'), [
-                `var obj = require('${moduleName}');`,
-                `module.exports = obj && obj.__esModule ? obj : { default: obj };`
-              ].join('\n\n'));
-            });
+  _uninstallExternalPlugin(path, moduleName) {
+    Event.fire(PLUGIN_DELETING, {
+      module: moduleName
+    });
+
+    rimraf(path, (err) => {
+      if (err) {
+        console.log(`Could not delete module`);
+      }
+
+      Event.fire(PLUGIN_DELETED, {
+        module: moduleName
+      });
+    });
+  }
+
+  _installExternalPlugin(path, moduleName, module) {
+    Event.fire(PLUGIN_INSTALLING, {
+      module: moduleName
+    });
+
+    mkdirp(path, () => {
+      fs.writeFile(resolve(path, 'package.json'), JSON.stringify({
+        name: `plugin-${moduleName}`,
+        dependencies: {},
+        private: true
+      }, null, '  '), (err) => {
+        if (err) {
+          console.error(`Could not install ${moduleName}`);
+          return;
+        }
+
+        exec(`npm install ${module} --production --save`, {
+          cwd: path,
+        }, (err, stdout, stderr) => {
+          if (err) {
+            console.error(`Could not install ${moduleName}`);
+          }
+
+          fs.writeFile(resolve(path, 'index.js'), [
+            `var obj = require('${moduleName}');`,
+            `module.exports = obj && obj.__esModule ? obj : { default: obj };`
+          ].join('\n\n'));
+
+          Event.fire(PLUGIN_INSTALLED, {
+            module: moduleName
           });
         });
-      }
+      });
     });
   }
 

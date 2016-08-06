@@ -4,7 +4,7 @@ import LocalPage from './plugins/local';
 import ExternalPage from './plugins/external';
 import DefaultPage from './plugins/default';
 
-export default (robot) => ({state, setState, tabsProps, tabProps}) => {
+export default (robot) => ({state, setState, tabsProps, tabProps, updatedAt}) => {
 
   const {
     Tab,
@@ -24,6 +24,7 @@ export default (robot) => ({state, setState, tabsProps, tabProps}) => {
     label: 'External plugins',
     body: (
       <ExternalPage
+        updatedAt={updatedAt}
         robot={robot}
         setState={setState}
         state={state}
