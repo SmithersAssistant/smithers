@@ -51,10 +51,17 @@ config.get('plugins.local').map((plugin) => {
 });
 
 // Load External Plugins
+pluginManager.installExternalPlugins();
 config.get('plugins.external').map((plugin) => {
+  const [pluginName] = plugin.split('@');
+  const location = resolve(config.getExternalPluginsPath(), pluginName);
+
   pluginManager.register(
-    pluginInfo(plugin, EXTERNAL_PLUGIN),
-    pluginManager.loadPlugin(plugin.location)
+    pluginInfo({
+      name: pluginName,
+      location
+    }, EXTERNAL_PLUGIN),
+    pluginManager.loadPlugin(location)
   );
 });
 

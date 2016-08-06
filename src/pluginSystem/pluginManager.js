@@ -1,6 +1,8 @@
 import fs from 'fs';
 import {resolve} from 'path';
 import config from 'config';
+import mkdirp from 'mkdirp';
+import {exec} from 'child_process';
 import {LOCAL_PLUGIN} from './sources';
 import Plugin from './Plugin';
 
@@ -9,6 +11,44 @@ class PluginManager {
   constructor() {
     this.cards = [];
     this.plugins = [];
+  }
+
+  installExternalPlugins() {
+    const externalPlugins = config.get('plugins.external');
+    const basePath = config.getExternalPluginsPath();
+
+    externalPlugins.forEach((module) => {
+      const [moduleName] = module.split('@');
+      const path = resolve(basePath, moduleName);
+
+      if (!fs.existsSync(path)) {
+        mkdirp(path, () => {
+          fs.writeFile(resolve(path, 'package.json'), JSON.stringify({
+            name: `plugin-${moduleName}`,
+            dependencies: {},
+            private: true
+          }, null, '  '), (err) => {
+            if (err) {
+              console.error(`Could not install ${moduleName}`);
+              return;
+            }
+
+            exec(`npm install ${module} --production --save`, {
+              cwd: path,
+            }, (err, stdout, stderr) => {
+              if (err) {
+                console.error(`Could not install ${moduleName}`);
+              }
+
+              fs.writeFile(resolve(path, 'index.js'), [
+                `var obj = require('${moduleName}');`,
+                `module.exports = obj && obj.__esModule ? obj : { default: obj };`
+              ].join('\n\n'));
+            });
+          });
+        });
+      }
+    });
   }
 
   addLocalPlugin(location) {

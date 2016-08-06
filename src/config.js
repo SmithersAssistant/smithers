@@ -1,13 +1,17 @@
 import fs from 'fs';
+import {resolve} from 'path';
 import {remote} from 'electron';
 import _ from 'lodash';
+import mkdirp from 'mkdirp';
 
 const {app} = remote;
-const CONFIG_PATH = app.getPath("userData") + "/user.config.json";
+const CONFIG_PATH = resolve(app.getPath("userData"), "user.config.json");
+const PLUGINS_PATH = resolve(app.getPath("userData"), "plugins");
 
 class Config {
   constructor() {
     this.config = this.loadConfig();
+    mkdirp(PLUGINS_PATH);
   }
 
   defaultConfig() {
@@ -30,6 +34,10 @@ class Config {
 
   getConfigPath() {
     return CONFIG_PATH;
+  }
+
+  getExternalPluginsPath() {
+    return PLUGINS_PATH;
   }
 
   loadConfig() {
