@@ -17,8 +17,8 @@ import {Collection, CollectionItem} from 'components/UI/Collection'
 
 export default {
   UI: {
-    theme,
-    color,
+    ...theme,
+    theme: theme.theme,
     colors,
 
     A,

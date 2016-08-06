@@ -12,7 +12,7 @@ export default (robot) => {
     Icon,
   } = robot.UI
 
-  const styles = (currentColor, hasShadow) => StyleSheet.create({
+  const staticStyles = StyleSheet.create({
     circle: {
       display: 'inline-block',
       margin: 25,
@@ -24,10 +24,6 @@ export default (robot) => {
       ':hover': {
         ...theme.shadow2
       },
-      backgroundColor: color(currentColor)
-    },
-    active: {
-      ...(hasShadow ? theme.shadow3 : {})
     },
     icon: {
       position: 'absolute',
@@ -35,11 +31,20 @@ export default (robot) => {
       top: '50%',
       transform: 'translate(-50%, -50%)'
     },
+  });
+
+  const styles = (currentColor, hasShadow) => StyleSheet.create({
+    circle: {
+      backgroundColor: color(currentColor)
+    },
+    active: {
+      ...(hasShadow ? theme.shadow3 : {})
+    },
     activeIcon: {
       color: color(currentColor, 200)
     }
   });
-
+  
   return ({state, setState}) => {
     return (
       <div style={{
@@ -57,13 +62,14 @@ export default (robot) => {
                 robot.setTheme(c)
               }}
               className={cx({
+                [css(staticStyles.circle)]: true,
                 [css(style.circle)]: true,
                 [css(style.active)]: state.activeColor === c
               })}
             >{state.activeColor === c ? (
               <Icon
                 className={cx({
-                  [css(style.icon)]: true,
+                  [css(staticStyles.icon)]: true,
                   [css(style.activeIcon)]: state.activeColor === c,
                 })}
                 icon="paint-brush"
