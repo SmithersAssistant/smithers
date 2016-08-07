@@ -124,6 +124,10 @@ export default {
     return pluginManager.list()
   },
 
+  execute(value) {
+    pluginManager.execute(value);
+  },
+
   _isCurrentPlugin(a, b) {
     // Modules with the same name are not allowed in npm
     // But when you have a module with the same name locally
