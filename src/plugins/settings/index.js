@@ -61,15 +61,25 @@ export default robot => {
         robot.on(robot.events.PLUGIN_INSTALLED, ({module}) => {
           robot.notify(`'${module}' installed`);
           this.setState({pluginsPageState: {
-            ...this.state.pluginsPageState,
-            updated_at: +new Date()
+            ...this.state.pluginsPageState
+          }});
+        }),
+        robot.on(robot.events.PLUGIN_INSTALLING, ({module}) => {
+          robot.notify(`Installing '${module}', please hold on`);
+          this.setState({pluginsPageState: {
+            ...this.state.pluginsPageState
           }});
         }),
         robot.on(robot.events.PLUGIN_DELETED, ({module}) => {
           robot.notify(`'${module}' deleted`);
           this.setState({pluginsPageState: {
-            ...this.state.pluginsPageState,
-            updated_at: +new Date()
+            ...this.state.pluginsPageState
+          }});
+        }),
+        robot.on(robot.events.PLUGIN_DELETING, ({module}) => {
+          robot.notify(`Deleting '${module}', please hold on`);
+          this.setState({pluginsPageState: {
+            ...this.state.pluginsPageState
           }});
         })
       ];
@@ -123,7 +133,6 @@ export default robot => {
             externalAnchorStyles: styles.a,
             externalAnchorStylesActive: styles.aActive
           }}
-          updatedAt={this.state.pluginsPageState.updated_at}
         />
       }]
     },

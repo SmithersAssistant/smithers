@@ -150,6 +150,15 @@ class PluginManager {
     return plugin;
   }
 
+  removeExternalPlugin(module) {
+    let plugins = config.get('plugins.external');
+
+    config.set('plugins.external', plugins.map((plugin) => {
+      let [moduleName] = plugin.split('@');
+      return moduleName === module.name ? undefined : plugin;
+    }).filter(x => !!x));
+  }
+
   addExternalPlugin(module) {
     const [moduleName] = module.split('@');
     let plugins = config.get('plugins.external');

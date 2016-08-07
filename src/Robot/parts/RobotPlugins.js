@@ -52,9 +52,19 @@ export default {
     pluginManager.removeLocalPlugin(pluginToBeUninstalled);
 
     plugins = plugins.filter(plugin => {
-      const isMe = (plugin.name === pluginToBeUninstalled.name && (JSON.stringify(plugin.commands.map(x => x.usage)) == JSON.stringify(pluginToBeUninstalled.commands.map(x => x.usage))));
+      if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
+        return null;
+      }
 
-      if (isMe) {
+      return plugin;
+    }).filter(x => !!x);
+  },
+
+  removeExternalPlugin(pluginToBeUninstalled) {
+    pluginManager.removeExternalPlugin(pluginToBeUninstalled);
+
+    plugins = plugins.filter(plugin => {
+      if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
         return null;
       }
 

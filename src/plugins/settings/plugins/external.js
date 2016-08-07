@@ -1,8 +1,12 @@
 import React from 'react';
 import {css} from 'aphrodite';
 import styles from './styles';
-import Dialog from 'material-ui/Dialog';
+
 import pluginManager from 'pluginSystem/pluginManager';
+
+import IconButton from 'material-ui/IconButton/IconButton';
+import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
+import Dialog from 'material-ui/Dialog';
 
 import {
   EXTERNAL_PLUGIN
@@ -58,6 +62,14 @@ export default ({state, setState, robot}) => {
               className={css(styles.pluginItem)}
             >
               {plugin.name}
+
+              <IconButton
+                className={css(styles.removePluginButton)}
+                onClick={() => {
+                robot.removeExternalPlugin(plugin);
+                resetAddExternalPlugin();
+              }}
+              ><RemoveIcon/></IconButton>
 
               <span className={css(styles.info)}>(v{plugin.version})</span>
             </CollectionItem>
