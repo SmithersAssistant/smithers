@@ -157,6 +157,14 @@ class PluginManager {
       let [moduleName] = plugin.split('@');
       return moduleName === module.name ? undefined : plugin;
     }).filter(x => !!x));
+
+    this.plugins = this.plugins.map(plugin => {
+      if (plugin.location === module.location) {
+        return null;
+      }
+
+      return plugin;
+    }).filter(x => !!x);
   }
 
   addExternalPlugin(module) {

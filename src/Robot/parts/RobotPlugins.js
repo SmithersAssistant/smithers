@@ -65,6 +65,9 @@ export default {
 
     plugins = plugins.filter(plugin => {
       if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
+      }
+
+      if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
         return null;
       }
 
