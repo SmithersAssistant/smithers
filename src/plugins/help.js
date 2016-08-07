@@ -11,7 +11,11 @@ export default robot => {
 
   const Help = React.createClass({
     countPlugins() {
-      return robot.plugins().length
+      const installedPlugins = this.props.plugin !== undefined
+        ? robot.plugins().filter(plugin => this.props.plugin === plugin.name)
+        : robot.plugins();
+
+      return installedPlugins.length
     },
     parseUsage({usage, arguments: args, optionals}) {
       let result = usage.split(' ');
@@ -79,7 +83,8 @@ export default robot => {
       return plugins
     },
     render() {
-      const {plugin, ...other} = this.props
+      const {plugin, ...other} = this.props;
+      const pluginCount = this.countPlugins();
 
       return (
         <Table
@@ -89,7 +94,7 @@ export default robot => {
           body={this.renderPlugins()}
           footer={[{
             colSpan: 3,
-            value: `${this.countPlugins()} plugins installed.`
+            value: `${pluginCount} plugin${pluginCount === 1 ? '' : 's'} installed`
           }]}
         />
       )

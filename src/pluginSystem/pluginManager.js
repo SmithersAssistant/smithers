@@ -4,7 +4,7 @@ import config from 'config';
 import mkdirp from 'mkdirp';
 import {exec} from 'child_process';
 import rimraf from 'rimraf';
-import {LOCAL_PLUGIN} from './sources';
+import {LOCAL_PLUGIN, EXTERNAL_PLUGIN} from './sources';
 import Plugin from './Plugin';
 import Event, {PLUGIN_INSTALLING, PLUGIN_INSTALLED, PLUGIN_UPDATING, PLUGIN_UPDATED, PLUGIN_DELETING, PLUGIN_DELETED} from 'Event';
 
@@ -15,7 +15,7 @@ class PluginManager {
     this.plugins = [];
   }
 
-  syncExternalPlugins(cb) {
+  syncExternalPlugins() {
     const externalPlugins = config.get('plugins.external');
     const externalPluginModuleNames = config.get('plugins.external').map(module => {
       const [moduleName] = module.split('@');
@@ -60,7 +60,9 @@ class PluginManager {
     });
 
     mkdirp(path, () => {
-      fs.writeFile(resolve(path, 'package.json'), JSON.stringify({
+      const packageJsonPath = resolve(path, 'package.json');
+
+      fs.writeFile(packageJsonPath, JSON.stringify({
         name: `plugin-${moduleName}`,
         dependencies: {},
         private: true
@@ -80,14 +82,46 @@ class PluginManager {
           fs.writeFile(resolve(path, 'index.js'), [
             `var obj = require('${moduleName}');`,
             `module.exports = obj && obj.__esModule ? obj : { default: obj };`
-          ].join('\n\n'));
+          ].join('\n\n'), (err) => {
+            exec(`npm list --json --depth=0`, {
+              cwd: path
+            }, (err, stdout, stderr) => {
+              if (err) {
+                console.error(`Could not read version of ${moduleName}`);
+              }
 
-          Event.fire(PLUGIN_INSTALLED, {
-            module: moduleName
+              const info = JSON.parse(stdout);
+
+              Object.keys(info.dependencies).forEach(dependency => {
+                if (dependency === moduleName) {
+                  const contents = window.require(packageJsonPath);
+                  contents.version = info.dependencies[dependency].version;
+
+                  fs.writeFileSync(packageJsonPath, JSON.stringify(contents, null, '  '));
+                }
+              });
+
+              const plugin = {
+                name: moduleName,
+                location: path,
+                version: window.require(packageJsonPath).version,
+                source: EXTERNAL_PLUGIN
+              };
+
+              this.register(plugin, this.loadPlugin(plugin.location));
+
+              Event.fire(PLUGIN_INSTALLED, {
+                module: moduleName
+              });
+            });
           });
         });
       });
     });
+  }
+
+  checkForUpdates() {
+    // npm outdated --json
   }
 
   addLocalPlugin(location) {
@@ -159,6 +193,8 @@ class PluginManager {
   }
 
   register(info, cb) {
+    console.log(info, cb);
+
     if (!cb) {
       console.error([
         'COULD NOT LOAD PLUGIN',

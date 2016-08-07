@@ -18,8 +18,7 @@ class Event {
   }
 
   fire(event, ...args) {
-    console.group('EVENT FIRED');
-    console.info(event);
+    console.group(`EVENT FIRED - ${event}`);
     console.log(...args);
     console.groupEnd();
     (this.events[event] || []).map(({cb}) => cb(...args))

@@ -66,7 +66,7 @@ export default {
     plugins = [
       ...plugins,
       {
-        name: plugin.name,
+        ...plugin,
         commands: []
       }
     ]
@@ -75,7 +75,7 @@ export default {
 
   listen(regex, {description, usage, args}, cb) {
     plugins = plugins.map((plugin) => {
-      if (plugin.name === currentPlugin.name) {
+      if (this._isCurrentPlugin(plugin, currentPlugin)) {
         plugin = {
           ...plugin,
           commands: [
@@ -91,7 +91,7 @@ export default {
 
   test(plugin, command) {
     plugins
-      .find(p => p.name === plugin.name)
+      .find(p => this._isCurrentPlugin(p, plugin))
       .commands
       .filter(cmd => cmd.regex.test(command))
       .forEach(plugin => plugin.cb({
@@ -102,15 +102,22 @@ export default {
 
   commands(plugin) {
     return plugins
-      .find(p => p.name === plugin.name)
+      .find(p => this._isCurrentPlugin(p, plugin))
       .commands
       .map(({regex: name, description, usage, args}) => ({name, description, usage, ...parseUsage(usage, args)}));
   },
 
   plugins() {
-    return pluginManager.list().map(plugin => ({
-      ...plugin,
-      commands: plugin.commands
-    }))
+    return pluginManager.list()
+  },
+
+  _isCurrentPlugin(a, b) {
+    // Modules with the same name are not allowed in npm
+    // But when you have a module with the same name locally
+    // We check  the source of it
+
+    // If we have local modules with the same name, the source will be the same
+    // Therefor we check the location
+    return (a.name === b.name) && (a.source === b.source) && (a.location === b.location);
   }
 }

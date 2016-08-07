@@ -62,6 +62,7 @@ config.get('plugins.external').map((plugin) => {
 
   pluginManager.register(
     pluginInfo({
+      version: window.require(resolve(location, 'package.json')).version,
       name: pluginName,
       location
     }, EXTERNAL_PLUGIN),
