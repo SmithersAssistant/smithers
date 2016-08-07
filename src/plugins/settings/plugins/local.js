@@ -17,7 +17,7 @@ import Dialog from 'material-ui/Dialog';
 export default ({state, setState, robot}) => {
   const {
     Button,
-    FlattButton,
+    FlatButton,
     Collection,
     CollectionItem,
     TextField
@@ -100,8 +100,8 @@ export default ({state, setState, robot}) => {
       <Dialog
         title="Add a Local Plugin"
         actions={[
-          <FlattButton onClick={resetAddLocalPlugin}>CANCEL</FlattButton>,
-          <FlattButton
+          <FlatButton onClick={resetAddLocalPlugin}>CANCEL</FlatButton>,
+          <FlatButton
             disabled={state.addLocalPluginLocation === '' || state.addLocalPluginErrorText !== ''}
             onClick={() => {
               console.log(`Loading plugin (${state.addLocalPluginLocation})`);
@@ -117,7 +117,7 @@ export default ({state, setState, robot}) => {
             }}
           >
             ADD
-          </FlattButton>
+          </FlatButton>
         ]}
         modal={false}
         open={state.addLocalPluginDialogOpen}

@@ -41,7 +41,7 @@ const Button = ({color = ButtonColors.THEME, children, className, ...other}) => 
   </button>
 )
 
-export const FlattButton = ({disabled = false, color = ButtonColors.THEME, children, ...other}) => (
+export const FlatButton = ({disabled = false, color = ButtonColors.THEME, children, ...other}) => (
   <MaterialFlatButton
     disabled={disabled}
     {...other}

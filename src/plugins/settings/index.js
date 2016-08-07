@@ -51,6 +51,8 @@ export default robot => {
           addLocalPluginDialogOpen: false,
           addLocalPluginLocation: '',
           addLocalPluginErrorText: '',
+          addExternalPluginDialogOpen: false,
+          addExternalPluginPackage: '',
         }
       }
     },

@@ -150,6 +150,20 @@ class PluginManager {
     return plugin;
   }
 
+  addExternalPlugin(module) {
+    const [moduleName] = module.split('@');
+    let plugins = config.get('plugins.external');
+
+    if (plugins.includes(module)) {
+      return undefined;
+    }
+
+    plugins.push(module);
+    config.set('plugins.external', plugins);
+
+    return moduleName;
+  }
+
   removeLocalPlugin({location}) {
     let installedPlugins = config.get('plugins.local');
 
@@ -193,8 +207,6 @@ class PluginManager {
   }
 
   register(info, cb) {
-    console.log(info, cb);
-
     if (!cb) {
       console.error([
         'COULD NOT LOAD PLUGIN',

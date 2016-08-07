@@ -4,7 +4,7 @@ import {color} from 'styles/functions/_color'
 import * as colors from 'styles/functions/_colors'
 
 import A from 'components/UI/A'
-import Button, {ButtonColors, FlattButton} from 'components/UI/Button'
+import Button, {ButtonColors, FlatButton} from 'components/UI/Button'
 import Icon from 'components/UI/Icon'
 import {Tabs} from 'components/UI/Tabs'
 import {Tab} from 'components/UI/Tab'
@@ -24,7 +24,7 @@ export default {
     A,
     Button,
     ButtonColors,
-    FlattButton,
+    FlatButton,
     Icon,
     Tabs,
     Tab,
