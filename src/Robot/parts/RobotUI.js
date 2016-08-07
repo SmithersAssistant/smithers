@@ -14,6 +14,7 @@ import TextField from 'components/UI/TextField'
 import SelectField from 'components/UI/SelectField'
 import CheckBoxField from 'components/UI/CheckBoxField'
 import {Collection, CollectionItem} from 'components/UI/Collection'
+import {StyleSheet, css} from 'aphrodite';
 
 export default {
   UI: {
@@ -34,6 +35,8 @@ export default {
     SelectField,
     CheckBoxField,
     Collection,
-    CollectionItem
+    CollectionItem,
+    StyleSheet,
+    css
   }
 }
