@@ -1,6 +1,6 @@
 import React from 'react'
 import {remote} from 'electron'
-const {app, getCurrentWindow} = remote
+const {app} = remote
 import {StyleSheet, css} from 'aphrodite'
 import styles from './indexStyles'
 
@@ -177,34 +177,6 @@ export default robot => {
     usage: 'settings'
   }, () => {
     robot.addCard('com.robinmalfait.settings');
-  });
-
-  robot.listen(/^restart$/, {
-    description: "Restart",
-    usage: 'restart'
-  }, () => {
-    restart();
-  });
-
-  robot.listen(/^open devtools$/, {
-    description: 'Open the chrome dev tools',
-    usage: 'open devtools'
-  }, () => {
-    getCurrentWindow().openDevTools();
-  });
-
-  robot.listen(/^quit$/, {
-    description: 'Close the application',
-    usage: 'quit'
-  }, () => {
-    app.quit();
-  });
-
-  robot.listen(/^refresh$/, {
-    description: 'Refresh the window',
-    usage: 'refresh'
-  }, () => {
-    window.location.reload();
   });
 
   robot.on(robot.events.OPEN_SETTINGS, () => {
