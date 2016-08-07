@@ -4,6 +4,10 @@ Your personal assistant
 
 ![](https://d.pr/i/12xU1+)
 
+## Plugins
+
+You can find some plugins on [npm](https://www.npmjs.com/search?q=smithers+assistant)
+
 ## Contribute
 
 1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device
