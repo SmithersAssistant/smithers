@@ -95,7 +95,7 @@ autoUpdater.addListener("checking-for-update", (event) => {
   Event.fire(CHECKING_FOR_UPDATES, {event});
 });
 
-autoUpdater.addListener("update-not-available", () => {
+autoUpdater.addListener("update-not-available", (event) => {
   Event.fire(UPDATE_NOT_AVAILABLE, {event});
 });
 
