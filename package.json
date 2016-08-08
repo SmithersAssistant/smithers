@@ -53,7 +53,7 @@
     "app-category-type": "app-category-type=public.app-category.developer-tools"
   },
   "scripts": {
-    "dev": "webpack --watch",
+    "dev": "./node_modules/.bin/cross-env NODE_ENV=development webpack --watch",
     "build": "./node_modules/.bin/cross-env NODE_ENV=production webpack",
     "test": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
     "test:watch": "npm test -- --watch",

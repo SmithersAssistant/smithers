@@ -2,9 +2,7 @@ const os = require('os');
 const {app, BrowserWindow, autoUpdater} = require('electron');
 
 // Auto Updater
-const env = process.env.NODE_ENV || 'development';
-
-if (env !== 'development') {
+if (process.env.NODE_ENV !== 'development') {
   autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`)
 }
 
