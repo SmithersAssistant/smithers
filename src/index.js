@@ -3,6 +3,7 @@ import {webFrame, remote} from 'electron';
 import React from 'react';
 import {render} from 'react-dom';
 import config from 'config';
+import menuFactory from 'Menu';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Event, {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, UPDATE_ERROR, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} from 'Event';
@@ -77,6 +78,9 @@ notifications.start();
 
 // Disable pinch zoom
 webFrame.setZoomLevelLimits(1, 1);
+
+// Render menu bar items
+menuFactory();
 
 // Auto updater
 autoUpdater.addListener("update-available", (event) => {
