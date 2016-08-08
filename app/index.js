@@ -1,5 +1,12 @@
-const {app, BrowserWindow} = require('electron');
+const os = require('os');
+const {app, BrowserWindow, autoUpdater} = require('electron');
 
+// Auto Updater
+if (process.env.NODE_ENV !== 'development') {
+  autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`)
+}
+
+// Window Management
 let win;
 
 const createWindow = () => {

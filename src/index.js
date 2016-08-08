@@ -5,11 +5,12 @@ import {render} from 'react-dom';
 import config from 'config';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Event, {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, UPDATE_ERROR, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} from 'Event';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-const {app} = remote;
+const {app, autoUpdater} = remote;
 
 // Import global CSS
 import './styles/global.css'
@@ -76,6 +77,27 @@ notifications.start();
 
 // Disable pinch zoom
 webFrame.setZoomLevelLimits(1, 1);
+
+// Auto updater
+autoUpdater.addListener("update-available", (event) => {
+  Event.fire(UPDATE_AVAILABLE, {event});
+});
+
+autoUpdater.addListener("update-downloaded", (event, releaseNotes, releaseName, releaseDate, updateURL) => {
+  Event.fire(UPDATE_DOWNLOADED, {event, releaseNotes, releaseName, releaseDate, updateURL});
+});
+
+autoUpdater.addListener("error", (error) => {
+  Event.fire(UPDATE_ERROR, {error});
+});
+
+autoUpdater.addListener("checking-for-update", (event) => {
+  Event.fire(CHECKING_FOR_UPDATES, {event});
+});
+
+autoUpdater.addListener("update-not-available", () => {
+  Event.fire(UPDATE_NOT_AVAILABLE, {event});
+});
 
 // Render
 render((
