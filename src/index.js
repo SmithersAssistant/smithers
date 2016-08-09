@@ -5,6 +5,7 @@ import {render} from 'react-dom';
 import config from 'config';
 import menuFactory from 'Menu';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import {getThemePalette} from 'state';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Event, {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, UPDATE_ERROR, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} from 'Event';
 
@@ -111,7 +112,7 @@ if (process.env.NODE_ENV !== 'development') {
 
 // Render
 render((
-  <MuiThemeProvider muiTheme={getMuiTheme()}>
+  <MuiThemeProvider muiTheme={getMuiTheme({palette: getThemePalette()})}>
     <Provider store={store}>
       <App/>
     </Provider>

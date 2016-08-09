@@ -1,11 +1,17 @@
 import {
-  SET_THEME,
+  SET_PRIMARY_COLOR,
+  SET_SECONDARY_COLOR,
   SET_VOICE
 } from './types'
 
-export const setTheme = (theme) => ({
-  type: SET_THEME,
-  theme
+export const setPrimaryColor = (color) => ({
+  type: SET_PRIMARY_COLOR,
+  color
+})
+
+export const setSecondaryColor = (color) => ({
+  type: SET_SECONDARY_COLOR,
+  color
 })
 
 export const setVoice = (voice) => ({

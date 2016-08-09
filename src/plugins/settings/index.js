@@ -38,7 +38,8 @@ export default robot => {
           downloading_updates: false
         },
         themePageState: {
-          activeColor: theme.colorTheme
+          primaryColor: theme.primaryColor,
+          secondaryColor: theme.secondaryColor,
         },
         pluginsPageState: {
           activeTab: 0,

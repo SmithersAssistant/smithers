@@ -10,10 +10,11 @@ export default (robot) => {
     A,
     Button,
     Icon,
-    CheckBoxField,
     Collection,
     CollectionItem
   } = robot.UI;
+
+  const {Checkbox} = robot.UI.material;
 
   return React.createClass({
     componentDidMount() {
@@ -92,7 +93,7 @@ export default (robot) => {
             )}
           </CollectionItem>
           <CollectionItem>
-            <CheckBoxField
+            <Checkbox
               label="Show tabs"
               labelPosition="left"
               onCheck={(e, isChecked) => isChecked ? robot.showTabs() : robot.hideTabs()}

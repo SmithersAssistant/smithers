@@ -15,11 +15,13 @@ import {
 export default ({state, setState, robot}) => {
   const {
     Button,
-    TextField,
+    material,
     FlatButton,
     Collection,
     CollectionItem,
   } = robot.UI;
+
+  const {TextField} = material;
 
   const resetAddExternalPlugin = () => {
     setState({

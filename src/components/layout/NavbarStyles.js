@@ -42,7 +42,7 @@ export default StyleSheet.create({
     fontSize: 20,
     color: 'white',
     backgroundColor: theme.barBackgroundColor,
-    borderBottom: `1px solid ${color(theme.colorTheme, 800)}`,
+    borderBottom: `1px solid ${color(theme.primaryColor, 800)}`,
     ':active': {
       outline: 'none'
     },
@@ -78,14 +78,14 @@ export default StyleSheet.create({
     boxShadow: `inset 0 51px ${color('grey', 100)}` 
   },
   argument: {
-    backgroundColor: color(theme.colorTheme),
+    backgroundColor: color(theme.primaryColor),
     color: 'white',
     padding: 5,
     borderRadius: 3,
     ...theme.shadow1
   },
   optional: {
-    backgroundColor: color(theme.colorTheme, 100),
+    backgroundColor: color(theme.primaryColor, 100),
     padding: 5,
     borderRadius: 3,
     ...theme.shadow1

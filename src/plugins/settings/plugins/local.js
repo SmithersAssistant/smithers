@@ -20,8 +20,10 @@ export default ({state, setState, robot}) => {
     FlatButton,
     Collection,
     CollectionItem,
-    TextField
+    material
   } = robot.UI;
+
+  const {TextField} = material;
 
   const resetAddLocalPlugin = () => {
     setState({

@@ -8,19 +8,19 @@ import Button, {ButtonColors, FlatButton} from 'components/UI/Button'
 import Icon from 'components/UI/Icon'
 import {Tabs} from 'components/UI/Tabs'
 import {Tab} from 'components/UI/Tab'
-import Chip from 'components/UI/Chip'
 import Webview from 'components/UI/Webview'
-import TextField from 'components/UI/TextField'
-import SelectField from 'components/UI/SelectField'
-import CheckBoxField from 'components/UI/CheckBoxField'
 import {Collection, CollectionItem} from 'components/UI/Collection'
 import {StyleSheet, css} from 'aphrodite';
+
+import * as material from 'material-ui';
 
 export default {
   UI: {
     ...theme,
     theme: theme.theme,
     colors,
+
+    material,
 
     A,
     Button,
@@ -29,11 +29,7 @@ export default {
     Icon,
     Tabs,
     Tab,
-    Chip,
     Webview,
-    TextField,
-    SelectField,
-    CheckBoxField,
     Collection,
     CollectionItem,
     StyleSheet,

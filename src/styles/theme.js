@@ -1,4 +1,4 @@
-import {getThemeColor} from 'state'
+import {getPrimaryColor, getSecondaryColor} from 'state'
 import {color, rgba} from './functions'
 export * from './functions'
 import os from 'os'
@@ -102,9 +102,10 @@ const helpers = {
   }
 }
 
-const themeFactory = (colorTheme = getThemeColor('indigo')) => ({
-  colorTheme,
-  ...colors(colorTheme),
+const themeFactory = (primaryColor = getPrimaryColor(), secondaryColor = getSecondaryColor()) => ({
+  primaryColor,
+  secondaryColor,
+  ...colors(primaryColor),
   ...fonts,
   ...sizes,
   ...card,

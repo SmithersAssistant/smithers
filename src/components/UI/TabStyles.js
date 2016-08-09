@@ -7,7 +7,7 @@ export default StyleSheet.create({
   tab: {
     position: 'relative',
     display: 'inline-block',
-    backgroundColor: color(theme.colorTheme, 700)
+    backgroundColor: color(theme.primaryColor, 700)
   },
   tabActive: {
     borderBottom: `${px(tabBorderSize)} solid white`

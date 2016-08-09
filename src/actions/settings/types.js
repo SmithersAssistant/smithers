@@ -1,2 +1,3 @@
-export const SET_THEME = 'SET_THEME'
+export const SET_PRIMARY_COLOR = 'SET_PRIMARY_COLOR'
+export const SET_SECONDARY_COLOR = 'SET_SECONDARY_COLOR'
 export const SET_VOICE = 'SET_VOICE'

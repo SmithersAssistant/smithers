@@ -1,14 +1,26 @@
 import {
-  SET_THEME,
+  SET_PRIMARY_COLOR,
+  SET_SECONDARY_COLOR,
   SET_VOICE
 } from '../actions/types'
 
 const settings = (state = {}, action) => {
   switch (action.type) {
-    case SET_THEME:
+    case SET_PRIMARY_COLOR:
       return {
         ...state,
-        theme: action.theme
+        theme: {
+          ...state.theme,
+          primaryColor: action.color
+        }
+      }
+    case SET_SECONDARY_COLOR:
+      return {
+        ...state,
+        theme: {
+          ...state.theme,
+          secondaryColor: action.color
+        }
       }
     case SET_VOICE:
       return {
@@ -21,7 +33,10 @@ const settings = (state = {}, action) => {
 }
 
 export const defaultState = {
-  theme: 'indigo',
+  theme: {
+    primaryColor: 'indigo',
+    secondaryColor: 'pink'
+  },
   voice: undefined
 }
 
