@@ -1,6 +1,5 @@
 import React from 'react'
 import {remote} from 'electron'
-const {app} = remote
 import {StyleSheet, css} from 'aphrodite'
 import styles from './indexStyles'
 
@@ -175,6 +174,10 @@ export default robot => {
   });
 
   robot.on(robot.events.OPEN_SETTINGS, () => {
+    robot.addCard('com.robinmalfait.settings');
+  });
+
+  robot.on(robot.events.CHECK_FOR_UPDATES, () => {
     robot.addCard('com.robinmalfait.settings');
   });
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import {remote} from 'electron';
 const {app, autoUpdater} = remote;
 
+const isDevMode = process.env.NODE_ENV === 'development';
+
 export default (robot) => {
   const {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} = robot.events;
   const {
@@ -50,7 +52,9 @@ export default (robot) => {
       this.removeListeners.map(removeListener => removeListener())
     },
     checkForUpdates() {
-      autoUpdater.checkForUpdates()
+      if (!isDevMode) {
+        autoUpdater.checkForUpdates();
+      }
     },
     renderButtonContents() {
       const {checking_for_updates, downloading_updates} = this.props.state
@@ -78,7 +82,7 @@ export default (robot) => {
         <Collection>
           <CollectionItem>
             Current version: v{app.getVersion()}
-            <Button disabled={process.env.NODE_ENV === 'development'} className="right" onClick={this.checkForUpdates}>
+            <Button disabled={isDevMode} className="right" onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
             </Button>
             {update_available && (

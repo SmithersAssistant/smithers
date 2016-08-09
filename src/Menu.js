@@ -1,7 +1,10 @@
 import {remote, shell} from 'electron';
-import Event, {OPEN_SETTINGS} from './Event';
-const {Menu, app} = remote;
+import Event, {OPEN_SETTINGS, CHECK_FOR_UPDATES} from './Event';
+const {Menu, app, autoUpdater} = remote;
+
 const name = app.getName();
+
+const isProductionMode = process.env.NODE_ENV !== 'development';
 
 const template = [
   {
@@ -118,6 +121,16 @@ if (process.platform == 'darwin') {
       },
       {
         type: 'separator'
+      },
+      {
+        label: 'Check for Updates...',
+        enabled: isProductionMode,
+        click() {
+          Event.fire(CHECK_FOR_UPDATES);
+          if (isProductionMode) {
+            autoUpdater.checkForUpdates();
+          }
+        }
       },
       {
         label: 'Preferences...',
