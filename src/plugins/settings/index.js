@@ -27,12 +27,7 @@ export default robot => {
   const GeneralPage = generalPage(robot);
   const ThemePage = themePage(robot);
   const PluginsPage = pluginsPage(robot);
-
-  const restart = () => {
-    app.relaunch();
-    app.quit();
-  };
-
+  
   const Settings = React.createClass({
     getInitialState() {
       return {
