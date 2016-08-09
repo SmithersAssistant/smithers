@@ -1,9 +1,9 @@
 import React from 'react';
-import {remote} from 'electron'
-const {app, autoUpdater} = remote
+import {remote} from 'electron';
+const {app, autoUpdater} = remote;
 
 export default (robot) => {
-  const {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} = robot.events
+  const {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} = robot.events;
   const {
     A,
     Button,
@@ -11,7 +11,7 @@ export default (robot) => {
     CheckBoxField,
     Collection,
     CollectionItem
-  } = robot.UI
+  } = robot.UI;
 
   return React.createClass({
     componentDidMount() {
@@ -31,8 +31,6 @@ export default (robot) => {
           })
         }),
         robot.on(UPDATE_NOT_AVAILABLE, () => {
-          robot.notify('No updates available :(')
-
           this.props.setState({
             checking_for_updates: false,
             update_available: false,
@@ -41,8 +39,6 @@ export default (robot) => {
           })
         }),
         robot.on(UPDATE_DOWNLOADED, () => {
-          robot.notify('An update has been downloaded')
-
           this.props.setState({
             update_downloaded: true,
             downloading_updates: false
@@ -80,9 +76,9 @@ export default (robot) => {
 
       return (
         <Collection>
-          {/*<CollectionItem>
+          <CollectionItem>
             Current version: v{app.getVersion()}
-            <Button className="right" onClick={this.checkForUpdates}>
+            <Button disabled={process.env.NODE_ENV === 'development'} className="right" onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
             </Button>
             {update_available && (
@@ -90,7 +86,7 @@ export default (robot) => {
                 <span>, <A onClick={() => autoUpdater.quitAndInstall()}>install update</A></span>
               )}</span>
             )}
-          </CollectionItem>*/}
+          </CollectionItem>
           <CollectionItem>
             <CheckBoxField
               label="Show tabs"
