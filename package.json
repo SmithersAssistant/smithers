@@ -53,11 +53,12 @@
     "app-category-type": "app-category-type=public.app-category.developer-tools"
   },
   "scripts": {
-    "dev": "./node_modules/.bin/cross-env NODE_ENV=development webpack --watch",
-    "build": "./node_modules/.bin/cross-env NODE_ENV=production webpack",
-    "test": "./node_modules/.bin/cross-env NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
+    "clean": "./npm_scripts/clean.sh",
+    "dev": "npm run clean && cross-env NODE_ENV=development webpack --watch",
+    "build": "cross-env NODE_ENV=production webpack",
+    "test": "cross-env NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
     "test:watch": "npm test -- --watch",
-    "start": "electron app",
+    "start": "cross-env NODE_ENV=development electron app",
     "postinstall": "install-app-deps",
     "pack": "npm run build && build -wlm --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
     "dist": "npm run build && build -wlm",
