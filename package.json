@@ -59,8 +59,8 @@
     "test:watch": "npm test -- --watch",
     "start": "electron app",
     "postinstall": "install-app-deps",
-    "pack": "npm run build && build -m --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
-    "dist": "npm run build && build -m",
-    "release": "npm run build && build -m --publish=always"
+    "pack": "npm run build && build -wlm --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
+    "dist": "npm run build && build -wlm",
+    "release": "npm run build && build -wlm --publish=always"
   }
 }

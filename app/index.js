@@ -3,7 +3,7 @@ const {app, BrowserWindow, autoUpdater} = require('electron');
 
 // Auto Updater
 if (process.env.NODE_ENV !== 'development') {
-  autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`)
+  autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`);
 }
 
 // Window Management
@@ -27,7 +27,7 @@ const createWindow = () => {
   win.loadURL(`file://${__dirname}/index.html`);
 
   win.on('closed', () => {
-    win = null
+    win = null;
   });
 };
 

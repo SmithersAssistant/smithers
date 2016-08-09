@@ -83,25 +83,31 @@ webFrame.setZoomLevelLimits(1, 1);
 menuFactory();
 
 // Auto updater
-autoUpdater.addListener("update-available", (event) => {
-  Event.fire(UPDATE_AVAILABLE, {event});
-});
+if (process.env.NODE_ENV !== 'development') {
+  autoUpdater.addListener("update-available", (event) => {
+    Event.fire(UPDATE_AVAILABLE, {event});
+  });
 
-autoUpdater.addListener("update-downloaded", (event, releaseNotes, releaseName, releaseDate, updateURL) => {
-  Event.fire(UPDATE_DOWNLOADED, {event, releaseNotes, releaseName, releaseDate, updateURL});
-});
+  autoUpdater.addListener("update-downloaded", (event, releaseNotes, releaseName, releaseDate, updateURL) => {
+    Event.fire(UPDATE_DOWNLOADED, {event, releaseNotes, releaseName, releaseDate, updateURL});
+  });
 
-autoUpdater.addListener("error", (error) => {
-  Event.fire(UPDATE_ERROR, {error});
-});
+  autoUpdater.addListener("error", (error) => {
+    Event.fire(UPDATE_ERROR, {error});
+  });
 
-autoUpdater.addListener("checking-for-update", (event) => {
-  Event.fire(CHECKING_FOR_UPDATES, {event});
-});
+  autoUpdater.addListener("checking-for-update", (event) => {
+    Event.fire(CHECKING_FOR_UPDATES, {event});
+  });
 
-autoUpdater.addListener("update-not-available", (event) => {
-  Event.fire(UPDATE_NOT_AVAILABLE, {event});
-});
+  autoUpdater.addListener("update-not-available", (event) => {
+    Event.fire(UPDATE_NOT_AVAILABLE, {event});
+  });
+
+  setTimeout(() => {
+    autoUpdater.checkForUpdates();
+  }, 5000);
+}
 
 // Render
 render((
