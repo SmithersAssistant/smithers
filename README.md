@@ -1,4 +1,4 @@
-# Smithers
+# Smithers [![Build Status](https://travis-ci.org/SmithersAssistant/smithers.svg?branch=develop)](https://travis-ci.org/SmithersAssistant/smithers)
 
 Your personal assistant
 
