@@ -1,6 +1,5 @@
 // UI
 import * as theme from 'styles/theme'
-import {color} from 'styles/functions/_color'
 import * as colors from 'styles/functions/_colors'
 
 import A from 'components/UI/A'

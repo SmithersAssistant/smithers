@@ -30,7 +30,7 @@ export default StyleSheet.create({
     left: 20,
     transform: 'translate(0, -50%)',
     fontSize: '2em',
-    color: lighten(color('grey', 500), .5),
+    color: lighten(color('grey', 500), 0.5),
     marginTop: Math.max(0, (theme.headerOffset - 10) / 2)
   },
   inputStyles: {

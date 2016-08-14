@@ -59,7 +59,7 @@ const template = [
       },
       {
         label: 'Toggle Full Screen',
-        accelerator: process.platform == 'darwin'
+        accelerator: process.platform === 'darwin'
           ? 'Ctrl+Command+F'
           : 'F11',
         click (item, focusedWindow) {
@@ -70,7 +70,7 @@ const template = [
       },
       {
         label: 'Toggle Developer Tools',
-        accelerator: process.platform == 'darwin'
+        accelerator: process.platform === 'darwin'
           ? 'Alt+Command+I'
           : 'Ctrl+Shift+I',
         click (item, focusedWindow) {
@@ -111,7 +111,7 @@ const template = [
   }
 ]
 
-if (process.platform == 'darwin') {
+if (process.platform === 'darwin') {
   template.unshift({
     label: name,
     submenu: [
@@ -184,7 +184,6 @@ if (process.platform == 'darwin') {
       role: 'front'
     }
   )
-
 }
 
 export default () => {

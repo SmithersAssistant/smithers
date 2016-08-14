@@ -6,7 +6,7 @@ import {exec} from 'child_process'
 import rimraf from 'rimraf'
 import {LOCAL_PLUGIN, EXTERNAL_PLUGIN} from './sources'
 import Plugin from './Plugin'
-import Event, {PLUGIN_INSTALLING, PLUGIN_INSTALLED, PLUGIN_UPDATING, PLUGIN_UPDATED, PLUGIN_DELETING, PLUGIN_DELETED} from 'Event'
+import Event, {PLUGIN_INSTALLING, PLUGIN_INSTALLED, PLUGIN_DELETING, PLUGIN_DELETED} from 'Event'
 
 class PluginManager {
 
@@ -33,6 +33,10 @@ class PluginManager {
     })
 
     fs.readdir(config.getExternalPluginsPath(), (err, files) => {
+      if (err) {
+        // TODO : handle err
+        console.error(err)
+      }
       files.filter(plugin => !externalPluginModuleNames.includes(plugin))
         .map((moduleName) => this._uninstallExternalPlugin(resolve(basePath, moduleName), moduleName))
     })
@@ -75,7 +79,7 @@ class PluginManager {
         exec(`npm install ${module} --production --save`, {
           cwd: path
         }, (err, stdout, stderr) => {
-          if (err) {
+          if (err || stderr) {
             console.error(`Could not install ${moduleName}`)
           }
 
@@ -83,6 +87,11 @@ class PluginManager {
             `var obj = require('${moduleName}');`,
             'module.exports = obj && obj.__esModule ? obj : { default: obj };'
           ].join('\n\n'), (err) => {
+            if (err) {
+              // TODO : handle err
+              console.error(err)
+            }
+
             exec('npm list --json --depth=0', {
               cwd: path
             }, (err, stdout, stderr) => {
@@ -259,7 +268,7 @@ class PluginManager {
 
   resolveComponent (name) {
     try {
-      const card = this.cards.find(c => c.name == name)
+      const card = this.cards.find(c => c.name === name)
       if (card) {
         return card.component
       }

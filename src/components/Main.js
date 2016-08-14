@@ -66,7 +66,7 @@ const RestorableComponent = React.createClass({
 })
 
 const isFunctionalComponent = (Component) => {
-  return Component.length == 1
+  return Component.length === 1
 }
 
 const NoCards = () => (
@@ -131,7 +131,7 @@ const Main = React.createClass({
     this.saveComponentStates()
   },
   componentWillUnmount () {
-    cancelAnimationFrame(this._retrieveState)
+    window.cancelAnimationFrame(this._retrieveState)
   },
   registerCard (id, {getState}) {
     this.cards = [
@@ -144,7 +144,7 @@ const Main = React.createClass({
   },
   saveComponentStates () {
     setTimeout(() => {
-      this._retrieveState = requestAnimationFrame(() => {
+      this._retrieveState = window.requestAnimationFrame(() => {
         if (this.cards.length > 0) {
           const cardStates = this.cards.map(card => ({
             id: card.id,

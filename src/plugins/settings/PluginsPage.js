@@ -5,11 +5,10 @@ import ExternalPage from './plugins/external'
 import DefaultPage from './plugins/default'
 
 export default (robot) => ({state, setState, tabsProps, tabProps, updatedAt}) => {
-
   const {
     Tab,
     Tabs
-  } = Robot.UI
+  } = robot.UI
 
   const pages = [{
     label: 'Local plugins',

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'aphrodite'
-import {theme, rgba} from 'styles/theme'
+import {theme} from 'styles/theme'
 
 export default StyleSheet.create({
   scrollBar: {

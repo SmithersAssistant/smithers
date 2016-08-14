@@ -17,7 +17,7 @@ import {
 } from './types'
 
 const findTabIndex = (list, active) => {
-  return list.findIndex(tab => tab.id == active)
+  return list.findIndex(tab => tab.id === active)
 }
 
 export const addTab = (title, id = uuid()) => ({

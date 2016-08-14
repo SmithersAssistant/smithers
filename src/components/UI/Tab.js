@@ -22,13 +22,13 @@ export const TabHolder = ({
 
   return (
     <li
-      ref={e => scrollIntoView ? (e != null && isActive ? e.scrollIntoView({block: 'end', behavior: 'smooth'}) : null) : null}
+      ref={e => scrollIntoView ? (e !== null && isActive ? e.scrollIntoView({block: 'end', behavior: 'smooth'}) : null) : null}
       {...otherProps}
       className={css(...flatten([
         styles.tab,
         isActive ? styles.tabActive : undefined,
-        externalStyles != undefined ? externalStyles : undefined,
-        externalStylesActive != undefined && isActive ? externalStylesActive : undefined
+        externalStyles !== undefined ? externalStyles : undefined,
+        externalStylesActive !== undefined && isActive ? externalStylesActive : undefined
       ]))}
     >
       <a

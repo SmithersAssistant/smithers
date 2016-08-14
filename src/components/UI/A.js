@@ -10,7 +10,7 @@ const A = React.createClass({
   },
 
   handleOnClick (e) {
-    if (this.props.target == '_blank') {
+    if (this.props.target === '_blank') {
       e.preventDefault()
       shell.openExternal(this.props.href)
     }

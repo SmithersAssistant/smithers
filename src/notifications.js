@@ -15,7 +15,7 @@ const showNotification = () => {
   const body = notifications[notifications.length - 1]
 
   if (hasMessage) {
-    new Notification('Smithers', {body})
+    new window.Notification('Smithers', {body}) // eslint-disable-line no-new
     isActive = true
 
     setTimeout(() => {

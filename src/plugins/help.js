@@ -3,7 +3,6 @@ import orderBy from 'lodash/orderBy'
 const HELP_COMPONENT = 'com.robinmalfait.help'
 
 export default robot => {
-
   const {
     color
   } = robot.UI
@@ -25,7 +24,7 @@ export default robot => {
           result = result.map(item => {
             if (item === arg.match) {
               return <span style={{
-                borderBottom: `2px solid ${color(Robot.getPrimaryColor())}`,
+                borderBottom: `2px solid ${color(robot.getPrimaryColor())}`,
                 borderRadius: 4,
                 padding: 2
               }}>{arg.humanized}</span>
@@ -41,7 +40,7 @@ export default robot => {
           result = result.map(item => {
             if (item === arg.match) {
               return <span style={{
-                borderBottom: `2px solid ${color(Robot.getPrimaryColor(), 100)}`,
+                borderBottom: `2px solid ${color(robot.getPrimaryColor(), 100)}`,
                 borderRadius: 4,
                 padding: 2
               }}>{arg.humanized}</span>
@@ -83,12 +82,15 @@ export default robot => {
       return plugins
     },
     render () {
-      const {plugin, ...other} = this.props
+      const {...other} = this.props
       const pluginCount = this.countPlugins()
+      const props = robot.deleteProps(other, [
+        'plugin'
+      ])
 
       return (
         <Table
-          {...other}
+          {...props}
           title='Help'
           header={['Plugin Name', 'Usage', 'Description']}
           body={this.renderPlugins()}

@@ -2,9 +2,9 @@
 import { connect } from 'react-redux'
 
 // Actions
-import {
-    removeCard
-} from '../actions/index'
+// import {
+//     removeCard
+// } from '../actions/index'
 
 // Component
 import Toolbar from './Toolbar'

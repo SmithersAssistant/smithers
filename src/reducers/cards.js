@@ -47,17 +47,17 @@ const cards = (state = [], action) => {
     case REMOVE_CARD:
       return {
         ...state,
-        cards: state.cards.filter(item => item.id != action.id)
+        cards: state.cards.filter(item => item.id !== action.id)
       }
     case CLEAR_CARD_HISTORY:
       return {
         ...state,
-        cards: [...state.cards.filter(card => card.relation != action.tab)]
+        cards: [...state.cards.filter(card => card.relation !== action.tab)]
       }
     case REMOVE_TAB:
       return {
         ...state,
-        cards: state.cards.filter(item => item.relation != action.id)
+        cards: state.cards.filter(item => item.relation !== action.id)
       }
     default:
       return state

@@ -2,7 +2,6 @@ import React from 'react'
 import {css} from 'aphrodite'
 import Event, {FOCUS_INPUT, PUT_INPUT} from 'Event'
 import styles from './NavbarStyles'
-import {Collection, CollectionItem} from 'components/UI/Collection'
 import flatMap from 'lodash/flatMap'
 import {fuzzysearch} from 'components/functions'
 import debounce from 'lodash/debounce'
@@ -30,15 +29,14 @@ const isTextSelected = (input) => {
   const endPos = input.selectionEnd
   const doc = document.selection
 
-  if (doc && doc.createRange().text.length != 0) {
+  if (doc && doc.createRange().text.length !== 0) {
     return true
-  } else if (!doc && input.value.substring(startPos, endPos).length != 0) {
+  } else if (!doc && input.value.substring(startPos, endPos).length !== 0) {
     return true
   }
 
   return false
 }
-
 
 const Navbar = React.createClass({
   getInitialState () {
@@ -133,10 +131,10 @@ const Navbar = React.createClass({
 
     return (
       <span>
-          {result.map((item, i) => <span key={i} style={{
-            marginRight: 4
-          }}>{item}</span>)}
-        </span>
+        {result.map((item, i) => <span key={i} style={{
+          marginRight: 4
+        }}>{item}</span>)}
+      </span>
     )
   },
 
@@ -218,7 +216,7 @@ const Navbar = React.createClass({
 
   handleKeyDown (e) {
     // Tab through tabsbar if we don't have suggestions and tabs are visible
-    if (e.keyCode == Keys.TAB && this.state.suggestions.length <= 0 && areTabsVisible()) {
+    if (e.keyCode === Keys.TAB && this.state.suggestions.length <= 0 && areTabsVisible()) {
       e.preventDefault()
 
       e.shiftKey

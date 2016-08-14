@@ -2,7 +2,6 @@ import React from 'react'
 import cx from 'classnames'
 
 export default (robot) => {
-
   const {
     theme,
 

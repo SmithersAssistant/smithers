@@ -147,33 +147,38 @@ const Webview = React.createClass({
       return false
     }
 
-    var rect = el.getBoundingClientRect(),
-      vWidth = window.innerWidth || document.documentElement.clientWidth,
-      vHeight = window.innerHeight || document.documentElement.clientHeight,
-      efp = (x, y) => document.elementFromPoint(x, y)
+    var rect = el.getBoundingClientRect()
+    var vWidth = window.innerWidth || document.documentElement.clientWidth
+    var vHeight = window.innerHeight || document.documentElement.clientHeight
+    var efp = (x, y) => document.elementFromPoint(x, y)
 
     // Return false if it's not in the viewport
-    if (rect.right < 0 || rect.bottom < 0
-      || rect.left > vWidth || rect.top > vHeight)
+    if (
+      rect.right < 0 ||
+      rect.bottom < 0 ||
+      rect.left > vWidth ||
+      rect.top > vHeight
+    ) {
       return false
+    }
 
     // Return true if any of its four corners are visible
     return (
-      el.contains(efp(rect.left, rect.top))
-      || el.contains(efp(rect.right, rect.top))
-      || el.contains(efp(rect.right, rect.bottom))
-      || el.contains(efp(rect.left, rect.bottom))
+      el.contains(efp(rect.left, rect.top)) ||
+      el.contains(efp(rect.right, rect.top)) ||
+      el.contains(efp(rect.right, rect.bottom)) ||
+      el.contains(efp(rect.left, rect.bottom))
     )
   },
   onVisibilityChange (el, callback) {
-    var old_visible
+    var oldVisible
 
     return () => {
       var visible = this.isElementInViewport(el)
 
-      if (visible != old_visible) {
-        old_visible = visible
-        if (typeof callback == 'function') {
+      if (visible !== oldVisible) {
+        oldVisible = visible
+        if (typeof callback === 'function') {
           callback()
         }
       }
@@ -187,7 +192,7 @@ const Webview = React.createClass({
       'onDidNavigateInPage', 'onLoadCommit'
     ])
 
-    return this.props.whenLoading == undefined ? (
+    return this.props.whenLoading === undefined ? (
       this.renderWebview(props)
     ) : (
       <div>

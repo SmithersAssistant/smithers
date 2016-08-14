@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
 })
 
 const log = reducer => (state, action) => {
-  if (process.env.NODE_ENV == 'development') {
+  if (process.env.NODE_ENV === 'development') {
     console.log(action)
   }
   return reducer(state, action)

@@ -23,28 +23,28 @@ export default (robot) => {
           robot.notify('An update is available!')
 
           this.props.setState({
-            checking_for_updates: false,
-            update_available: true,
-            downloading_updates: true
+            checkingForUpdates: false,
+            updateAvailable: true,
+            downloadingUpdates: true
           })
         }),
         robot.on(CHECKING_FOR_UPDATES, () => {
           this.props.setState({
-            checking_for_updates: true
+            checkingForUpdates: true
           })
         }),
         robot.on(UPDATE_NOT_AVAILABLE, () => {
           this.props.setState({
-            checking_for_updates: false,
-            update_available: false,
-            downloading_updates: false,
-            update_downloaded: false
+            checkingForUpdates: false,
+            updateAvailable: false,
+            downloadingUpdates: false,
+            updateDownloaded: false
           })
         }),
         robot.on(UPDATE_DOWNLOADED, () => {
           this.props.setState({
-            update_downloaded: true,
-            downloading_updates: false
+            updateDownloaded: true,
+            downloadingUpdates: false
           })
         })
       ]
@@ -58,15 +58,15 @@ export default (robot) => {
       }
     },
     renderButtonContents () {
-      const {checking_for_updates, downloading_updates} = this.props.state
+      const {checkingForUpdates, downloadingUpdates} = this.props.state
 
-      if (checking_for_updates) {
+      if (checkingForUpdates) {
         return (
           <span><Icon icon='refresh fa-spin breathing' /> Checking for updates...</span>
         )
       }
 
-      if (downloading_updates) {
+      if (downloadingUpdates) {
         return (
           <span><Icon icon='refresh fa-spin breathing' /> Downloading updates...</span>
         )
@@ -77,7 +77,7 @@ export default (robot) => {
       )
     },
     render () {
-      const {update_available, update_downloaded} = this.props.state
+      const {updateAvailable, updateDownloaded} = this.props.state
 
       return (
         <Collection>
@@ -86,8 +86,8 @@ export default (robot) => {
             <Button disabled={isDevMode} className='right' onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
             </Button>
-            {update_available && (
-              <span className='right breathing'>update available{update_downloaded && (
+            {updateAvailable && (
+              <span className='right breathing'>update available{updateDownloaded && (
                 <span>, <A onClick={() => autoUpdater.quitAndInstall()}>install update</A></span>
               )}</span>
             )}

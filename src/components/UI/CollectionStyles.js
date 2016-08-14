@@ -1,7 +1,6 @@
 import {StyleSheet} from 'aphrodite'
 import {theme, px, rgba} from 'styles/theme'
 
-
 export default StyleSheet.create({
   collectionStyles: {
     display: 'block',
@@ -18,6 +17,6 @@ export default StyleSheet.create({
     padding: px(10, 20),
     margin: 0,
     borderBottom: '1px solid #e0e0e0',
-    color: rgba('#000', .87)
+    color: rgba('#000', 0.87)
   }
 })

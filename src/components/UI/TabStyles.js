@@ -18,7 +18,7 @@ export default StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: 500,
     fontSize: '14px',
-    color: rgba('#fff', .7),
+    color: rgba('#fff', 0.7),
     height: (theme.tabHeight - tabBorderSize),
     lineHeight: px(theme.tabHeight - tabBorderSize),
     paddingLeft: (theme.tabHeight / 2),

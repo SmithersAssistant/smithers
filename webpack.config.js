@@ -23,6 +23,13 @@ module.exports = {
     modulesDirectories: ['src', 'node_modules']
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.jsx?$/,
+        loader: 'standard',
+        exclude: /node_modules/
+      }
+    ],
     loaders: [
       {
         test: /\.(js|jsx)$/,
@@ -54,5 +61,8 @@ module.exports = {
       sourceMap: false,
     }) : noop
   ],
+  standard: {
+    parser: 'babel-eslint'
+  },
   target: 'electron-renderer'
 };

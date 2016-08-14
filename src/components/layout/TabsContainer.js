@@ -20,11 +20,11 @@ import Tabs from './Tabs'
 
 const attachRelationsToTabs = (tabs, cards = []) => tabs.map(tab => ({
   ...tab,
-  cards: cards.filter(card => card.relation == tab.id)
+  cards: cards.filter(card => card.relation === tab.id)
 }))
 
 const findActiveTab = ({list, active}) => {
-  return list.findIndex(tab => tab.id == active)
+  return list.findIndex(tab => tab.id === active)
 }
 
 const focusInput = debounce(() => {
@@ -37,8 +37,8 @@ const canTabs = (tabs) => {
       ...tab,
       canClose: true,
       canCloseOthers: true,
-      canCloseToTheLeft: !(index == 0), // Nope, if the first tab
-      canCloseToTheRight: !(index == tabs.length - 1) // Nope, if the last tab
+      canCloseToTheLeft: !(index === 0), // Nope, if the first tab
+      canCloseToTheRight: !(index === tabs.length - 1) // Nope, if the last tab
     }
   })
 }

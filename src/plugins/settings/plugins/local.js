@@ -134,7 +134,7 @@ export default ({state, setState, robot}) => {
           hintText={homedir()}
           errorText={state.addLocalPluginErrorText}
           onChange={handlePluginLocationPath}
-        ></TextField>
+        />
       </Dialog>
     </div>
   )

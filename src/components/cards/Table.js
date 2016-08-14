@@ -81,15 +81,15 @@ const Table = React.createClass({
           </tbody>
           {footer && (
             <tfoot>
-            <tr style={trStyles}>
-              {footer.map((item, i) => {
-                if (item.hasOwnProperty('value')) {
-                  return <td style={cellStyles} key={`footer_${i}`} {...item}>{item.value}</td>
-                }
+              <tr style={trStyles}>
+                {footer.map((item, i) => {
+                  if (item.hasOwnProperty('value')) {
+                    return <td style={cellStyles} key={`footer_${i}`} {...item}>{item.value}</td>
+                  }
 
-                return <td style={cellStyles} key={`footer_${i}`}>{item}</td>
-              })}
-            </tr>
+                  return <td style={cellStyles} key={`footer_${i}`}>{item}</td>
+                })}
+              </tr>
             </tfoot>
           )}
         </table>

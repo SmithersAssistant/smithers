@@ -1,6 +1,6 @@
 import Event, {SPEECH_RESULT} from 'Event'
 
-const REC = new webkitSpeechRecognition()
+const REC = new window.webkitSpeechRecognition() // eslint-disable-line new-cap
 const AVAILABLE_EVENTS = [
   'onaudiostart', 'onaudioend', 'onend', 'onerror',
   'onnomatch', 'onresult', 'onsoundstart', 'onsoundend',

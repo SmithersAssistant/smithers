@@ -1,6 +1,5 @@
 import React from 'react'
-import {remote} from 'electron'
-import {StyleSheet, css} from 'aphrodite'
+import {css} from 'aphrodite'
 import styles from './indexStyles'
 
 import IconButton from 'material-ui/IconButton/IconButton'
@@ -14,7 +13,6 @@ import pluginsPage from './PluginsPage'
 const SETTINGS_COMPONENT = 'com.robinmalfait.settings'
 
 export default robot => {
-
   const {Blank} = robot.cards
   const {
     theme,
@@ -32,10 +30,10 @@ export default robot => {
       return {
         activePage: 0,
         generalPageState: {
-          checking_for_updates: false,
-          update_available: false,
-          update_downloaded: false,
-          downloading_updates: false
+          checkingForUpdates: false,
+          updateAvailable: false,
+          updateDownloaded: false,
+          downloadingUpdates: false
         },
         themePageState: {
           primaryColor: theme.primaryColor,

@@ -20,7 +20,7 @@ if (module.hot) {
 }
 
 const saveFilteredState = throttle(() => {
-  requestAnimationFrame(() => saveState(store.getState()))
+  window.requestAnimationFrame(() => saveState(store.getState()))
 }, 1000)
 
 store.subscribe(() => saveFilteredState())

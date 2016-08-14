@@ -35,7 +35,7 @@ const Button = ({color = ButtonColors.THEME, children, className, ...other}) => 
   <button {...other} className={cx({
     [`${css(styles().button)}`]: true,
     [`${css(styles(color === ButtonColors.THEME ? theme.primaryColor : color).buttonColor)}`]: true,
-    [className]: className != undefined
+    [className]: className !== undefined
   })}>
     <TouchRipple>{children}</TouchRipple>
   </button>

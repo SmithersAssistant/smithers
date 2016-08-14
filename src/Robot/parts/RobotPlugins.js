@@ -11,11 +11,11 @@ const humanize = (str) => {
 }
 
 const execAll = (regex, str) => {
-  var match
   var matches = []
   var isGlobal = regex.global
+  var match = regex.exec(str)
 
-  while (match = regex.exec(str)) {
+  while (match) {
     matches.push({
       match: match[0],
       contents: match.slice(1).join(),
@@ -26,6 +26,8 @@ const execAll = (regex, str) => {
     if (!isGlobal) {
       break
     }
+
+    match = regex.exec(str)
   }
 
   return matches
@@ -109,7 +111,7 @@ export default {
       .filter(cmd => cmd.regex.test(command))
       .forEach(plugin => plugin.cb({
         command,
-        matches:  plugin.regex.exec(command)
+        matches: plugin.regex.exec(command)
       }))
   },
 

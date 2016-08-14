@@ -22,7 +22,7 @@ const normalize = (title = '', otherwise) => {
 }
 
 const findTabIndex = (list, active) => {
-  return list.findIndex(tab => tab.id == active)
+  return list.findIndex(tab => tab.id === active)
 }
 
 const moveItemInArray = (list, fromIndex, toIndex) => {
@@ -88,7 +88,7 @@ const tabs = (state = [], action) => {
       return {
         ...state,
         list: state.list.map(item => {
-          if (item.id == action.id) {
+          if (item.id === action.id) {
             return tab(item, action)
           }
           return item
@@ -126,7 +126,7 @@ const tabs = (state = [], action) => {
       let visible = false
 
       if (list.length > 0) {
-        active = action.id == state.active ? list[list.length - 1].id : state.active
+        active = action.id === state.active ? list[list.length - 1].id : state.active
         visible = true
       }
 

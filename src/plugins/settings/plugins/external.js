@@ -109,7 +109,7 @@ export default ({state, setState, robot}) => {
           fullWidth
           hintText='packagename or packagename@version'
           onChange={handlePluginPackage}
-        ></TextField>
+        />
       </Dialog>
     </div>
   )

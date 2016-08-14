@@ -59,7 +59,7 @@ class Config {
         return JSON.parse(config)
       } catch (e) {
         console.error(`ERROR\n  Could not load config file (${CONFIG_PATH})\n  Check the file, and see what's going on`)
-        Robot.notify('Could not load config file')
+        window.Robot.notify('Could not load config file')
         return this.defaultConfig()
       }
     }

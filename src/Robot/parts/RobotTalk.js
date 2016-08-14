@@ -44,7 +44,7 @@ export default {
 
   loadVoices () {
     let voicesInterval = setInterval(() => {
-      voices = window.speechSynthesis.getVoices().filter(s => s.localService == true)
+      voices = window.speechSynthesis.getVoices().filter(s => s.localService === true)
 
       if (voices.length > 0) {
         const savedVoice = getVoice()

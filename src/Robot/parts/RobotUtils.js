@@ -1,7 +1,6 @@
 import {v4 as uuid} from 'uuid'
 import {dispatch} from 'store'
 import {deleteProps} from 'components/functions'
-import {remote, ipcRenderer} from 'electron'
 
 import {userInfo} from 'os'
 
@@ -20,33 +19,32 @@ const utils = {
     return amount < 10 ? `0${amount}` : amount
   },
   fetch (url, options = {}) {
-    return fetch(url, options)
+    return window.fetch(url, options)
   },
   fetchJson (url, options = {}) {
     return utils.fetch(url, options).then((res) => res.json())
   },
-  httpBuildQuery (obj, num_prefix, temp_key) {
-    const output_string = []
+  httpBuildQuery (obj, numPrefix, tmpKey) {
+    const output = []
 
     Object.keys(obj).forEach((val) => {
       let key = val
 
-      num_prefix && !isNaN(key) ? key = num_prefix + key : ''
+      numPrefix && !isNaN(key) ? key = numPrefix + key : ''
 
       key = encodeURIComponent(key.replace(/[!'()*]/g, escape))
-      temp_key ? key = `${temp_key}[${key}]` : ''
+      tmpKey ? key = `${tmpKey}[${key}]` : ''
 
       if (typeof obj[val] === 'object') {
         const query = utils.httpBuildQuery(obj[val], null, key)
-        output_string.push(query)
+        output.push(query)
       } else {
         const value = encodeURIComponent(obj[val].replace(/[!'()*]/g, escape))
-        output_string.push(`${key}=${value}`)
+        output.push(`${key}=${value}`)
       }
-
     })
 
-    return output_string.join('&')
+    return output.join('&')
   },
   faviconUrl (url) {
     return `https://www.google.com/s2/favicons?domain=${url}`
@@ -59,7 +57,7 @@ const utils = {
     return url
   },
   jsonToFormData (payload) {
-    let form = new FormData()
+    let form = new window.FormData()
 
     for (let key in payload) {
       form.append(key, payload[key])
@@ -77,8 +75,7 @@ const utils = {
     }
   },
   notify: (msg) => dispatch(enqueueNotification(msg)),
-  noop: () => {
-  },
+  noop: () => {},
   deleteProps
 }
 
