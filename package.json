@@ -45,6 +45,7 @@
     "json-loader": "^0.5.4",
     "mocha": "^2.4.5",
     "react-hot-loader": "^1.3.0",
+    "standard": "^7.1.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1"
   },
@@ -56,6 +57,7 @@
     "clean": "./npm_scripts/clean.sh",
     "dev": "npm run clean && cross-env NODE_ENV=development webpack --watch",
     "build": "cross-env NODE_ENV=production webpack",
+    "pretest": "standard",
     "test": "cross-env NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
     "test:watch": "npm test -- --watch",
     "start": "cross-env NODE_ENV=development electron app",

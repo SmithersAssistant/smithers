@@ -1,4 +1,4 @@
-# Smithers [![Build Status](https://travis-ci.org/SmithersAssistant/smithers.svg?branch=develop)](https://travis-ci.org/SmithersAssistant/smithers)
+# Smithers [![Build Status](https://travis-ci.org/SmithersAssistant/smithers.svg?branch=develop)](https://travis-ci.org/SmithersAssistant/smithers) [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 Your personal assistant
 
