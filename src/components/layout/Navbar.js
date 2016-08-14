@@ -268,7 +268,7 @@ const Navbar = React.createClass({
       let input = suggestion.command.usage;
 
       Object.keys(variables).forEach((key) => {
-        input = input.replace(`<${key}>`, variables[key].value);
+        input = input.replace(`<${key}>`, variables[key].value || `<${key}>`);
       });
 
       if (
@@ -378,7 +378,7 @@ const Navbar = React.createClass({
     const flatVariables = {};
     Object.keys(variables).forEach(key => {
       flatVariables[key] = variables[key].value;
-    })
+    });
 
     return (
       <Suggestions

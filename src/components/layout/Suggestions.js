@@ -36,7 +36,11 @@ const Suggestions = React.createClass({
           this.setState({ suggestions, resolved: true });
         } else {
           setTimeout(() => {
-            this.setState({ suggestions, resolved: true })
+            // We have to check it again because at this time
+            // it can happen that the component has been unmounted
+            if (this.isMounted()) {
+              this.setState({ suggestions, resolved: true });
+            }
           }, 20);
         }
       });
