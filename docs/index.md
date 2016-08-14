@@ -37,8 +37,8 @@ Robot.UI is a set of some UI components and usefull functions it includes:
 - `Color`:
 - `Colors`:
 
-- `StyleSheet`: StyleSheet function from [](npm.im/aphrodite)
-- `css`: css function from [](npm.im/aphrodite)
+- `StyleSheet`: StyleSheet function from [aphrodite](https://npm.im/aphrodite)
+- `css`: css function from [aphrodite](https://npm.im/aphrodite)
 - `darken`:
 - `ligthen`:
 - `material`: all elements of [Material-UI](http://www.material-ui.com/)
