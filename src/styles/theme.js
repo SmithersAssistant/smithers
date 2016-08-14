@@ -85,8 +85,9 @@ const helpers = {
     overflowY: 'scroll',
     '::-webkit-scrollbar': {
       width: 10,
-      backgroundColor: 'whitesmoke',
-      borderRadius: 0
+      backgroundColor: rgba("#E0E0E0", 0.6),
+      borderRadius: 0,
+      borderLeft: '1px solid #E0E0E0'
     },
     '::-webkit-scrollbar:hover': {
       backgroundColor: rgba('#000', 0.09)
