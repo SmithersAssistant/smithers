@@ -1,18 +1,18 @@
-import {theme} from 'styles/theme';
-import {StyleSheet} from 'aphrodite';
+import {theme} from 'styles/theme'
+import {StyleSheet} from 'aphrodite'
 
 export default StyleSheet.create({
   tabs: {
     borderTop: 'none',
     backgroundColor: 'white',
     borderBottom: '1px solid whitesmoke',
-    height: theme.tabHeight + 1,
+    height: theme.tabHeight + 1
   },
   tabsInBar: {
     position: 'absolute',
     top: 0,
     left: 120,
-    right: 96,
+    right: 96
   },
   nestedTabs: {
     marginTop: 1

@@ -1,60 +1,60 @@
 // Dependencies
-import React from 'react';
-import {css} from 'aphrodite';
-import styles from './TabsStyles';
-import {remote} from 'electron';
-const {Menu} = remote;
+import React from 'react'
+import {css} from 'aphrodite'
+import styles from './TabsStyles'
+import {remote} from 'electron'
+const {Menu} = remote
 
 // Pages
-import Main from "components/Main"
+import Main from 'components/Main'
 
 // UI Elements
 import {Tabs as TabsHolder} from 'components/UI/Tabs'
 import {Tab} from 'components/UI/Tab'
 
 const triggerMouseEvent = (node, eventType) => {
-  const clickEvent = document.createEvent('MouseEvents');
-  clickEvent.initEvent(eventType, true, true);
-  node.dispatchEvent(clickEvent);
+  const clickEvent = document.createEvent('MouseEvents')
+  clickEvent.initEvent(eventType, true, true)
+  node.dispatchEvent(clickEvent)
 }
 
 const hackMouseDown = (targetNode) => {
-  triggerMouseEvent(targetNode, "mouseover");
-  triggerMouseEvent(targetNode, "mousedown");
-  triggerMouseEvent(targetNode, "mouseup");
-  triggerMouseEvent(targetNode, "click");
+  triggerMouseEvent(targetNode, 'mouseover')
+  triggerMouseEvent(targetNode, 'mousedown')
+  triggerMouseEvent(targetNode, 'mouseup')
+  triggerMouseEvent(targetNode, 'click')
 }
 
 const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, removeTabsToTheLeft, removeTabsToTheRight, removeOtherTabs, activeTab, activateTab, focusInput, editTab, saveCardStates}) => {
   const onTabHolderContextMenu = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
     if (e.target.matches('ul')) {
       Menu.buildFromTemplate([{
         label: 'New Tab',
-        click() {
+        click () {
           addTab()
         }
       }]).popup(remote.getCurrentWindow())
     }
-  };
+  }
 
   const onTabContextMenu = (e, {id, title, canClose, canCloseOthers, canCloseToTheLeft, canCloseToTheRight}) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault()
+    e.stopPropagation()
 
     Menu.buildFromTemplate([{
       label: 'New Tab',
-      click() {
+      click () {
         addTab()
       }
     }, {
       type: 'separator'
     }, {
       label: 'Edit Tab',
-      click() {
-        activateTab(id);
+      click () {
+        activateTab(id)
         editTab(title)
       }
     }, {
@@ -62,29 +62,29 @@ const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, remove
     }, {
       label: 'Close Tab',
       enabled: canClose,
-      click() {
+      click () {
         removeTab(id)
       }
     }, {
       label: 'Close Other Tabs',
       enabled: canCloseOthers,
-      click() {
+      click () {
         removeOtherTabs(id)
       }
     }, {
       label: 'Close Tabs To The Left',
       enabled: canCloseToTheLeft,
-      click() {
+      click () {
         removeTabsToTheLeft(id)
       }
     }, {
       label: 'Close Tabs To The Right',
       enabled: canCloseToTheRight,
-      click() {
+      click () {
         removeTabsToTheRight(id)
       }
     }]).popup(remote.getCurrentWindow())
-  };
+  }
 
   return !tabsAreVisible ? (
     <Main
@@ -105,7 +105,7 @@ const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, remove
     >
       {tabs.map(tab => (
         <Tab
-          scrollIntoView={true}
+          scrollIntoView
           onContextMenu={(e) => onTabContextMenu(e, tab)}
           onDoubleClick={() => editTab(tab.title)}
           onActive={() => activateTab(tab.id)}
@@ -122,6 +122,6 @@ const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, remove
       ))}
     </TabsHolder>
   )
-};
+}
 
 export default Tabs

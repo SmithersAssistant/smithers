@@ -1,76 +1,76 @@
-import fs from 'fs';
-import {resolve} from 'path';
-import {remote} from 'electron';
-import _ from 'lodash';
-import mkdirp from 'mkdirp';
+import fs from 'fs'
+import {resolve} from 'path'
+import {remote} from 'electron'
+import _ from 'lodash'
+import mkdirp from 'mkdirp'
 
-const {app} = remote;
-const CONFIG_PATH = resolve(app.getPath("userData"), "user.config.json");
-const PLUGINS_PATH = resolve(app.getPath("userData"), "plugins");
+const {app} = remote
+const CONFIG_PATH = resolve(app.getPath('userData'), 'user.config.json')
+const PLUGINS_PATH = resolve(app.getPath('userData'), 'plugins')
 
 class Config {
-  constructor() {
-    this.config = this.loadConfig();
-    this.watchers = [];
+  constructor () {
+    this.config = this.loadConfig()
+    this.watchers = []
 
-    mkdirp(PLUGINS_PATH);
+    mkdirp(PLUGINS_PATH)
 
     fs.watchFile(this.getConfigPath(), (curr, prev) => {
-      this.config = this.loadConfig();
+      this.config = this.loadConfig()
 
-      this.watchers.map(watcher => watcher(this.config, curr, prev));
-    });
+      this.watchers.map(watcher => watcher(this.config, curr, prev))
+    })
   }
 
-  defaultConfig() {
+  defaultConfig () {
     return {
       plugins: {
         local: [],
         external: []
-      },
-    };
+      }
+    }
   }
 
-  onConfigChanged(cb = () => {}) {
-    this.watchers.push(cb);
+  onConfigChanged (cb = () => {}) {
+    this.watchers.push(cb)
   }
 
-  get(key, defaultValue) {
-    return _.get(this.config, key, defaultValue);
+  get (key, defaultValue) {
+    return _.get(this.config, key, defaultValue)
   }
 
-  set(key, value) {
-    this.config = _.set(this.config, key, value);
-    this.persist();
+  set (key, value) {
+    this.config = _.set(this.config, key, value)
+    this.persist()
   }
 
-  getConfigPath() {
-    return CONFIG_PATH;
+  getConfigPath () {
+    return CONFIG_PATH
   }
 
-  getExternalPluginsPath() {
-    return PLUGINS_PATH;
+  getExternalPluginsPath () {
+    return PLUGINS_PATH
   }
 
-  loadConfig() {
+  loadConfig () {
     if (fs.existsSync(CONFIG_PATH)) {
-      const config = fs.readFileSync(CONFIG_PATH, 'utf8');
+      const config = fs.readFileSync(CONFIG_PATH, 'utf8')
       try {
-        return JSON.parse(config);
-      } catch(e) {
-        console.error(`ERROR\n  Could not load config file (${CONFIG_PATH})\n  Check the file, and see what's going on`);
-        Robot.notify(`Could not load config file`);
-        return this.defaultConfig();
+        return JSON.parse(config)
+      } catch (e) {
+        console.error(`ERROR\n  Could not load config file (${CONFIG_PATH})\n  Check the file, and see what's going on`)
+        Robot.notify('Could not load config file')
+        return this.defaultConfig()
       }
     }
 
-    fs.writeFile(CONFIG_PATH, JSON.stringify(this.defaultConfig(), null, '  '));
-    return this.defaultConfig();
+    fs.writeFile(CONFIG_PATH, JSON.stringify(this.defaultConfig(), null, '  '))
+    return this.defaultConfig()
   }
 
-  persist() {
-    fs.writeFile(CONFIG_PATH, JSON.stringify(this.config, null, '  '));
+  persist () {
+    fs.writeFile(CONFIG_PATH, JSON.stringify(this.config, null, '  '))
   }
 }
 
-export default new Config();
+export default new Config()

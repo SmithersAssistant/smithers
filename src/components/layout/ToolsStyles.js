@@ -1,5 +1,5 @@
-import {StyleSheet} from 'aphrodite';
-import {color, rgba, theme, px} from 'styles/theme';
+import {StyleSheet} from 'aphrodite'
+import {color, rgba, theme, px} from 'styles/theme'
 
 export default StyleSheet.create({
   toolbar: {

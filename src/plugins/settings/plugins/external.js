@@ -1,16 +1,16 @@
-import React from 'react';
-import {css} from 'aphrodite';
-import styles from './styles';
+import React from 'react'
+import {css} from 'aphrodite'
+import styles from './styles'
 
-import pluginManager from 'pluginSystem/pluginManager';
+import pluginManager from 'pluginSystem/pluginManager'
 
-import IconButton from 'material-ui/IconButton/IconButton';
-import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline';
-import Dialog from 'material-ui/Dialog';
+import IconButton from 'material-ui/IconButton/IconButton'
+import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline'
+import Dialog from 'material-ui/Dialog'
 
 import {
   EXTERNAL_PLUGIN
-} from 'pluginSystem/sources';
+} from 'pluginSystem/sources'
 
 export default ({state, setState, robot}) => {
   const {
@@ -18,42 +18,42 @@ export default ({state, setState, robot}) => {
     material,
     FlatButton,
     Collection,
-    CollectionItem,
-  } = robot.UI;
+    CollectionItem
+  } = robot.UI
 
-  const {TextField} = material;
+  const {TextField} = material
 
   const resetAddExternalPlugin = () => {
     setState({
       addExternalPluginDialogOpen: false,
-      addExternalPluginPackage: '',
-    });
-  };
+      addExternalPluginPackage: ''
+    })
+  }
 
   const handlePluginPackage = (e) => {
     setState({
       addExternalPluginPackage: e.target.value
-    });
-  };
+    })
+  }
 
   const AddButton = () => (
     <Button
       onClick={() => {
         setState({
           addExternalPluginDialogOpen: true
-        });
+        })
       }}
     >
       Add Plugin
     </Button>
-  );
+  )
 
-  const externalPlugins = robot.plugins().filter(plugin => plugin.source === EXTERNAL_PLUGIN);
+  const externalPlugins = robot.plugins().filter(plugin => plugin.source === EXTERNAL_PLUGIN)
 
   return (
     <div>
       <div className={css(styles.rightWrapper)}>
-        <AddButton/>
+        <AddButton />
       </div>
 
       {externalPlugins.length > 0 ? (
@@ -68,10 +68,10 @@ export default ({state, setState, robot}) => {
               <IconButton
                 className={css(styles.removePluginButton)}
                 onClick={() => {
-                robot.removeExternalPlugin(plugin);
-                resetAddExternalPlugin();
-              }}
-              ><RemoveIcon/></IconButton>
+                  robot.removeExternalPlugin(plugin)
+                  resetAddExternalPlugin()
+                }}
+              ><RemoveIcon /></IconButton>
 
               <span className={css(styles.info)}>(v{plugin.version})</span>
             </CollectionItem>
@@ -83,15 +83,15 @@ export default ({state, setState, robot}) => {
 
       {/* DIALOGS */}
       <Dialog
-        title="Add an External Plugin"
+        title='Add an External Plugin'
         actions={[
           <FlatButton onClick={resetAddExternalPlugin}>CANCEL</FlatButton>,
           <FlatButton
             disabled={state.addExternalPluginPackage === ''}
             onClick={() => {
-              console.log(`Loading plugin (${state.addExternalPluginPackage})`);
-              pluginManager.addExternalPlugin(state.addExternalPluginPackage);
-              resetAddExternalPlugin();
+              console.log(`Loading plugin (${state.addExternalPluginPackage})`)
+              pluginManager.addExternalPlugin(state.addExternalPluginPackage)
+              resetAddExternalPlugin()
             }}
           >
             ADD
@@ -102,12 +102,12 @@ export default ({state, setState, robot}) => {
         onRequestClose={resetAddExternalPlugin}
       >
         <TextField
-          autoFocus={true}
-          type="text"
+          autoFocus
+          type='text'
           value={state.addExternalPluginPackage}
-          floatingLabelText="Package Name"
-          fullWidth={true}
-          hintText="packagename or packagename@version"
+          floatingLabelText='Package Name'
+          fullWidth
+          hintText='packagename or packagename@version'
           onChange={handlePluginPackage}
         ></TextField>
       </Dialog>

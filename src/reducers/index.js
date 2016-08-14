@@ -1,10 +1,10 @@
-import {combineReducers} from 'redux';
+import {combineReducers} from 'redux'
 
-import commands, {defaultState as commandsDefaultState} from './commands';
-import cards, {defaultState as cardsDefaultState} from './cards';
-import notifications, {defaultState as notificationsDefaultState} from './notifications';
-import tabs, {defaultState as tabsDefaultState} from './tabs';
-import settings, {defaultState as settingsDefaultState} from './settings';
+import commands, {defaultState as commandsDefaultState} from './commands'
+import cards, {defaultState as cardsDefaultState} from './cards'
+import notifications, {defaultState as notificationsDefaultState} from './notifications'
+import tabs, {defaultState as tabsDefaultState} from './tabs'
+import settings, {defaultState as settingsDefaultState} from './settings'
 
 // import throttle from 'lodash/throttle'
 // import { loadState, saveState } from '../storage'
@@ -24,13 +24,13 @@ const rootReducer = combineReducers({
   notifications,
   tabs,
   settings
-});
+})
 
 const log = reducer => (state, action) => {
-  if (process.env.NODE_ENV == "development") {
-    console.log(action);
+  if (process.env.NODE_ENV == 'development') {
+    console.log(action)
   }
-  return reducer(state, action);
+  return reducer(state, action)
 }
 
 export const defaultState = {
@@ -39,6 +39,6 @@ export const defaultState = {
   notifications: notificationsDefaultState,
   tabs: tabsDefaultState,
   settings: settingsDefaultState
-};
+}
 
-export default log(rootReducer);
+export default log(rootReducer)

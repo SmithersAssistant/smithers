@@ -8,7 +8,7 @@ const cardImagesStyles = {
   padding: 0
 }
 
-const gap = 10;
+const gap = 10
 
 const styles = StyleSheet.create({
   imagesStyles: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 const imgStyles = {
   width: '100%',
   height: 'auto',
-  margin: [(gap / 2), 0].map(i => `${i}px`).join(' '),
+  margin: [(gap / 2), 0].map(i => `${i}px`).join(' ')
 }
 
 const Images = ({title, images, ...other}) => (
@@ -41,19 +41,19 @@ const Images = ({title, images, ...other}) => (
     <ul style={cardImagesStyles}>
       <div className={css(styles.imagesStyles)}>
         {images && images.map((img, i) => {
-          if (typeof img === "string") {
+          if (typeof img === 'string') {
             return (
-              <img style={imgStyles} key={i} src={img}/>
+              <img style={imgStyles} key={i} src={img} />
             )
           } else {
             return (
-              <img style={imgStyles} key={i} alt={img.title} title={img.title} src={img.src}/>
+              <img style={imgStyles} key={i} alt={img.title} title={img.title} src={img.src} />
             )
           }
         })}
       </div>
     </ul>
   </Base>
-);
+)
 
 export default Images

@@ -43,6 +43,6 @@ const Full = ({children, title, ...other}) => (
       {children}
     </div>
   </Base>
-);
+)
 
 export default Full

@@ -1,4 +1,4 @@
-const STORAGE_STATE_KEY = '@@state';
+const STORAGE_STATE_KEY = '@@state'
 
 export const loadState = (defaultState, key = STORAGE_STATE_KEY) => {
   // Array
@@ -6,16 +6,16 @@ export const loadState = (defaultState, key = STORAGE_STATE_KEY) => {
     return [
       ...defaultState,
       ...(JSON.parse(localStorage.getItem(key)) || [])
-    ];
+    ]
   }
 
   // Object
   return {
     ...defaultState,
     ...(JSON.parse(localStorage.getItem(key)) || {})
-  };
-};
+  }
+}
 
 export const saveState = (state, key = STORAGE_STATE_KEY) => {
   localStorage.setItem(key, JSON.stringify(state))
-};
+}

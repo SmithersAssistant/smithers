@@ -7,7 +7,7 @@ import flatMap from 'lodash/flatMap'
 import {fuzzysearch} from 'components/functions'
 import debounce from 'lodash/debounce'
 import {areTabsVisible} from 'state'
-import Suggestions from './Suggestions';
+import Suggestions from './Suggestions'
 
 // UI Elements
 import Icon from 'components/UI/Icon'
@@ -19,16 +19,16 @@ const Keys = {
   DOWN: 40,
   TAB: 9,
   ESC: 27
-};
+}
 
-const CONTEXT_SUGGESTIONS = 'CONTEXT_SUGGESTIONS';
-const CONTEXT_VARIABLES = 'CONTEXT_VARIABLES';
-const CONTEXT_EMPTY = 'CONTEXT_EMPTY';
+const CONTEXT_SUGGESTIONS = 'CONTEXT_SUGGESTIONS'
+const CONTEXT_VARIABLES = 'CONTEXT_VARIABLES'
+const CONTEXT_EMPTY = 'CONTEXT_EMPTY'
 
 const isTextSelected = (input) => {
-  const startPos = input.selectionStart;
-  const endPos = input.selectionEnd;
-  const doc = document.selection;
+  const startPos = input.selectionStart
+  const endPos = input.selectionEnd
+  const doc = document.selection
 
   if (doc && doc.createRange().text.length != 0) {
     return true
@@ -37,42 +37,42 @@ const isTextSelected = (input) => {
   }
 
   return false
-};
+}
 
 
 const Navbar = React.createClass({
-  getInitialState() {
+  getInitialState () {
     return {
       suggestions: [],
       suggestion: {},
       variables: {},
       currentSuggestion: -1,
       context: CONTEXT_EMPTY,
-      showVariables: false,
+      showVariables: false
     }
   },
 
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       canGoBack: false,
       canGoForward: false
-    };
+    }
   },
 
-  isContext(...contexts) {
-    return contexts.includes(this.state.context);
+  isContext (...contexts) {
+    return contexts.includes(this.state.context)
   },
 
-  getInput() {
-    return this.refs.input;
+  getInput () {
+    return this.refs.input
   },
 
-  resetSuggestions() {
-    this.setState(this.getInitialState());
+  resetSuggestions () {
+    this.setState(this.getInitialState())
   },
 
-  setSuggestions(value) {
-    const suggestions = this.getSuggestionsFor(value);
+  setSuggestions (value) {
+    const suggestions = this.getSuggestionsFor(value)
 
     this.setState({
       suggestions,
@@ -80,32 +80,32 @@ const Navbar = React.createClass({
       currentSuggestion: -1,
       currentVariable: -1,
       showVariables: false
-    });
+    })
   },
 
-  componentWillMount: function() {
-    this.showVariables = debounce(this.showVariables, 500);
+  componentWillMount: function () {
+    this.showVariables = debounce(this.showVariables, 500)
   },
 
-  componentDidMount() {
-    this.getInput().focus();
+  componentDidMount () {
+    this.getInput().focus()
 
-    Event.on(FOCUS_INPUT, () => this.getInput().focus());
+    Event.on(FOCUS_INPUT, () => this.getInput().focus())
     Event.on(PUT_INPUT, ({
       text,
       selectStart,
       selectEnd
     }) => {
-      this.getInput().value = text;
-      this.getInput().focus();
+      this.getInput().value = text
+      this.getInput().focus()
       if (selectStart && selectEnd) {
         this.getInput().setSelectionRange(selectStart, selectEnd)
       }
     })
   },
 
-  parseUsage({usage, arguments: args, optionals}) {
-    let result = usage.split(' ');
+  parseUsage ({usage, arguments: args, optionals}) {
+    let result = usage.split(' ')
 
     if (args.length > 0) {
       args.forEach(arg => {
@@ -114,9 +114,9 @@ const Navbar = React.createClass({
             return <span className={css(styles.argument)}>{arg.humanized}</span>
           }
 
-          return item;
-        });
-      });
+          return item
+        })
+      })
     }
 
     if (optionals.length > 0) {
@@ -126,9 +126,9 @@ const Navbar = React.createClass({
             return <span className={css(styles.optional)}>{arg.humanized}</span>
           }
 
-          return item;
-        });
-      });
+          return item
+        })
+      })
     }
 
     return (
@@ -140,9 +140,9 @@ const Navbar = React.createClass({
     )
   },
 
-  getSuggestionsFor(text) {
+  getSuggestionsFor (text) {
     if (text.trim().length <= 0) {
-      return [];
+      return []
     }
 
     return flatMap(pluginManager.list().map(plugin => plugin.commands))
@@ -151,28 +151,28 @@ const Navbar = React.createClass({
         return ({
           command,
           value: this.parseUsage(command)
-        });
-      });
+        })
+      })
   },
 
-  executeCommand(value) {
-    const {handleInput} = this.props;
+  executeCommand (value) {
+    const {handleInput} = this.props
 
-    handleInput(value);
-    pluginManager.execute(value);
-    this.getInput().value = "";
+    handleInput(value)
+    pluginManager.execute(value)
+    this.getInput().value = ''
 
-    this.resetSuggestions();
+    this.resetSuggestions()
   },
 
-  handleKeyUp(e) {
-    e.preventDefault();
+  handleKeyUp (e) {
+    e.preventDefault()
 
-    const {addTab} = this.props;
+    const {addTab} = this.props
 
     if (this.isContext(CONTEXT_EMPTY, CONTEXT_SUGGESTIONS, CONTEXT_VARIABLES)) {
-      if(e.keyCode === Keys.ESC) {
-        this.selectInputText();
+      if (e.keyCode === Keys.ESC) {
+        this.selectInputText()
         this.resetSuggestions()
       }
     }
@@ -180,9 +180,9 @@ const Navbar = React.createClass({
     if (this.isContext(CONTEXT_VARIABLES)) {
       if (e.keyCode === Keys.ENTER) {
         if (this.refs.variables) {
-          this.handleVariableSelection();
+          this.handleVariableSelection()
         } else {
-          this.setState({ context: CONTEXT_EMPTY });
+          this.setState({ context: CONTEXT_EMPTY })
         }
       }
     }
@@ -194,8 +194,8 @@ const Navbar = React.createClass({
             addTab()
           }
 
-          this.executeCommand(e.target.value);
-          break;
+          this.executeCommand(e.target.value)
+          break
         case Keys.UP:
           if (this.props.canGoBack && this.state.suggestions.length <= 0) {
             this.props.previousCommand()
@@ -203,7 +203,7 @@ const Navbar = React.createClass({
               this.getInput().value = this.props.command
             })
           }
-          break;
+          break
         case Keys.DOWN:
           if (this.props.canGoForward && this.state.suggestions.length <= 0) {
             this.props.nextCommand()
@@ -211,65 +211,65 @@ const Navbar = React.createClass({
               this.getInput().value = this.props.command
             })
           }
-          break;
+          break
       }
     }
   },
 
-  handleKeyDown(e) {
+  handleKeyDown (e) {
     // Tab through tabsbar if we don't have suggestions and tabs are visible
     if (e.keyCode == Keys.TAB && this.state.suggestions.length <= 0 && areTabsVisible()) {
-      e.preventDefault();
+      e.preventDefault()
 
       e.shiftKey
         ? this.props.focusPrevTab()
-        : this.props.focusNextTab();
+        : this.props.focusNextTab()
     }
 
     // If you have suggestions
     if (this.state.suggestions.length > 0) {
       if (e.keyCode === Keys.UP || (e.keyCode === Keys.TAB && e.shiftKey)) {
-        e.preventDefault();
+        e.preventDefault()
 
         if (this.isContext(CONTEXT_SUGGESTIONS)) {
-          this.refs.suggestions.goUp();
+          this.refs.suggestions.goUp()
         }
 
         if (this.isContext(CONTEXT_VARIABLES)) {
-          this.refs.variables.goUp();
+          this.refs.variables.goUp()
         }
       }
 
       if (e.keyCode === Keys.DOWN || (e.keyCode === Keys.TAB && !e.shiftKey)) {
-        e.preventDefault();
+        e.preventDefault()
 
         if (this.isContext(CONTEXT_SUGGESTIONS)) {
-          this.refs.suggestions.goDown();
+          this.refs.suggestions.goDown()
         }
 
         if (this.isContext(CONTEXT_VARIABLES)) {
-          this.refs.variables.goDown();
+          this.refs.variables.goDown()
         }
       }
     }
   },
 
-  handleVariableSelection(item = this._currentVariableValue, variableSet = true) {
+  handleVariableSelection (item = this._currentVariableValue, variableSet = true) {
     this.setState({
       variables: {
         ...this.state.variables,
         [this._currentVariable]: {
           value: item,
-          set: variableSet,
+          set: variableSet
         }
       }
     }, () => {
-      let {suggestion, variables} = this.state;
-      let input = suggestion.command.usage;
+      let {suggestion, variables} = this.state
+      let input = suggestion.command.usage
 
       Object.keys(variables).forEach((key) => {
-        input = input.replace(`<${key}>`, variables[key].value || `<${key}>`);
-      });
+        input = input.replace(`<${key}>`, variables[key].value || `<${key}>`)
+      })
 
       if (
         suggestion.command.arguments.length === Object.keys(variables).length &&
@@ -277,39 +277,39 @@ const Navbar = React.createClass({
       ) {
         this.setState({
           context: CONTEXT_EMPTY
-        });
+        })
       }
 
       setTimeout(() => {
-        Event.fire(PUT_INPUT, {text: input});
+        Event.fire(PUT_INPUT, {text: input})
       })
-    });
+    })
   },
 
-  handleSuggestionSelection(suggestion, currIndex = null) {
+  handleSuggestionSelection (suggestion, currIndex = null) {
     if (suggestion.command.arguments.length > 0 || suggestion.command.arguments.length > 0) {
-      this.setSuggestionInInput(suggestion, currIndex);
+      this.setSuggestionInInput(suggestion, currIndex)
     } else {
-      this.executeCommand(suggestion.command.usage);
+      this.executeCommand(suggestion.command.usage)
 
-      this.resetSuggestions();
+      this.resetSuggestions()
     }
   },
 
-  setSuggestionInInput(_suggestion, currIndex = null) {
-    const suggestion = _suggestion || this.state.suggestions[this.state.currentSuggestion];
+  setSuggestionInInput (_suggestion, currIndex = null) {
+    const suggestion = _suggestion || this.state.suggestions[this.state.currentSuggestion]
 
     setTimeout(() => {
       Event.fire(PUT_INPUT, {
         text: suggestion.command.usage,
         selectStart: suggestion.command.usage.indexOf('<'),
         selectEnd: suggestion.command.usage.indexOf('>') + 1
-      });
+      })
 
       const vars = [
         ...suggestion.command.arguments,
         ...suggestion.command.optionals
-      ];
+      ]
 
       if (currIndex !== null) {
         this.setState({
@@ -317,105 +317,105 @@ const Navbar = React.createClass({
           suggestion: {
             ...this.state.suggestions[currIndex],
             variables: {}
-          },
+          }
         }, () => {
-          this.showVariables(vars.length > 0);
-        });
+          this.showVariables(vars.length > 0)
+        })
       } else {
-        this.showVariables(vars.length > 0);
+        this.showVariables(vars.length > 0)
       }
     })
   },
 
-  showVariables(show = true) {
-    let data = {showVariables: show};
+  showVariables (show = true) {
+    let data = {showVariables: show}
     if (show) {
-      data.context = CONTEXT_VARIABLES;
+      data.context = CONTEXT_VARIABLES
     }
 
-    this.setState(data);
+    this.setState(data)
   },
 
-  selectInputText() {
-    const input = this.getInput();
+  selectInputText () {
+    const input = this.getInput()
     input && input.setSelectionRange(isTextSelected(input) ? input.value.length : 0, input.value.length)
   },
 
-  renderVariables() {
-    const {suggestion, variables} = this.state;
+  renderVariables () {
+    const {suggestion, variables} = this.state
 
     if (!suggestion) {
-      return null;
+      return null
     }
 
     const vars = [
       ...suggestion.command.arguments,
       ...suggestion.command.optionals
-    ];
+    ]
 
     if (vars.length <= 0) {
-      return null;
+      return null
     }
 
     const filteredVars = vars.filter(variable => {
       return !variables[variable.contents] || variables[variable.contents].set === false
-    });
+    })
 
     if (filteredVars.length <= 0) {
-      return null;
+      return null
     }
 
-    const variable = filteredVars[0].contents;
+    const variable = filteredVars[0].contents
 
-    const command = vars.find(cmd => cmd.match === `<${variable}>`);
+    const command = vars.find(cmd => cmd.match === `<${variable}>`)
 
     if (!command) {
-      return null;
+      return null
     }
 
-    this._currentVariable = variable;
+    this._currentVariable = variable
 
-    const flatVariables = {};
+    const flatVariables = {}
     Object.keys(variables).forEach(key => {
-      flatVariables[key] = variables[key].value;
-    });
+      flatVariables[key] = variables[key].value
+    })
 
     return (
       <Suggestions
-        ref="variables"
+        ref='variables'
         suggestions={command.data(flatVariables)}
         title={command.humanized.toUpperCase()}
         externalStyles={[styles.suggestions, styles.positionSuggestions]}
         externalSuggestionStyles={styles.suggestion}
         externalActiveSuggestionStyles={(isActive) => isActive ? styles.activeSuggestion : undefined}
         onActive={(item) => {
-          this._currentVariableValue = item;
-          this.handleVariableSelection(item, false);
+          this._currentVariableValue = item
+          this.handleVariableSelection(item, false)
         }}
         onSelect={(item) => this.handleVariableSelection(item, true)}
       />
     )
   },
 
-  render() {
+  render () {
     const {suggestions, showVariables} = this.state
 
     return (
       <div className={css(styles.headerStyles)} onClick={() => this.getInput().focus()}>
         <div className={css(styles.inputWrapperStyles)}>
           <div className={css(styles.inputIconStyles)}>
-            <Icon icon="terminal"/>
+            <Icon icon='terminal' />
           </div>
           <input
             className={css(styles.inputStyles)}
             onKeyDown={this.handleKeyDown}
             onKeyUp={this.handleKeyUp}
             onChange={(e) => {
-              this.setSuggestions(e.target.value);
+              this.setSuggestions(e.target.value)
             }}
-            ref="input"
-            type="text"
-            placeholder="Type your commands here..."
+            ref='input'
+            type='text'
+            placeholder='Type your commands here...'
           />
 
           {/* PRE-FILL VARIABLES*/}
@@ -424,7 +424,7 @@ const Navbar = React.createClass({
           {/* SUGGESTIONS */}
           {suggestions.length > 0 && !showVariables && (
             <Suggestions
-              ref="suggestions"
+              ref='suggestions'
               suggestions={suggestions}
               externalStyles={[styles.suggestions, styles.positionSuggestions]}
               externalSuggestionStyles={styles.suggestion}
@@ -437,6 +437,6 @@ const Navbar = React.createClass({
       </div>
     )
   }
-});
+})
 
 export default Navbar

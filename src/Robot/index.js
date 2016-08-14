@@ -20,7 +20,7 @@ const Robot = {
   ...RobotPlugins,
   ...RobotUtils,
   ...RobotEvents,
-  ...RobotConfig,
+  ...RobotConfig
 }
 
 Robot.loadVoices()

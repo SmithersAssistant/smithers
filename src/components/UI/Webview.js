@@ -7,7 +7,7 @@ const noop = () => {
 }
 
 const Webview = React.createClass({
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       whenLoading: undefined,
       onWillNavigate: noop,
@@ -19,12 +19,12 @@ const Webview = React.createClass({
       onLoadCommit: noop
     }
   },
-  getInitialState() {
+  getInitialState () {
     return {
       isLoading: false
     }
   },
-  componentDidMount() {
+  componentDidMount () {
     this.attachListeners()
 
     this._onVisibilityChangeHandler = this.onVisibilityChange(this.refs.webview, () => {
@@ -35,11 +35,11 @@ const Webview = React.createClass({
       (this._onVisibilityChangeHandler || noop)()
     }, 600)
   },
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.removeEventListeners()
     clearInterval(this._onVisibilityChangeHandlerInterval)
   },
-  getEvents() {
+  getEvents () {
     return [{
       key: 'wil-navigate',
       cb: this.props.onWillNavigate
@@ -72,32 +72,32 @@ const Webview = React.createClass({
       cb: this.props.onLoadCommit
     }]
   },
-  attachListeners() {
+  attachListeners () {
     this.getEvents().map(event => {
       this.callMethod('addEventListener', event.key, event.cb)
     })
   },
-  callMethod(method, ...args) {
+  callMethod (method, ...args) {
     return this.refs.webview && this.refs.webview[method](...args)
   },
-  canGoBack() {
+  canGoBack () {
     return this.callMethod('canGoBack')
   },
-  canGoForward() {
+  canGoForward () {
     return this.callMethod('canGoForward')
   },
-  goBack() {
+  goBack () {
     return this.callMethod('goBack')
   },
-  goForward() {
+  goForward () {
     return this.callMethod('goForward')
   },
-  newWindowEventListener(e) {
+  newWindowEventListener (e) {
     try {
       const protocol = parse(e.url).protocol
 
       if (!['http:', 'https:', 'mailto:'].includes(protocol)) {
-        throw new Error("invalid protocol")
+        throw new Error('invalid protocol')
       }
 
       shell.openExternal(e.url)
@@ -105,46 +105,46 @@ const Webview = React.createClass({
       console.log(`Ignoring ${e.url} due to ${err.message}`)
     }
   },
-  reload() {
+  reload () {
     this.callMethod('reload')
   },
-  removeEventListeners() {
+  removeEventListeners () {
     this.getEvents().map(event => {
       this.refs.webview.removeEventListener(event.key, event.cb)
     })
   },
-  startLoading() {
+  startLoading () {
     this.setState({isLoading: true})
   },
-  stopLoading() {
+  stopLoading () {
     this.setState({isLoading: false})
   },
-  renderWebview(props) {
+  renderWebview (props) {
     return (
       <webview
         {...props}
-        ref="webview"
+        ref='webview'
       />
     )
   },
-  triggerReflow() {
+  triggerReflow () {
     try {
       const {webview} = this.refs
 
       if (webview) {
         const el = webview.shadowRoot.lastChild
 
-        el.style.flex = '0 1';
-        el.offsetHeight; // no need to store this anywhere, the reference is enough
-        el.style.flex = '1 1 auto';
+        el.style.flex = '0 1'
+        el.offsetHeight // no need to store this anywhere, the reference is enough
+        el.style.flex = '1 1 auto'
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   },
   isElementInViewport (el) {
     if (!el) {
-      return false;
+      return false
     }
 
     var rect = el.getBoundingClientRect(),
@@ -155,7 +155,7 @@ const Webview = React.createClass({
     // Return false if it's not in the viewport
     if (rect.right < 0 || rect.bottom < 0
       || rect.left > vWidth || rect.top > vHeight)
-      return false;
+      return false
 
     // Return true if any of its four corners are visible
     return (
@@ -163,9 +163,9 @@ const Webview = React.createClass({
       || el.contains(efp(rect.right, rect.top))
       || el.contains(efp(rect.right, rect.bottom))
       || el.contains(efp(rect.left, rect.bottom))
-    );
+    )
   },
-  onVisibilityChange(el, callback) {
+  onVisibilityChange (el, callback) {
     var old_visible
 
     return () => {
@@ -179,8 +179,8 @@ const Webview = React.createClass({
       }
     }
   },
-  render() {
-    let {isLoading} = this.state;
+  render () {
+    let {isLoading} = this.state
     let props = deleteProps(this.props, [
       'whenLoading', 'onWillNavigate', 'onDidGetResponseDetails',
       'onDidNavigate', 'onDidStartLoading', 'onDidStopLoading',

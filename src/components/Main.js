@@ -9,7 +9,7 @@ import {removeCard} from 'actions/index'
 import {StyleSheet, css} from 'aphrodite'
 import {theme, px} from 'styles/theme'
 
-import Event, {OPEN_HELP} from 'Event';
+import Event, {OPEN_HELP} from 'Event'
 
 const styles = StyleSheet.create({
   cardsStyles: {
@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
 })
 
 const RestorableComponent = React.createClass({
-  getDefaultProps() {
+  getDefaultProps () {
     return {
-      registerCard: () => {}, //  NOOP
+      registerCard: () => {} //  NOOP
     }
   },
-  componentDidMount() {
+  componentDidMount () {
     const {component} = this.refs
     const {cardContainer, registerCard, isFunctional} = this.props
 
@@ -42,26 +42,26 @@ const RestorableComponent = React.createClass({
       }
 
       registerCard(cardContainer.id, {
-        getState() {
+        getState () {
           return component.state
         }
       })
     }
   },
-  componentWillUnmount() {
+  componentWillUnmount () {
     let {isFunctional, cardContainer, unRegisterCard} = this.props
     if (!isFunctional) {
       unRegisterCard(cardContainer.id)
     }
   },
-  render() {
-    let {Component, componentProps, isFunctional} = this.props;
+  render () {
+    let {Component, componentProps, isFunctional} = this.props
     componentProps = {
       ...componentProps,
       removeCard: () => dispatch(removeCard(componentProps.__CARD_ID__))
     }
 
-    return isFunctional ? <Component {...componentProps} /> : <Component {...componentProps} ref="component"/>
+    return isFunctional ? <Component {...componentProps} /> : <Component {...componentProps} ref='component' />
   }
 })
 
@@ -76,18 +76,18 @@ const NoCards = () => (
   }}>
     <h1 className={css(styles.noCardsTitleStyles)}>Type <kbd
       style={{
-        fontFamily: "Roboto",
+        fontFamily: 'Roboto',
         background: 'white',
         padding: px(5, 14),
         borderRadius: 3,
         ...theme.shadow1
       }}
       onClick={() => {
-        Event.fire(OPEN_HELP);
+        Event.fire(OPEN_HELP)
       }}
     >help</kbd> to see available commands</h1>
   </div>
-);
+)
 
 const Card = (cardContainer, registerCard, unRegisterCard) => {
   const C = pluginManager.resolveComponent(cardContainer.card)
@@ -99,7 +99,7 @@ const Card = (cardContainer, registerCard, unRegisterCard) => {
   const props = {
     ...cardContainer.props,
     __CARD_ID__: cardContainer.id
-  };
+  }
 
   const isFunctional = isFunctionalComponent(C)
 
@@ -116,33 +116,33 @@ const Card = (cardContainer, registerCard, unRegisterCard) => {
       />
     </div>
   )
-};
+}
 
 const Main = React.createClass({
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       saveCardStates: () => {} // NOOP
     }
   },
-  componentWillMount() {
+  componentWillMount () {
     this.cards = []
   },
-  componentDidMount() {
+  componentDidMount () {
     this.saveComponentStates()
   },
-  componentWillUnmount() {
+  componentWillUnmount () {
     cancelAnimationFrame(this._retrieveState)
   },
-  registerCard(id, {getState}) {
+  registerCard (id, {getState}) {
     this.cards = [
       ...this.cards,
       {
         id,
-        getState,
+        getState
       }
     ]
   },
-  saveComponentStates() {
+  saveComponentStates () {
     setTimeout(() => {
       this._retrieveState = requestAnimationFrame(() => {
         if (this.cards.length > 0) {
@@ -163,10 +163,10 @@ const Main = React.createClass({
       })
     }, 1000) // Every second
   },
-  unRegisterCard(id) {
+  unRegisterCard (id) {
     this.cards = this.cards.filter(c => c.id !== id)
   },
-  render() {
+  render () {
     let {cards} = this.props
 
     cards = cards.map((c) => Card(c, this.registerCard, this.unRegisterCard)).filter(c => c !== null)
@@ -177,6 +177,6 @@ const Main = React.createClass({
       </div>
     )
   }
-});
+})
 
 export default Main

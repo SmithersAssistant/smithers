@@ -1,23 +1,23 @@
-import React from 'react';
-import {remote} from 'electron';
-const {app, autoUpdater} = remote;
+import React from 'react'
+import {remote} from 'electron'
+const {app, autoUpdater} = remote
 
-const isDevMode = process.env.NODE_ENV === 'development';
+const isDevMode = process.env.NODE_ENV === 'development'
 
 export default (robot) => {
-  const {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} = robot.events;
+  const {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} = robot.events
   const {
     A,
     Button,
     Icon,
     Collection,
     CollectionItem
-  } = robot.UI;
+  } = robot.UI
 
-  const {Checkbox} = robot.UI.material;
+  const {Checkbox} = robot.UI.material
 
   return React.createClass({
-    componentDidMount() {
+    componentDidMount () {
       this.removeListeners = [
         robot.on(UPDATE_AVAILABLE, () => {
           robot.notify('An update is available!')
@@ -49,26 +49,26 @@ export default (robot) => {
         })
       ]
     },
-    componentWillUnmount() {
+    componentWillUnmount () {
       this.removeListeners.map(removeListener => removeListener())
     },
-    checkForUpdates() {
+    checkForUpdates () {
       if (!isDevMode) {
-        autoUpdater.checkForUpdates();
+        autoUpdater.checkForUpdates()
       }
     },
-    renderButtonContents() {
+    renderButtonContents () {
       const {checking_for_updates, downloading_updates} = this.props.state
 
       if (checking_for_updates) {
         return (
-          <span><Icon icon="refresh fa-spin breathing"/> Checking for updates...</span>
+          <span><Icon icon='refresh fa-spin breathing' /> Checking for updates...</span>
         )
       }
 
       if (downloading_updates) {
         return (
-          <span><Icon icon="refresh fa-spin breathing"/> Downloading updates...</span>
+          <span><Icon icon='refresh fa-spin breathing' /> Downloading updates...</span>
         )
       }
 
@@ -76,26 +76,26 @@ export default (robot) => {
         <span>Check for updates</span>
       )
     },
-    render() {
+    render () {
       const {update_available, update_downloaded} = this.props.state
 
       return (
         <Collection>
           <CollectionItem>
             Current version: v{app.getVersion()}
-            <Button disabled={isDevMode} className="right" onClick={this.checkForUpdates}>
+            <Button disabled={isDevMode} className='right' onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
             </Button>
             {update_available && (
-              <span className="right breathing">update available{update_downloaded && (
+              <span className='right breathing'>update available{update_downloaded && (
                 <span>, <A onClick={() => autoUpdater.quitAndInstall()}>install update</A></span>
               )}</span>
             )}
           </CollectionItem>
           <CollectionItem>
             <Checkbox
-              label="Show tabs"
-              labelPosition="left"
+              label='Show tabs'
+              labelPosition='left'
               onCheck={(e, isChecked) => isChecked ? robot.showTabs() : robot.hideTabs()}
               checked={window.state().tabs.visible}
             />

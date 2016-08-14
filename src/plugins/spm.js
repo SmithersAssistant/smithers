@@ -5,19 +5,19 @@ export default robot => {
     usage: 'install <package_name>'
   }, () => {
 
-  });
+  })
 
   robot.listen(/^uninstall (.*)$/, {
     description: 'uninstall a package',
     usage: 'uninstall <package_name>'
   }, () => {
 
-  });
+  })
 
   robot.listen(/^update (.*)$/, {
     description: 'update a package',
-    usage: 'update <package_name>',
+    usage: 'update <package_name>'
   }, () => {
 
-  });
-};
+  })
+}

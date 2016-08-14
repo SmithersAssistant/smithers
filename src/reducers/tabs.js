@@ -15,8 +15,8 @@ import {
   FOCUS_NEXT_TAB
 } from '../actions/types'
 
-const normalize = (title = "", otherwise) => {
-  const normalized = title.trim();
+const normalize = (title = '', otherwise) => {
+  const normalized = title.trim()
 
   return normalized.length > 0 ? normalized : otherwise
 }
@@ -59,13 +59,13 @@ const tab = (state, action) => {
   switch (action.type) {
     case ADD_TAB:
       return {
-        title: normalize(action.title, "untitled"),
+        title: normalize(action.title, 'untitled'),
         id: action.id
       }
     case EDIT_TAB:
       return {
         ...state,
-        title: normalize(action.title, "untitled")
+        title: normalize(action.title, 'untitled')
       }
     default:
       return state
@@ -105,7 +105,7 @@ const tabs = (state = [], action) => {
         return {
           ...state,
           visible: state.list.length > 0
-        };
+        }
       }
 
       id = uuid()

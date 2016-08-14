@@ -1,9 +1,9 @@
 import React from 'react'
 import {css} from 'aphrodite'
-import {theme, color as getColor}  from 'styles/theme'
+import {theme, color as getColor} from 'styles/theme'
 import cx from 'classnames'
 import styles from './ButtonStyles'
-import MaterialFlatButton from 'material-ui/FlatButton/FlatButton';
+import MaterialFlatButton from 'material-ui/FlatButton/FlatButton'
 import TouchRipple from 'material-ui/internal/TouchRipple'
 
 export const ButtonColors = {

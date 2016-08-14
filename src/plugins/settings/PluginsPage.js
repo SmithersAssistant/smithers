@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import LocalPage from './plugins/local';
-import ExternalPage from './plugins/external';
-import DefaultPage from './plugins/default';
+import LocalPage from './plugins/local'
+import ExternalPage from './plugins/external'
+import DefaultPage from './plugins/default'
 
 export default (robot) => ({state, setState, tabsProps, tabProps, updatedAt}) => {
 
   const {
     Tab,
     Tabs
-  } = Robot.UI;
+  } = Robot.UI
 
   const pages = [{
     label: 'Local plugins',
@@ -39,7 +39,7 @@ export default (robot) => ({state, setState, tabsProps, tabProps, updatedAt}) =>
         state={state}
       />
     )
-  }];
+  }]
 
   return (
     <Tabs

@@ -6,7 +6,7 @@ import {
 } from '../actions/types'
 
 const commands = (state = {}, action) => {
-  let currentCommand;
+  let currentCommand
 
   switch (action.type) {
     case HANDLE_INPUT:

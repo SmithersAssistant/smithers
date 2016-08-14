@@ -19,21 +19,21 @@ const mapStateToProps = (state) => ({
   command: state.commands.command,
   canGoBack: state.commands.currentCommand !== 0,
   canGoForward: state.commands.currentCommand < (state.commands.past || []).length
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   handleInput: (value) => dispatch(handleInput(value)),
   addTab: (title) => {
-    dispatch(addTab(title));
+    dispatch(addTab(title))
     Event.fire(FOCUS_INPUT)
   },
   focusNextTab: (places) => dispatch(focusNextTab(places)),
   focusPrevTab: (places) => dispatch(focusPrevTab(places)),
   previousCommand: () => dispatch(previousCommand()),
   nextCommand: () => dispatch(nextCommand())
-});
+})
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Navbar);
+)(Navbar)

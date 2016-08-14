@@ -21,15 +21,15 @@ import Tabs from './Tabs'
 const attachRelationsToTabs = (tabs, cards = []) => tabs.map(tab => ({
   ...tab,
   cards: cards.filter(card => card.relation == tab.id)
-}));
+}))
 
 const findActiveTab = ({list, active}) => {
   return list.findIndex(tab => tab.id == active)
-};
+}
 
 const focusInput = debounce(() => {
   Event.fire(FOCUS_INPUT)
-}, 200);
+}, 200)
 
 const canTabs = (tabs) => {
   return tabs.map((tab, index) => {
@@ -41,18 +41,18 @@ const canTabs = (tabs) => {
       canCloseToTheRight: !(index == tabs.length - 1) // Nope, if the last tab
     }
   })
-};
+}
 
 const mapStateToProps = (state) => ({
   tabsAreVisible: state.tabs.visible,
   cards: state.tabs.visible ? [] : state.cards.cards,
   tabs: !state.tabs.visible ? [] : canTabs(attachRelationsToTabs(state.tabs.list, state.cards.cards)),
   activeTab: !state.tabs.visible ? null : findActiveTab(state.tabs)
-});
+})
 
 const mapDispatchToProps = (dispatch) => ({
   activateTab: (id) => {
-    dispatch(focusTab(id));
+    dispatch(focusTab(id))
     focusInput()
   },
   addTab: () => dispatch(addTab()),
@@ -64,11 +64,11 @@ const mapDispatchToProps = (dispatch) => ({
   focusInput: () => focusInput(),
   editTab: (tabText) => Event.fire(PUT_INPUT, {
     text: `edit tab ${tabText}`,
-    selectStart: `edit tab `.length,
+    selectStart: 'edit tab '.length,
     selectEnd: `edit tab ${tabText}`.length
   }),
   onSortEnd: ({oldIndex, newIndex}) => dispatch(moveTab(oldIndex, newIndex))
-});
+})
 
 export default connect(
   mapStateToProps,

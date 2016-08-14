@@ -1,7 +1,7 @@
 import {
   HANDLE_INPUT,
   PREVIOUS_COMMAND,
-  NEXT_COMMAND,
+  NEXT_COMMAND
 } from './types'
 
 export const handleInput = (input) => ({

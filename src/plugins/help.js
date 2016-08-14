@@ -1,24 +1,24 @@
 import React from 'react'
-import orderBy from 'lodash/orderBy';
-const HELP_COMPONENT = 'com.robinmalfait.help';
+import orderBy from 'lodash/orderBy'
+const HELP_COMPONENT = 'com.robinmalfait.help'
 
 export default robot => {
 
   const {
     color
-  } = robot.UI;
-  const {Table} = robot.cards;
+  } = robot.UI
+  const {Table} = robot.cards
 
   const Help = React.createClass({
-    countPlugins() {
+    countPlugins () {
       const installedPlugins = this.props.plugin !== undefined
         ? robot.plugins().filter(plugin => this.props.plugin === plugin.name)
-        : robot.plugins();
+        : robot.plugins()
 
       return installedPlugins.length
     },
-    parseUsage({usage, arguments: args, optionals}) {
-      let result = usage.split(' ');
+    parseUsage ({usage, arguments: args, optionals}) {
+      let result = usage.split(' ')
 
       if (args.length > 0) {
         args.forEach(arg => {
@@ -31,9 +31,9 @@ export default robot => {
               }}>{arg.humanized}</span>
             }
 
-            return item;
-          });
-        });
+            return item
+          })
+        })
       }
 
       if (optionals.length > 0) {
@@ -47,9 +47,9 @@ export default robot => {
               }}>{arg.humanized}</span>
             }
 
-            return item;
-          });
-        });
+            return item
+          })
+        })
       }
 
       return (
@@ -60,14 +60,14 @@ export default robot => {
         </span>
       )
     },
-    renderPlugins() {
-      const plugins = [];
+    renderPlugins () {
+      const plugins = []
       const installedPlugins = this.props.plugin !== undefined
         ? robot.plugins().filter(plugin => this.props.plugin === plugin.name)
-        : robot.plugins();
+        : robot.plugins()
 
       orderBy(installedPlugins, ['name']).forEach(plugin => {
-        let showed = false;
+        let showed = false
 
         orderBy(plugin.commands, ['usage']).forEach(command => {
           plugins.push([
@@ -82,14 +82,14 @@ export default robot => {
 
       return plugins
     },
-    render() {
-      const {plugin, ...other} = this.props;
-      const pluginCount = this.countPlugins();
+    render () {
+      const {plugin, ...other} = this.props
+      const pluginCount = this.countPlugins()
 
       return (
         <Table
           {...other}
-          title="Help"
+          title='Help'
           header={['Plugin Name', 'Usage', 'Description']}
           body={this.renderPlugins()}
           footer={[{
@@ -101,30 +101,30 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(Help, HELP_COMPONENT);
+  robot.registerComponent(Help, HELP_COMPONENT)
 
   robot.listen(/^help$/, {
-    description: "Help Plugin",
+    description: 'Help Plugin',
     usage: 'help'
   }, () => {
-    robot.addCard(HELP_COMPONENT);
-  });
+    robot.addCard(HELP_COMPONENT)
+  })
 
   robot.listen(/^help (.*)$/, {
     description: 'Get help for a specific plugin',
     usage: 'help <plugin>',
     args: {
       plugin: () => {
-        return robot.plugins().map(plugin => plugin.name);
+        return robot.plugins().map(plugin => plugin.name)
       }
     }
   }, (res) => {
     robot.addCard(HELP_COMPONENT, {
       plugin: res.matches[1]
-    });
-  });
+    })
+  })
 
   robot.on(robot.events.OPEN_HELP, () => {
-    robot.addCard(HELP_COMPONENT);
-  });
+    robot.addCard(HELP_COMPONENT)
+  })
 }

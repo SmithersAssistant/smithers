@@ -6,6 +6,6 @@ const Blank = ({children, title, style = {}, ...other}) => (
   <Base {...other} title={title} style={{...cardStyles, ...itemStyles, ...style}}>
     {children}
   </Base>
-);
+)
 
 export default Blank

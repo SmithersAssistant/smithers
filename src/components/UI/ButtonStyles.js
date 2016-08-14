@@ -19,13 +19,13 @@ export default c => StyleSheet.create({
       color: 'whitesmoke'
     },
     ':disabled': {
-      backgroundColor: color("grey", 400),
-      color: color("grey", 900),
+      backgroundColor: color('grey', 400),
+      color: color('grey', 900),
       cursor: 'not-allowed'
     },
     ':disabled:hover': {
-      backgroundColor: color("grey", 400),
-      color: color("grey", 900),
+      backgroundColor: color('grey', 400),
+      color: color('grey', 900),
       cursor: 'not-allowed'
     }
   },
@@ -38,4 +38,4 @@ export default c => StyleSheet.create({
       backgroundColor: color(c, 600)
     }
   }
-});
+})

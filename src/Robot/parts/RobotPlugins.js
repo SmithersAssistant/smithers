@@ -3,17 +3,17 @@ import pluginManager from 'pluginSystem/pluginManager'
 // Return an array
 const NOOP = () => ([])
 
-let plugins = [];
-let currentPlugin;
+let plugins = []
+let currentPlugin
 
 const humanize = (str) => {
   return str.split('_').join(' ')
-};
+}
 
 const execAll = (regex, str) => {
-  var match;
-  var matches = [];
-  var isGlobal = regex.global;
+  var match
+  var matches = []
+  var isGlobal = regex.global
 
   while (match = regex.exec(str)) {
     matches.push({
@@ -24,16 +24,16 @@ const execAll = (regex, str) => {
     })
 
     if (!isGlobal) {
-      break;
+      break
     }
   }
 
-  return matches;
+  return matches
 }
 
 const parseUsage = (usageString, args) => {
-  const ARGUMENTS_REGEX = /<([a-zA-Z0-9_]*)>/gi; // <name>
-  const OPTIONALS_REGEX = /<([a-zA-Z0-9_]*)\?>/gi; // <name?>
+  const ARGUMENTS_REGEX = /<([a-zA-Z0-9_]*)>/gi // <name>
+  const OPTIONALS_REGEX = /<([a-zA-Z0-9_]*)\?>/gi // <name?>
 
   return {
     arguments: [].concat(execAll(ARGUMENTS_REGEX, usageString)).map((variable) => ({
@@ -45,37 +45,37 @@ const parseUsage = (usageString, args) => {
       data: args && args[variable.contents] || NOOP
     }))
   }
-};
+}
 
 export default {
-  removePlugin(pluginToBeUninstalled) {
-    pluginManager.removeLocalPlugin(pluginToBeUninstalled);
+  removePlugin (pluginToBeUninstalled) {
+    pluginManager.removeLocalPlugin(pluginToBeUninstalled)
 
     plugins = plugins.filter(plugin => {
       if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
-        return null;
+        return null
       }
 
-      return plugin;
-    }).filter(x => !!x);
+      return plugin
+    }).filter(x => !!x)
   },
 
-  removeExternalPlugin(pluginToBeUninstalled) {
-    pluginManager.removeExternalPlugin(pluginToBeUninstalled);
+  removeExternalPlugin (pluginToBeUninstalled) {
+    pluginManager.removeExternalPlugin(pluginToBeUninstalled)
 
     plugins = plugins.filter(plugin => {
       if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
       }
 
       if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
-        return null;
+        return null
       }
 
-      return plugin;
-    }).filter(x => !!x);
+      return plugin
+    }).filter(x => !!x)
   },
 
-  registerPlugin(plugin) {
+  registerPlugin (plugin) {
     plugins = [
       ...plugins,
       {
@@ -86,7 +86,7 @@ export default {
     currentPlugin = plugin
   },
 
-  listen(regex, {description, usage, args}, cb) {
+  listen (regex, {description, usage, args}, cb) {
     plugins = plugins.map((plugin) => {
       if (this._isCurrentPlugin(plugin, currentPlugin)) {
         plugin = {
@@ -95,14 +95,14 @@ export default {
             ...plugin.commands,
             {regex, description, usage, args, cb}
           ]
-        };
+        }
       }
 
-      return plugin;
-    });
+      return plugin
+    })
   },
 
-  test(plugin, command) {
+  test (plugin, command) {
     plugins
       .find(p => this._isCurrentPlugin(p, plugin))
       .commands
@@ -110,31 +110,31 @@ export default {
       .forEach(plugin => plugin.cb({
         command,
         matches:  plugin.regex.exec(command)
-      }));
+      }))
   },
 
-  commands(plugin) {
+  commands (plugin) {
     return plugins
       .find(p => this._isCurrentPlugin(p, plugin))
       .commands
-      .map(({regex: name, description, usage, args}) => ({name, description, usage, ...parseUsage(usage, args)}));
+      .map(({regex: name, description, usage, args}) => ({name, description, usage, ...parseUsage(usage, args)}))
   },
 
-  plugins() {
+  plugins () {
     return pluginManager.list()
   },
 
-  execute(value) {
-    pluginManager.execute(value);
+  execute (value) {
+    pluginManager.execute(value)
   },
 
-  _isCurrentPlugin(a, b) {
+  _isCurrentPlugin (a, b) {
     // Modules with the same name are not allowed in npm
     // But when you have a module with the same name locally
     // We check  the source of it
 
     // If we have local modules with the same name, the source will be the same
     // Therefor we check the location
-    return (a.name === b.name) && (a.source === b.source) && (a.location === b.location);
+    return (a.name === b.name) && (a.source === b.source) && (a.location === b.location)
   }
 }

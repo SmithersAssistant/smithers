@@ -1,11 +1,11 @@
-import {v4 as uuid} from 'uuid';
+import {v4 as uuid} from 'uuid'
 
 class Event {
-  constructor() {
+  constructor () {
     this.events = []
   }
 
-  on(event, cb) {
+  on (event, cb) {
     const id = uuid()
 
     this.events[event] = this.events[event] || []
@@ -17,9 +17,9 @@ class Event {
     }
   }
 
-  fire(event, ...args) {
-    console.group(`EVENT FIRED - ${event}`);
-    console.log(...args);
+  fire (event, ...args) {
+    console.group(`EVENT FIRED - ${event}`)
+    console.log(...args)
     console.groupEnd();
     (this.events[event] || []).map(({cb}) => cb(...args))
   }
@@ -33,20 +33,20 @@ export default new Event()
 export const FOCUS_INPUT = 'FOCUS_INPUT'
 export const PUT_INPUT = 'PUT_INPUT'
 export const NOTIFY = 'NOTIFY'
-export const OPEN_SETTINGS  = 'OPEN_SETTINGS'
-export const OPEN_HELP  = 'OPEN_HELP'
-export const SPEECH_RESULT  = 'SPEECH_RESULT'
+export const OPEN_SETTINGS = 'OPEN_SETTINGS'
+export const OPEN_HELP = 'OPEN_HELP'
+export const SPEECH_RESULT = 'SPEECH_RESULT'
 
-export const PLUGIN_INSTALLING = 'PLUGIN_INSTALLING';
-export const PLUGIN_INSTALLED = 'PLUGIN_INSTALLED';
-export const PLUGIN_UPDATING = 'PLUGIN_UPDATING';
-export const PLUGIN_UPDATED = 'PLUGIN_UPDATED';
-export const PLUGIN_DELETING = 'PLUGIN_DELETING';
-export const PLUGIN_DELETED = 'PLUGIN_DELETED';
+export const PLUGIN_INSTALLING = 'PLUGIN_INSTALLING'
+export const PLUGIN_INSTALLED = 'PLUGIN_INSTALLED'
+export const PLUGIN_UPDATING = 'PLUGIN_UPDATING'
+export const PLUGIN_UPDATED = 'PLUGIN_UPDATED'
+export const PLUGIN_DELETING = 'PLUGIN_DELETING'
+export const PLUGIN_DELETED = 'PLUGIN_DELETED'
 
-export const CHECK_FOR_UPDATES = 'CHECK_FOR_UPDATES';
-export const UPDATE_AVAILABLE = 'UPDATE_AVAILABLE';
-export const UPDATE_DOWNLOADED = 'UPDATE_DOWNLOADED';
-export const UPDATE_ERROR = 'UPDATE_ERROR';
-export const CHECKING_FOR_UPDATES = 'CHECKING_FOR_UPDATES';
-export const UPDATE_NOT_AVAILABLE = 'UPDATE_NOT_AVAILABLE';
+export const CHECK_FOR_UPDATES = 'CHECK_FOR_UPDATES'
+export const UPDATE_AVAILABLE = 'UPDATE_AVAILABLE'
+export const UPDATE_DOWNLOADED = 'UPDATE_DOWNLOADED'
+export const UPDATE_ERROR = 'UPDATE_ERROR'
+export const CHECKING_FOR_UPDATES = 'CHECKING_FOR_UPDATES'
+export const UPDATE_NOT_AVAILABLE = 'UPDATE_NOT_AVAILABLE'

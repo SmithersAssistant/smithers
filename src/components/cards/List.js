@@ -17,7 +17,7 @@ const cardListItemStyles = {
   lineHeight: '1.9rem',
   padding: '10px 20px',
   margin: 0,
-  borderBottom: '1px solid #e0e0e0',
+  borderBottom: '1px solid #e0e0e0'
 }
 
 const List = ({title, items, ...other}) => (
@@ -28,6 +28,6 @@ const List = ({title, items, ...other}) => (
       ))}
     </ul>
   </Base>
-);
+)
 
 export default List

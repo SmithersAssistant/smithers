@@ -3,15 +3,15 @@ import {remote} from 'electron'
 import {StyleSheet, css} from 'aphrodite'
 import styles from './indexStyles'
 
-import IconButton from 'material-ui/IconButton/IconButton';
-import SaveIcon from 'material-ui/svg-icons/content/save';
+import IconButton from 'material-ui/IconButton/IconButton'
+import SaveIcon from 'material-ui/svg-icons/content/save'
 
 // Pages
 import generalPage from './GeneralPage'
 import themePage from './ThemePage'
 import pluginsPage from './PluginsPage'
 
-const SETTINGS_COMPONENT = 'com.robinmalfait.settings';
+const SETTINGS_COMPONENT = 'com.robinmalfait.settings'
 
 export default robot => {
 
@@ -20,15 +20,15 @@ export default robot => {
     theme,
 
     Tabs,
-    Tab,
+    Tab
   } = robot.UI
 
-  const GeneralPage = generalPage(robot);
-  const ThemePage = themePage(robot);
-  const PluginsPage = pluginsPage(robot);
-  
+  const GeneralPage = generalPage(robot)
+  const ThemePage = themePage(robot)
+  const PluginsPage = pluginsPage(robot)
+
   const Settings = React.createClass({
-    getInitialState() {
+    getInitialState () {
       return {
         activePage: 0,
         generalPageState: {
@@ -39,7 +39,7 @@ export default robot => {
         },
         themePageState: {
           primaryColor: theme.primaryColor,
-          secondaryColor: theme.secondaryColor,
+          secondaryColor: theme.secondaryColor
         },
         pluginsPageState: {
           activeTab: 0,
@@ -47,42 +47,42 @@ export default robot => {
           addLocalPluginLocation: '',
           addLocalPluginErrorText: '',
           addExternalPluginDialogOpen: false,
-          addExternalPluginPackage: '',
+          addExternalPluginPackage: ''
         }
       }
     },
-    componentDidMount() {
+    componentDidMount () {
       this.listeners = [
         robot.on(robot.events.PLUGIN_INSTALLED, ({module}) => {
-          robot.notify(`'${module}' installed`);
+          robot.notify(`'${module}' installed`)
           this.setState({pluginsPageState: {
             ...this.state.pluginsPageState
-          }});
+          }})
         }),
         robot.on(robot.events.PLUGIN_INSTALLING, ({module}) => {
-          robot.notify(`Installing '${module}', please hold on`);
+          robot.notify(`Installing '${module}', please hold on`)
           this.setState({pluginsPageState: {
             ...this.state.pluginsPageState
-          }});
+          }})
         }),
         robot.on(robot.events.PLUGIN_DELETED, ({module}) => {
-          robot.notify(`'${module}' deleted`);
+          robot.notify(`'${module}' deleted`)
           this.setState({pluginsPageState: {
             ...this.state.pluginsPageState
-          }});
+          }})
         }),
         robot.on(robot.events.PLUGIN_DELETING, ({module}) => {
-          robot.notify(`Deleting '${module}', please hold on`);
+          robot.notify(`Deleting '${module}', please hold on`)
           this.setState({pluginsPageState: {
             ...this.state.pluginsPageState
-          }});
+          }})
         })
-      ];
+      ]
     },
-    componentWillUnmount() {
-      (this.listeners || []).forEach(x => x());
+    componentWillUnmount () {
+      (this.listeners || []).forEach(x => x())
     },
-    pages() {
+    pages () {
       return [{
         label: 'General',
         body: (
@@ -91,7 +91,7 @@ export default robot => {
             setState={(generalPageState, cb = robot.noop) => {
               this.setState({generalPageState: {
                 ...this.state.generalPageState,
-                ...generalPageState,
+                ...generalPageState
               }}, cb)
             }}
           />
@@ -103,7 +103,7 @@ export default robot => {
           setState={(themePageState, cb = robot.noop) => {
             this.setState({themePageState: {
               ...this.state.themePageState,
-              ...themePageState,
+              ...themePageState
             }}, cb)
           }}
         />
@@ -131,13 +131,13 @@ export default robot => {
         />
       }]
     },
-    render() {
+    render () {
       return (
-        <Blank {...this.props} title="Settings">
+        <Blank {...this.props} title='Settings'>
           <Tabs
             externalStyles={[styles.tabs, styles.tabsInBar]}
             selectedIndex={this.state.activePage}
-            disableSorting={true}
+            disableSorting
           >
             {this.pages().map((page, i) => (
               <Tab
@@ -155,30 +155,30 @@ export default robot => {
           <IconButton
             className={css(styles.saveButtonStyles)}
             onClick={() => {
-              robot.notify('Saved settings!');
+              robot.notify('Saved settings!')
 
-              window.location.reload();
+              window.location.reload()
             }}
-          ><SaveIcon/></IconButton>
+          ><SaveIcon /></IconButton>
         </Blank>
       )
     }
   })
 
-  robot.registerComponent(Settings, SETTINGS_COMPONENT);
+  robot.registerComponent(Settings, SETTINGS_COMPONENT)
 
   robot.listen(/^settings$/, {
-    description: "Settings",
+    description: 'Settings',
     usage: 'settings'
   }, () => {
-    robot.addCard('com.robinmalfait.settings');
-  });
+    robot.addCard('com.robinmalfait.settings')
+  })
 
   robot.on(robot.events.OPEN_SETTINGS, () => {
-    robot.addCard('com.robinmalfait.settings');
-  });
+    robot.addCard('com.robinmalfait.settings')
+  })
 
   robot.on(robot.events.CHECK_FOR_UPDATES, () => {
-    robot.addCard('com.robinmalfait.settings');
-  });
+    robot.addCard('com.robinmalfait.settings')
+  })
 }

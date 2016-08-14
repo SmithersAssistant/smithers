@@ -38,7 +38,7 @@ export const TabHolder = ({
           onClick(e)
           return false
         }}
-        href="#"
+        href='#'
         className={css(...flatten([
           styles.a,
           isActive ? styles.aActive : undefined,
@@ -50,7 +50,7 @@ export const TabHolder = ({
   )
 }
 
-export const SortableItem = SortableElement((props) => <TabHolder {...props}/>)
+export const SortableItem = SortableElement((props) => <TabHolder {...props} />)
 
 export const Tab = ({children}) => (
   <div>{children}</div>

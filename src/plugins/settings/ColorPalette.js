@@ -1,5 +1,5 @@
-import React from 'react';
-import cx from 'classnames';
+import React from 'react'
+import cx from 'classnames'
 
 export default (robot) => {
 
@@ -24,15 +24,15 @@ export default (robot) => {
       transition: 'box-shadow ease-in-out .3s',
       ':hover': {
         ...theme.shadow2
-      },
+      }
     },
     icon: {
       position: 'absolute',
       left: '50%',
       top: '50%',
       transform: 'translate(-50%, -50%)'
-    },
-  });
+    }
+  })
 
   const styles = (currentColor, hasShadow) => StyleSheet.create({
     circle: {
@@ -44,7 +44,7 @@ export default (robot) => {
     activeIcon: {
       color: color(currentColor, 200)
     }
-  });
+  })
 
   return ({activeColor, onChooseColor}) => {
     return (
@@ -53,7 +53,7 @@ export default (robot) => {
         textAlign: 'center'
       }}>
         {Object.keys(colors).map(c => {
-          const style = styles(c, activeColor === c);
+          const style = styles(c, activeColor === c)
 
           return (
             <div
@@ -70,9 +70,9 @@ export default (robot) => {
               <Icon
                 className={cx({
                   [css(staticStyles.icon)]: true,
-                  [css(style.activeIcon)]: activeColor === c,
+                  [css(style.activeIcon)]: activeColor === c
                 })}
-                icon="paint-brush"
+                icon='paint-brush'
               />
             ) : undefined}</div>
           )

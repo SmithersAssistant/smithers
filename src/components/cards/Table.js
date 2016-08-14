@@ -43,7 +43,7 @@ const tbodyCellHeaderStyles = {
 }
 
 const Table = React.createClass({
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       title: undefined,
       header: [],
@@ -51,8 +51,8 @@ const Table = React.createClass({
       footer: []
     }
   },
-  render() {
-    const {title, header, body, footer, ...other} = this.props;
+  render () {
+    const {title, header, body, footer, ...other} = this.props
 
     return (
       <Base {...other} title={title} style={{...cardStyles, ...itemStyles}}>
@@ -63,7 +63,7 @@ const Table = React.createClass({
               {header.map((item, i) => {
                 if (item.hasOwnProperty('value')) {
                   return <td style={{...tbodyCellStyles, ...tbodyCellHeaderStyles}}
-                             key={`header_${i}`} {...item}>{item.value}</td>
+                    key={`header_${i}`} {...item}>{item.value}</td>
                 }
 
                 return <td style={{...tbodyCellStyles, ...tbodyCellHeaderStyles}} key={`header_${i}`}>{item}</td>
@@ -96,6 +96,6 @@ const Table = React.createClass({
       </Base>
     )
   }
-});
+})
 
 export default Table

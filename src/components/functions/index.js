@@ -15,27 +15,27 @@ export const deleteProps = (component, toBeDeleted) => {
  * Copyright https://github.com/bevacqua/fuzzysearch
  */
 export const fuzzysearch = (needle, haystack) => {
-  var hlen = haystack.length;
-  var nlen = needle.length;
+  var hlen = haystack.length
+  var nlen = needle.length
 
   if (nlen > hlen) {
-    return false;
+    return false
   }
 
   if (nlen === hlen) {
-    return needle === haystack;
+    return needle === haystack
   }
 
   outer: for (var i = 0, j = 0; i < nlen; i++) {
-    var nch = needle.charCodeAt(i);
+    var nch = needle.charCodeAt(i)
     while (j < hlen) {
       if (haystack.charCodeAt(j++) === nch) {
-        continue outer;
+        continue outer
       }
     }
 
-    return false;
+    return false
   }
 
-  return true;
-};
+  return true
+}

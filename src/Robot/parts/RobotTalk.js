@@ -7,7 +7,7 @@ let voices = []
 let voice = null
 
 export default {
-  speak(msg, opts = {}) {
+  speak (msg, opts = {}) {
     msg = new window.SpeechSynthesisUtterance(msg)
     msg.voice = voice
 
@@ -17,32 +17,32 @@ export default {
 
     window.speechSynthesis.speak(msg)
   },
-  
-  hear(regex, cb) {
+
+  hear (regex, cb) {
     speechRecognition.listenFor(regex, cb)
   },
 
-  speechAddEventListener(event, cb) {
-    speechRecognition.addEventListener(event, cb);
+  speechAddEventListener (event, cb) {
+    speechRecognition.addEventListener(event, cb)
   },
 
-  isListening() {
-    return speechRecognition.isListening();
+  isListening () {
+    return speechRecognition.isListening()
   },
 
-  abortListening() {
-    speechRecognition.abort();
+  abortListening () {
+    speechRecognition.abort()
   },
 
-  startListening() {
-    speechRecognition.start();
+  startListening () {
+    speechRecognition.start()
   },
 
-  stopListening() {
-    speechRecognition.stop();
+  stopListening () {
+    speechRecognition.stop()
   },
 
-  loadVoices() {
+  loadVoices () {
     let voicesInterval = setInterval(() => {
       voices = window.speechSynthesis.getVoices().filter(s => s.localService == true)
 

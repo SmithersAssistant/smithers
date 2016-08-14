@@ -14,7 +14,7 @@ export const Menu = ({children, icon, ...other}) => {
   return (
     <IconMenu
       {...other}
-      iconButtonElement={<IconButton><Icon/></IconButton>}
+      iconButtonElement={<IconButton><Icon /></IconButton>}
     >
       {children}
     </IconMenu>

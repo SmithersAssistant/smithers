@@ -1,14 +1,14 @@
-import {StyleSheet} from 'aphrodite';
-import {color} from 'styles/theme';
+import {StyleSheet} from 'aphrodite'
+import {color} from 'styles/theme'
 
 export default StyleSheet.create({
   info: {
     fontSize: 12,
     float: 'right',
-    color: color('grey'),
+    color: color('grey')
   },
   pluginItem: {
-    position: 'relative',
+    position: 'relative'
   },
   removePluginButton: {
     position: 'absolute',
@@ -18,6 +18,6 @@ export default StyleSheet.create({
   rightWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'flex-end',
+    alignItems: 'flex-end'
   }
-});
+})

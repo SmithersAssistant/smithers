@@ -1,38 +1,38 @@
-import React from 'react';
-import {css} from 'aphrodite';
-import styles from './AppStyles';
+import React from 'react'
+import {css} from 'aphrodite'
+import styles from './AppStyles'
 
-import Navbar from './layout/NavbarContainer';
-import Tools from './layout/ToolsContainer';
-import Tabs from './layout/TabsContainer';
+import Navbar from './layout/NavbarContainer'
+import Tools from './layout/ToolsContainer'
+import Tabs from './layout/TabsContainer'
 
-import store from 'store';
-import {areTabsVisible} from 'state';
+import store from 'store'
+import {areTabsVisible} from 'state'
 
 export default React.createClass({
-  getInitialState() {
+  getInitialState () {
     return {
       visibleTabs: areTabsVisible()
     }
   },
-  componentDidMount() {
+  componentDidMount () {
     this._unsubscribe = store.subscribe(() => {
-      this.setState({ visibleTabs: areTabsVisible() });
-    });
+      this.setState({ visibleTabs: areTabsVisible() })
+    })
   },
-  componentWillUnmount() {
+  componentWillUnmount () {
     this._unsubscribe()
   },
-  render() {
-    let {visibleTabs} = this.state;
+  render () {
+    let {visibleTabs} = this.state
 
     return (
       <div className={css(styles.bodyStyles)}>
-        <Navbar/>
+        <Navbar />
         <div className={css(styles.contentStyles, visibleTabs ? undefined : styles.scrollBar)}>
-          <Tabs/>
+          <Tabs />
         </div>
-        <Tools/>
+        <Tools />
       </div>
     )
   }

@@ -11,7 +11,7 @@ export const Collection = ({externalStyles, className = false, ...other}) => (
       externalStyles
     ]))]: true,
     [className]: className
-  })}/>
+  })} />
 )
 
 export const CollectionItem = ({externalStyles, className = false, scrollIntoView = false, ...other}) => (
@@ -24,7 +24,7 @@ export const CollectionItem = ({externalStyles, className = false, scrollIntoVie
         externalStyles
       ]))]: true,
       [className]: className
-    })}/>
+    })} />
 )
 
 export default Collection

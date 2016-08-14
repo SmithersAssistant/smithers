@@ -1,18 +1,18 @@
-import React from 'react';
-import {css} from 'aphrodite';
-import styles from './styles';
+import React from 'react'
+import {css} from 'aphrodite'
+import styles from './styles'
 
 import {
   DEFAULT_PLUGIN
-} from 'pluginSystem/sources';
+} from 'pluginSystem/sources'
 
 export default ({state, setState, robot}) => {
   const {
     Collection,
-    CollectionItem,
-  } = robot.UI;
+    CollectionItem
+  } = robot.UI
 
-  const defaultPlugins = robot.plugins().filter(plugin => plugin.source === DEFAULT_PLUGIN);
+  const defaultPlugins = robot.plugins().filter(plugin => plugin.source === DEFAULT_PLUGIN)
 
   return (
     <div>

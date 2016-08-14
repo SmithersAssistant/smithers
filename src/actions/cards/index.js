@@ -14,7 +14,7 @@ export const addCard = (card, props = {}, relation = getActiveTab()) => ({
   props,
   id: uuid(),
   relation
-});
+})
 
 export const saveCardStates = (data) => ({
   type: SAVE_CARD_STATES,
@@ -24,9 +24,9 @@ export const saveCardStates = (data) => ({
 export const clearCards = () => ({
   type: CLEAR_CARD_HISTORY,
   tab: getActiveTab()
-});
+})
 
 export const removeCard = (id) => ({
   type: REMOVE_CARD,
   id
-});
+})

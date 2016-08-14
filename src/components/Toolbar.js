@@ -38,14 +38,14 @@ const Toolbar = ({title, actions, removeCard}) => {
   return (
     <div className={css(styles.cardHeaderStyles)}>
 
-      { title && <h3 className={css(styles.cardHeaderTitleStyles)}>{title}</h3>}
+      {title && <h3 className={css(styles.cardHeaderTitleStyles)}>{title}</h3>}
 
       <Menu style={theme.right} icon={ExpandMoreIcon}>
         <MenuItem onClick={() => removeCard()}>Remove card</MenuItem>
 
         {actions && actions.length > 0 && actions.map(({type, label, ...other}, i) => {
           if (type === 'divider') {
-            return (<MenuDivider key={i}/>)
+            return (<MenuDivider key={i} />)
           }
 
           return (<MenuItem key={i} {...other}>{label}</MenuItem>)

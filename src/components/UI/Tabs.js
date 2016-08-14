@@ -30,7 +30,7 @@ const TabsHolder = ({externalStyles, headers, ...rest}) => {
 const SortableList = SortableContainer((props) => (<TabsHolder {...props} />))
 
 export const Tabs = React.createClass({
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       onActive: noop,
       onSortStart: noop,
@@ -41,14 +41,14 @@ export const Tabs = React.createClass({
       disableSorting: false
     }
   },
-  
-  onClick(i, tab) {
+
+  onClick (i, tab) {
     if (i !== this.props.selectedIndex) {
       if (tab.props.onActive) tab.props.onActive(tab)
     }
   },
 
-  render() {
+  render () {
     let {
       disableSorting,
       children,
@@ -61,7 +61,7 @@ export const Tabs = React.createClass({
     } = this.props
     let headers = []
     let panels = []
-    
+
     for (var i = 0; i < children.length; i++) {
       let item = children[i]
       let isActive = i === selectedIndex
@@ -90,7 +90,7 @@ export const Tabs = React.createClass({
       panels.push(
         <div
           key={i}
-           className={cx({
+          className={cx({
             [css(styles.tabsPane)]: true,
             [css(styles.tabsPaneActive)]: isActive
           })}
@@ -116,8 +116,8 @@ export const Tabs = React.createClass({
             pressDelay={pressDelay}
             headers={headers}
             lockToContainerEdges
-            axis="x"
-            lockAxis="x"
+            axis='x'
+            lockAxis='x'
             helperClass={css(styles.tab)}
           />
         )}
@@ -125,4 +125,4 @@ export const Tabs = React.createClass({
       </div>
     )
   }
-});
+})

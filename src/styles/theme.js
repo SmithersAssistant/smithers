@@ -51,7 +51,7 @@ const colors = colorTheme => ({
 const sizes = {
   padding: 30,
   inputHeight: 46,
-  headerOffset: os.type() === "Darwin" ? 34 : 0, // 34 on mac
+  headerOffset: os.type() === 'Darwin' ? 34 : 0, // 34 on mac
   tabHeight: 48,
   footerHeight: (30 * 1.8)
 }
@@ -85,7 +85,7 @@ const helpers = {
     overflowY: 'scroll',
     '::-webkit-scrollbar': {
       width: 10,
-      backgroundColor: rgba("#E0E0E0", 0.6),
+      backgroundColor: rgba('#E0E0E0', 0.6),
       borderRadius: 0,
       borderLeft: '1px solid #E0E0E0'
     },
@@ -93,11 +93,11 @@ const helpers = {
       backgroundColor: rgba('#000', 0.09)
     },
     '::-webkit-scrollbar-thumb:vertical': {
-      background: rgba("#000", 0.5),
+      background: rgba('#000', 0.5),
       borderRadius: 100
     },
     '::-webkit-scrollbar-thumb:vertical:active': {
-      background: rgba("#000", 0.61),
+      background: rgba('#000', 0.61),
       borderRadius: 100
     }
   }

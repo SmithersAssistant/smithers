@@ -1,5 +1,5 @@
-import {StyleSheet} from 'aphrodite';
-import {theme, lighten, color} from '../../styles/theme';
+import {StyleSheet} from 'aphrodite'
+import {theme, lighten, color} from '../../styles/theme'
 
 export default StyleSheet.create({
   headerStyles: {
@@ -63,7 +63,7 @@ export default StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
-    top: theme.inputHeight + theme.headerOffset - 8,
+    top: theme.inputHeight + theme.headerOffset - 8
   },
   suggestions: {
     maxHeight: 'calc(100vh / 2)',
@@ -75,7 +75,7 @@ export default StyleSheet.create({
     cursor: 'default'
   },
   activeSuggestion: {
-    boxShadow: `inset 0 51px ${color('grey', 100)}` 
+    boxShadow: `inset 0 51px ${color('grey', 100)}`
   },
   argument: {
     backgroundColor: color(theme.primaryColor),
@@ -90,4 +90,4 @@ export default StyleSheet.create({
     borderRadius: 3,
     ...theme.shadow1
   }
-});
+})

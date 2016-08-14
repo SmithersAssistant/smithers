@@ -1,7 +1,7 @@
-import config from '../../config';
+import config from '../../config'
 
 export default {
-  getConfigPath() {
-    return config.getConfigPath();
+  getConfigPath () {
+    return config.getConfigPath()
   }
 }

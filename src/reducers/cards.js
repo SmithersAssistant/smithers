@@ -7,7 +7,7 @@ import {
 } from '../actions/types'
 
 const card = (state, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_CARD:
       return {
         card: action.card,
@@ -15,19 +15,19 @@ const card = (state, action) => {
         state: {},
         id: action.id,
         relation: action.relation
-      };
+      }
     default:
       return state
   }
-};
+}
 
 const cards = (state = [], action) => {
-  switch(action.type) {
+  switch (action.type) {
     case ADD_CARD:
       return {
         ...state,
         cards: [...state.cards, card(undefined, action)]
-      };
+      }
     case SAVE_CARD_STATES:
       return {
         ...state,
@@ -41,31 +41,31 @@ const cards = (state = [], action) => {
             }
           })
 
-          return item;
+          return item
         })
       }
     case REMOVE_CARD:
       return {
         ...state,
         cards: state.cards.filter(item => item.id != action.id)
-      };
+      }
     case CLEAR_CARD_HISTORY:
       return {
         ...state,
         cards: [...state.cards.filter(card => card.relation != action.tab)]
-      };
+      }
     case REMOVE_TAB:
       return {
         ...state,
         cards: state.cards.filter(item => item.relation != action.id)
-      };
+      }
     default:
       return state
   }
-};
+}
 
 export const defaultState = {
   cards: []
-};
+}
 
 export default cards

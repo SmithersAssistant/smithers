@@ -1,10 +1,10 @@
-import {remote, shell} from 'electron';
-import Event, {OPEN_SETTINGS, CHECK_FOR_UPDATES} from './Event';
-const {Menu, app, autoUpdater} = remote;
+import {remote, shell} from 'electron'
+import Event, {OPEN_SETTINGS, CHECK_FOR_UPDATES} from './Event'
+const {Menu, app, autoUpdater} = remote
 
-const name = app.getName();
+const name = app.getName()
 
-const isProductionMode = process.env.NODE_ENV !== 'development';
+const isProductionMode = process.env.NODE_ENV !== 'development'
 
 const template = [
   {
@@ -42,7 +42,7 @@ const template = [
         label: 'Select All',
         accelerator: 'CmdOrCtrl+A',
         role: 'selectall'
-      },
+      }
     ]
   },
   {
@@ -51,7 +51,7 @@ const template = [
       {
         label: 'Reload',
         accelerator: 'CmdOrCtrl+R',
-        click(item, focusedWindow) {
+        click (item, focusedWindow) {
           if (focusedWindow) {
             focusedWindow.reload()
           }
@@ -62,7 +62,7 @@ const template = [
         accelerator: process.platform == 'darwin'
           ? 'Ctrl+Command+F'
           : 'F11',
-        click(item, focusedWindow) {
+        click (item, focusedWindow) {
           if (focusedWindow) {
             focusedWindow.setFullScreen(!focusedWindow.isFullScreen())
           }
@@ -73,7 +73,7 @@ const template = [
         accelerator: process.platform == 'darwin'
           ? 'Alt+Command+I'
           : 'Ctrl+Shift+I',
-        click(item, focusedWindow) {
+        click (item, focusedWindow) {
           if (focusedWindow) {
             focusedWindow.toggleDevTools()
           }
@@ -103,13 +103,13 @@ const template = [
     submenu: [
       {
         label: 'Learn More',
-        click() {
+        click () {
           shell.openExternal('https://github.com/SmithersAssistant/Smithers')
         }
       }
     ]
   }
-];
+]
 
 if (process.platform == 'darwin') {
   template.unshift({
@@ -125,17 +125,17 @@ if (process.platform == 'darwin') {
       {
         label: 'Check for Updates...',
         enabled: isProductionMode,
-        click() {
-          Event.fire(CHECK_FOR_UPDATES);
+        click () {
+          Event.fire(CHECK_FOR_UPDATES)
           if (isProductionMode) {
-            autoUpdater.checkForUpdates();
+            autoUpdater.checkForUpdates()
           }
         }
       },
       {
         label: 'Preferences...',
         accelerator: 'Command+,',
-        click() {
+        click () {
           Event.fire(OPEN_SETTINGS)
         }
       },
@@ -167,7 +167,7 @@ if (process.platform == 'darwin') {
       {
         label: 'Quit',
         accelerator: 'Command+Q',
-        click() {
+        click () {
           app.quit()
         }
       }
@@ -183,12 +183,12 @@ if (process.platform == 'darwin') {
       label: 'Bring All to Front',
       role: 'front'
     }
-  );
+  )
 
 }
 
 export default () => {
   Menu.setApplicationMenu(
     Menu.buildFromTemplate(template)
-  );
+  )
 }

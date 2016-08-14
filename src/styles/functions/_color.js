@@ -7,9 +7,9 @@ export const darken = (color, percentage) => Color(color).darken(percentage).hex
 
 // Fetch a color from the Google Material colors
 export const color = (color, weight = 500) => {
-    if (colors[color] === undefined) {
-        color = 'indigo'
-    }
+  if (colors[color] === undefined) {
+    color = 'indigo'
+  }
 
-    return colors[color][weight] || colors[color][500]
+  return colors[color][weight] || colors[color][500]
 }

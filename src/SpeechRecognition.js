@@ -1,14 +1,14 @@
 import Event, {SPEECH_RESULT} from 'Event'
 
-const REC = new webkitSpeechRecognition();
+const REC = new webkitSpeechRecognition()
 const AVAILABLE_EVENTS = [
   'onaudiostart', 'onaudioend', 'onend', 'onerror',
   'onnomatch', 'onresult', 'onsoundstart', 'onsoundend',
   'onspeechstart', 'onspeechend', 'onstart'
-];
+]
 
 class SpeechRecognition {
-  constructor() {
+  constructor () {
     this.listeners = []
     this.started = false
     this.confidence = 0.6
@@ -19,15 +19,15 @@ class SpeechRecognition {
     REC.interimResults = true
 
     this.addEventListener('onstart', () => {
-      this.started = true;
-    });
+      this.started = true
+    })
 
     this.addEventListener('onresult', (event) => {
-      this.parseResults(event);
-    });
+      this.parseResults(event)
+    })
 
     this.addEventListener('onend', () => {
-      this.started = false;
+      this.started = false
     })
 
     // AVAILABLE_EVENTS.forEach(event => {
@@ -37,24 +37,24 @@ class SpeechRecognition {
     // });
   }
 
-  updateEventListeners() {
+  updateEventListeners () {
     AVAILABLE_EVENTS.forEach(event => {
-      REC[event] = (...args) =>  (this.events[event] || []).forEach(listener => listener(...args));
+      REC[event] = (...args) => (this.events[event] || []).forEach(listener => listener(...args))
     })
   }
 
-  addEventListener(event, cb) {
+  addEventListener (event, cb) {
     if (!AVAILABLE_EVENTS.includes(event)) {
-      throw new Error(`${event} is not a recognized event`);
+      throw new Error(`${event} is not a recognized event`)
     }
 
-    this.events[event] = this.events[event] || [];
-    this.events[event].push(cb);
+    this.events[event] = this.events[event] || []
+    this.events[event].push(cb)
 
     this.updateEventListeners()
   }
 
-  listenFor(regex, cb) {
+  listenFor (regex, cb) {
     this.listeners = [
       ...this.listeners,
       {
@@ -62,18 +62,18 @@ class SpeechRecognition {
         regex: [].concat(regex),
         cb
       }
-    ];
+    ]
   }
 
-  isListening() {
-    return this.started === true;
+  isListening () {
+    return this.started === true
   }
 
-  abort() {
+  abort () {
     REC.abort()
   }
 
-  start() {
+  start () {
     // Only start listening if it has not been started yet
     // And if it has listeners
     if (!this.started && this.listeners.length > 0) {
@@ -81,22 +81,22 @@ class SpeechRecognition {
     }
   }
 
-  stop() {
+  stop () {
     REC.stop()
   }
 
-  parseResults(event) {
+  parseResults (event) {
     Array.prototype.forEach.call(event.results, result => {
-      const details = result[0];
+      const details = result[0]
 
       // We are pretty sure now
       if (parseFloat(details.confidence) >= parseFloat(this.confidence)) {
-        const contents = details.transcript.trim();
+        const contents = details.transcript.trim()
 
         Event.fire(SPEECH_RESULT, {
           message: contents,
           confidence: details.confidence
-        });
+        })
 
         this.listeners.forEach(listener => {
           listener.regex.forEach(regex => {
@@ -105,18 +105,18 @@ class SpeechRecognition {
                 contents,
                 regex,
                 matches: regex.exec(contents)
-              });
+              })
             }
-          });
-        });
+          })
+        })
       }
-    });
+    })
   }
 
-  isSaidByUser(regex, contents) {
-    return regex.test(contents);
+  isSaidByUser (regex, contents) {
+    return regex.test(contents)
   }
 
 }
 
-export default new SpeechRecognition();
+export default new SpeechRecognition()

@@ -1,5 +1,5 @@
-import {StyleSheet} from 'aphrodite';
-import {theme, px} from 'styles/theme';
+import {StyleSheet} from 'aphrodite'
+import {theme, px} from 'styles/theme'
 
 export default StyleSheet.create({
   outputStyles: {
