@@ -21,7 +21,13 @@ const A = React.createClass({
     const {className = '', children, ...other} = this.props
 
     return (
-      <a className={`${css(styles().a)} ${className}`} {...other} onClick={this.handleOnClick}>{children}</a>
+      <a
+        className={`${css(styles().a)} ${className}`}
+        {...other}
+        onClick={this.handleOnClick}
+      >
+        {children}
+      </a>
     )
   }
 })
