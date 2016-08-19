@@ -24,22 +24,20 @@ const utils = {
   fetchJson (url, options = {}) {
     return utils.fetch(url, options).then((res) => res.json())
   },
-  httpBuildQuery (obj, numPrefix, tmpKey) {
+  httpBuildQuery (obj, tmpKey) {
     const output = []
 
     Object.keys(obj).forEach((val) => {
       let key = val
 
-      numPrefix && !isNaN(key) ? key = numPrefix + key : ''
-
       key = encodeURIComponent(key.replace(/[!'()*]/g, escape))
       tmpKey ? key = `${tmpKey}[${key}]` : ''
 
       if (typeof obj[val] === 'object') {
-        const query = utils.httpBuildQuery(obj[val], null, key)
+        const query = utils.httpBuildQuery(obj[val], key)
         output.push(query)
       } else {
-        const value = encodeURIComponent(obj[val].replace(/[!'()*]/g, escape))
+        const value = encodeURIComponent(`${obj[val]}`.replace(/[!'()*]/g, escape))
         output.push(`${key}=${value}`)
       }
     })
