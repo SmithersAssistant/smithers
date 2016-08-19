@@ -7,6 +7,9 @@
     <a target="_blank" href="http://standardjs.com/">
         <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" title="JavaScript Style Guide" alt="JavaScript Style Guide"/>
     </a>
+    <a target="_blank" href="https://github.com/SmithersAssistant/smithers/releases">
+        <img src="https://img.shields.io/github/downloads/SmithersAssistant/smithers/total.svg" title="Total Downloads" alt="Total Downloads"/>
+    </a>
     <a target="_blank" href="http://eisenbergeffect.bluespire.com/evergreen-browsers/">
         <img src="https://img.shields.io/badge/updates-evergreen-brightgreen.svg" title="Evergreen Software" alt="Evergreen Software"/>
     </a>
