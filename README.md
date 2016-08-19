@@ -1,4 +1,10 @@
-# Smithers [![Build Status](https://travis-ci.org/SmithersAssistant/smithers.svg?branch=develop)](https://travis-ci.org/SmithersAssistant/smithers) [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+# Smithers
+
+<center>
+[![Build Status](https://travis-ci.org/SmithersAssistant/smithers.svg?branch=develop)](https://travis-ci.org/SmithersAssistant/smithers)
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+[![](https://img.shields.io/badge/updates-evergreen-brightgreen.svg)](http://eisenbergeffect.bluespire.com/evergreen-browsers/)
+</center>
 
 Your personal assistant
 
