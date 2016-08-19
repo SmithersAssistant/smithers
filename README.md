@@ -13,6 +13,9 @@
     <a target="_blank" href="http://eisenbergeffect.bluespire.com/evergreen-browsers/">
         <img src="https://img.shields.io/badge/updates-evergreen-brightgreen.svg" title="Evergreen Software" alt="Evergreen Software"/>
     </a>
+    <a target="_blank" href="https://www.paypal.me/RobinMalfait">
+        <img src="https://img.shields.io/badge/PayPal-Donate-blue.svg" title="Evergreen Software" alt="Evergreen Software"/>
+    </a>
 </p>
 
 Your personal assistant
