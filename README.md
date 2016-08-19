@@ -1,10 +1,16 @@
 # Smithers
 
-<center>
-[![Build Status](https://img.shields.io/travis/SmithersAssistant/smithers/develop.svg)](https://travis-ci.org/SmithersAssistant/smithers)
-[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-[![](https://img.shields.io/badge/updates-evergreen-brightgreen.svg)](http://eisenbergeffect.bluespire.com/evergreen-browsers/)
-</center>
+<p align="center">
+    <a target="_blank" href="https://travis-ci.org/SmithersAssistant/smithers">
+        <img src="https://img.shields.io/travis/SmithersAssistant/smithers/develop.svg" title="Build Status" alt="Build Status"/>
+    </a>
+    <a target="_blank" href="http://standardjs.com/">
+        <img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg" title="JavaScript Style Guide" alt="JavaScript Style Guide"/>
+    </a>
+    <a target="_blank" href="http://eisenbergeffect.bluespire.com/evergreen-browsers/">
+        <img src="https://img.shields.io/badge/updates-evergreen-brightgreen.svg" title="Evergreen Software" alt="Evergreen Software"/>
+    </a>
+</p>
 
 Your personal assistant
 
