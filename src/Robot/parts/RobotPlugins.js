@@ -6,7 +6,15 @@ const NOOP = () => ([])
 let plugins = []
 let currentPlugin
 
+const snakeCase = (str) => {
+  return str.replace(/\.?([A-Z]+)/g, (x, y) => `_${y.toLowerCase()}`).replace(/^_/, '')
+}
+
 const humanize = (str) => {
+  if (str !== str.toLowerCase()) {
+    str = snakeCase(str)
+  }
+
   return str.split('_').join(' ')
 }
 
