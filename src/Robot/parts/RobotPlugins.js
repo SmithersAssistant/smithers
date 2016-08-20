@@ -41,10 +41,10 @@ const execAll = (regex, str) => {
   return matches
 }
 
-const parseUsage = (usageString, args) => {
-  const ARGUMENTS_REGEX = /<([a-zA-Z0-9_]*)>/gi // <name>
-  const OPTIONALS_REGEX = /<([a-zA-Z0-9_]*)\?>/gi // <name?>
+const ARGUMENTS_REGEX = /<([a-zA-Z0-9_]*)>/gi // <name>
+const OPTIONALS_REGEX = /<([a-zA-Z0-9_]*)\?>/gi // <name?>
 
+const parseUsage = (usageString, args) => {
   return {
     arguments: [].concat(execAll(ARGUMENTS_REGEX, usageString)).map((variable) => ({
       ...variable,
@@ -54,6 +54,27 @@ const parseUsage = (usageString, args) => {
       ...variable,
       data: args && args[variable.contents] || NOOP
     }))
+  }
+}
+
+const mapMatchesToUsages = (plugin, matches) => {
+  const usageString = plugin.usage
+
+  let result = [
+    ...execAll(ARGUMENTS_REGEX, usageString),
+    ...execAll(OPTIONALS_REGEX, usageString)
+  ]
+    .sort((a, b) => a.index - b.index)
+    .reduce((res, item, i) => {
+      return {
+        ...res,
+        [item.contents]: matches[i + 1]
+      }
+    }, {})
+
+  return {
+    ...result,
+    ...matches
   }
 }
 
@@ -96,14 +117,14 @@ export default {
     currentPlugin = plugin
   },
 
-  listen (regex, {description, usage, args}, cb) {
+  listen (regex, { description, usage, args }, cb) {
     plugins = plugins.map((plugin) => {
       if (this._isCurrentPlugin(plugin, currentPlugin)) {
         plugin = {
           ...plugin,
           commands: [
             ...plugin.commands,
-            {regex, description, usage, args, cb}
+            { regex, description, usage, args, cb }
           ]
         }
       }
@@ -119,7 +140,7 @@ export default {
       .filter(cmd => cmd.regex.test(command))
       .forEach(plugin => plugin.cb({
         command,
-        matches: plugin.regex.exec(command)
+        matches: mapMatchesToUsages(plugin, plugin.regex.exec(command))
       }))
   },
 
@@ -127,7 +148,7 @@ export default {
     return plugins
       .find(p => this._isCurrentPlugin(p, plugin))
       .commands
-      .map(({regex: name, description, usage, args}) => ({name, description, usage, ...parseUsage(usage, args)}))
+      .map(({ regex: name, description, usage, args }) => ({ name, description, usage, ...parseUsage(usage, args) }))
   },
 
   plugins () {
