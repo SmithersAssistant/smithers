@@ -1,12 +1,11 @@
 export default function finish () {
   return {
     label: 'Finish',
-    cb ({ chain, done, appendToOutput }) {
+    cb ({ chain, appendToOutput }) {
       return chain
         .then(() => {
           appendToOutput('Finished.')
         })
-        .then(done)
     }
   }
 }

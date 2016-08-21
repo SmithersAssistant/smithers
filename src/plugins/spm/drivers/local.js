@@ -15,7 +15,7 @@ export default function local (input, robot) {
     steps: [
       {
         label: 'Checking location path',
-        cb ({ chain, done, appendToOutput, failed }) {
+        cb ({ chain, appendToOutput, failed }) {
           return chain
             .then(() => {
               appendToOutput('determining if it is a valid location')
@@ -34,12 +34,11 @@ export default function local (input, robot) {
                 ' - Path does contain package.json'
               ].join('\n'))
             })
-            .then(done)
         }
       },
       {
         label: 'Package.json check',
-        cb ({ chain, done, appendToOutput, failed }) {
+        cb ({ chain, appendToOutput, failed }) {
           return chain
             .then(() => {
               const pckg = JSON.parse(fs.readFileSync(path.resolve(input, 'package.json'), 'utf8'))
@@ -51,7 +50,6 @@ export default function local (input, robot) {
                 failed(`\n - it does not contain one of the mandatory keywords: [${mandatoryKeywords.join(', ')}]`)
               }
             })
-            .then(done)
         }
       }
     ]

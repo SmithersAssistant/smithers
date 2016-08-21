@@ -1,7 +1,7 @@
 export default function notify (input) {
   return {
     label: 'Notify',
-    cb ({ chain, done, appendToOutput }) {
+    cb ({ chain, appendToOutput }) {
       return chain
         .then(() => {
           const msg = 'Plugin has been installed'
@@ -9,7 +9,6 @@ export default function notify (input) {
           appendToOutput(msg)
           window.Robot.notify(msg)
         })
-        .then(done)
     }
   }
 }

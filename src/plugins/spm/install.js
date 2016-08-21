@@ -1,5 +1,5 @@
 import React from 'react'
-import {clipboard} from 'electron'
+import {clipboard } from 'electron'
 
 import preInstallSteps from './preInstallSteps'
 import postInstallSteps from './postInstallSteps'
@@ -58,9 +58,9 @@ export default robot => {
       const id = robot.uuid()
       const {label, output = '', cb = robot.noop} = typeof step === 'function'
         ? step(
-            this.props.plugin,
-            robot
-          )
+        this.props.plugin,
+        robot
+      )
         : step
 
       return {
@@ -98,26 +98,29 @@ export default robot => {
             const {steps} = this.state
             const index = steps.findIndex(step => step.id === id) + 1
 
-            this.setState({steps: [
-              ...steps.slice(0, index),
-              this.registerStep(step),
-              ...steps.slice(index, steps.length)
-            ]})
+            this.setState({
+              steps: [
+                ...steps.slice(0, index),
+                this.registerStep(step),
+                ...steps.slice(index, steps.length)
+              ]
+            })
           },
           failed: (text = 'Something went wrong') => {
             throw new Error(text)
           },
-          done: (args) => this.stepDone(id, args),
           appendToOutput: (text) => {
             this.appendToOutput(id, text)
           }
-        }).catch((err) => {
-          robot.notify('Installation failed')
-          this.failed(id, err instanceof Error
-            ? err.message
-            : err
-          )
         })
+          .then((args) => this.stepDone(id, args))
+          .catch((err) => {
+            robot.notify('Installation failed')
+            this.failed(id, err instanceof Error
+              ? err.message
+              : err
+            )
+          })
       })
     },
     failed (id, text) {
@@ -215,13 +218,13 @@ export default robot => {
         <span>Installing <em>{plugin.split('/').pop()}</em></span>,
         <span>{steps.length} steps</span>,
         <A onClick={() => {
-          this.setState({ verboseMode: !verboseMode })
+          this.setState({verboseMode: !verboseMode})
         }}>Turn verbose mode {verboseMode ? 'off' : 'on'}</A>
       ]
 
       if (!verboseMode) {
         titleParts.push(<A onClick={() => {
-          this.setState({ detailView: !detailView })
+          this.setState({detailView: !detailView})
         }}>{detailView ? 'less' : 'more'} details</A>)
       }
 

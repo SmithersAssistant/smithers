@@ -1,7 +1,7 @@
 export default function loadDriver (input, robot) {
   return {
     label: 'Load driver',
-    cb ({ chain, done, appendToOutput, failed, registerStep }) {
+    cb ({ chain, appendToOutput, failed, registerStep }) {
       return chain
         .then((driver) => {
           if (driver === undefined) {
@@ -15,7 +15,6 @@ export default function loadDriver (input, robot) {
 
           return driverInfo
         })
-        .then(done)
     }
   }
 }
