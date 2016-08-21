@@ -87,7 +87,7 @@ const helpers = {
       width: 10,
       backgroundColor: rgba('#E0E0E0', 0.6),
       borderRadius: 0,
-      borderLeft: '1px solid #E0E0E0'
+      borderLeft: '1px solid transparant'
     },
     '::-webkit-scrollbar:hover': {
       backgroundColor: rgba('#000', 0.09)
