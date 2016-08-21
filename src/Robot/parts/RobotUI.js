@@ -9,8 +9,9 @@ import {Tabs} from 'components/UI/Tabs'
 import {Tab} from 'components/UI/Tab'
 import Webview from 'components/UI/Webview'
 import {Collection, CollectionItem} from 'components/UI/Collection'
-import {StyleSheet, css} from 'aphrodite'
+import PinToBottom from 'components/UI/PinToBottom'
 
+import {StyleSheet, css} from 'aphrodite'
 import * as material from 'material-ui'
 
 export default {
@@ -32,6 +33,8 @@ export default {
     Collection,
     CollectionItem,
     StyleSheet,
-    css
+    css,
+
+    PinToBottom
   }
 }
