@@ -1,22 +1,19 @@
-// SPM: Smithers Package Manager
-export default robot => {
-  robot.listen(/^install (.*)$/, {
-    description: 'install a package',
-    usage: 'install <package_name>'
-  }, () => {
+import install from './spm/install'
 
-  })
+// SPM: Smithers Package/Plugin Manager
+export default robot => {
+  install(robot)
 
   robot.listen(/^uninstall (.*)$/, {
-    description: 'uninstall a package',
-    usage: 'uninstall <package_name>'
+    description: 'uninstall a plugin',
+    usage: 'uninstall <plugin>'
   }, () => {
 
   })
 
   robot.listen(/^update (.*)$/, {
-    description: 'update a package',
-    usage: 'update <package_name>'
+    description: 'update a plugin. these plugins will only be npm remote plugins.',
+    usage: 'update <plugin>'
   }, () => {
 
   })
