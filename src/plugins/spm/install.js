@@ -340,6 +340,6 @@ export default robot => {
   }, (res) => {
     const {plugin} = res.matches
 
-    robot.addCard(INSTALL_COMPONENT, {plugin})
+    robot.addCard(INSTALL_COMPONENT, {plugin: plugin.trim()})
   })
 }
