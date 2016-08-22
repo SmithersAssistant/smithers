@@ -218,8 +218,10 @@ export default robot => {
       // Only show items that are done and are busy
       // Pending items are useless at this moment
       const output = steps.filter(step => step.state !== STATE_PENDING).map((step, i) => {
-        start += step.startTime
-        end += step.endTime
+        if (step.startTime && step.endTime) {
+          start += step.startTime
+          end += step.endTime
+        }
 
         return `${this.renderVerboseStepTitle(step, i)}${step.output}\n`
       }).join('\n')
@@ -235,24 +237,15 @@ export default robot => {
       const stepsFailed = steps.filter(step => step.state === STATE_FAILED)
       const stepsPending = steps.filter(step => step.state === STATE_PENDING).length
 
-      let statusStyles = {
-        color: color('orange', 700)
-      }
-      let statusIcon = 'clock-o'
+      let sumStartTime = 0
+      let sumEndTime = 0
 
-      if (stepsDone === steps.length) {
-        statusStyles = {
-          color: color('green', 700)
+      steps.forEach(step => {
+        if (step.startTime && step.endTime) {
+          sumStartTime += step.startTime
+          sumEndTime += step.endTime
         }
-        statusIcon = 'check'
-      }
-
-      if (stepsFailed.length > 0) {
-        statusStyles = {
-          color: color('red', 700)
-        }
-        statusIcon = 'times'
-      }
+      })
 
       const titleParts = [
         <span>Installing <em>{plugin.split(/[ /]/g).filter(x => !!x).pop()}</em></span>,
@@ -336,8 +329,8 @@ export default robot => {
                   <CollectionItem className='clearfix'>
                     {'Total Execution Time: '}
                     <Timing
-                      start={steps.map(step => step.startTime).reduce((total, curr) => total + curr, 0)}
-                      end={steps.map(step => step.endTime).reduce((total, curr) => total + curr, 0)}
+                      start={sumStartTime}
+                      end={sumEndTime}
                     />
                   </CollectionItem>
                 </Collection>
@@ -372,12 +365,6 @@ export default robot => {
           <footer>
             <span>
               {stepsDone} / {steps.length}
-            </span>
-            <span className='right'>
-              <Icon
-                style={statusStyles}
-                icon={statusIcon}
-              />
             </span>
             <LinearProgress
               mode='determinate'
