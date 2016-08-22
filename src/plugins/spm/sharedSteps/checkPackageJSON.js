@@ -14,6 +14,8 @@ export default {
         if (!mandatoryKeywords.every(keyword => (pckg.keywords || []).includes(keyword))) {
           failed(`\n - it does not contain one of the mandatory keywords: [${mandatoryKeywords.join(', ')}]`)
         }
+
+        return filePath
       })
   }
 }

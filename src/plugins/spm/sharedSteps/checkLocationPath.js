@@ -17,7 +17,7 @@ export default function checkLocationPath (input, robot) {
             failed('\n - Plugin path does not have a package.json file')
           }
 
-          appendToOutput([
+          appendToOutput('\n' + [
             ' - Path does exists',
             ' - Path is a directory',
             ' - Path does contain package.json'
