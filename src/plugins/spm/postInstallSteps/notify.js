@@ -3,11 +3,13 @@ export default function notify (input) {
     label: 'Notify',
     cb ({ chain, appendToOutput }) {
       return chain
-        .then(() => {
+        .then((plugin) => {
           const msg = 'Plugin has been installed'
 
           appendToOutput(msg)
           window.Robot.notify(msg)
+
+          return plugin
         })
     }
   }
