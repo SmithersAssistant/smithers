@@ -1,5 +1,5 @@
 import React from 'react'
-import {clipboard } from 'electron'
+import {clipboard} from 'electron'
 
 import preInstallSteps from './preInstallSteps'
 import postInstallSteps from './postInstallSteps'
@@ -133,7 +133,9 @@ export default robot => {
         }
       })
 
-      this.setState({detailView: true, verboseMode: false, failed: true})
+      const {verboseMode} = this.state
+
+      this.setState({detailView: !verboseMode, failed: true})
     },
     appendToOutput (id, text) {
       let {failed} = this.state
