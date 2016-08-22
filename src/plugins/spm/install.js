@@ -215,7 +215,7 @@ export default robot => {
       }
 
       const titleParts = [
-        <span>Installing <em>{plugin.split('/').pop()}</em></span>,
+        <span>Installing <em>{plugin.split(/[ /]/g).filter(x => !!x).pop()}</em></span>,
         <span>{steps.length} steps</span>,
         <A onClick={() => {
           this.setState({verboseMode: !verboseMode})
