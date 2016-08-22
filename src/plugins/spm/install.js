@@ -368,20 +368,23 @@ export default robot => {
               </Collection>
             )
           )}
-          <span>
-            {stepsDone} / {steps.length}
-          </span>
-          <span className='right'>
-            <Icon
-              style={statusStyles}
-              icon={statusIcon}
+
+          <footer>
+            <span>
+              {stepsDone} / {steps.length}
+            </span>
+            <span className='right'>
+              <Icon
+                style={statusStyles}
+                icon={statusIcon}
+              />
+            </span>
+            <LinearProgress
+              mode='determinate'
+              max={steps.length}
+              value={stepsDone}
             />
-          </span>
-          <LinearProgress
-            mode='determinate'
-            max={steps.length}
-            value={stepsDone}
-          />
+          </footer>
         </Blank>
       )
     }
