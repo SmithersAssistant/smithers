@@ -38,6 +38,17 @@ export default ({StyleSheet, color, px, theme}) => {
       minHeight: 200,
       maxHeight: 600,
       ...theme.scrollBar
+    },
+    busyIcon: {
+      float: 'right',
+      color: 'whitesmoke',
+      marginTop: 10
+    },
+    timing: {
+      fontSize: 12,
+      color: color('grey', 400),
+      margin: px(0, 20),
+      float: 'right'
     }
   })
 }
