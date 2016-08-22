@@ -11,9 +11,9 @@ export default function loadDriver (input, robot) {
           appendToOutput(`Loading driver '${driver.name}'`)
 
           const driverInfo = driver(input, robot)
-          driverInfo.steps.reverse().map(step => registerStep(step))
+          driverInfo.installSteps.reverse().map(step => registerStep(step))
 
-          return driverInfo
+          return input
         })
     }
   }
