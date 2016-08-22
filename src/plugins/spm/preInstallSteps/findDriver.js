@@ -9,7 +9,7 @@ export default function findDriver (input, robot) {
           appendToOutput(`Locating correct installation driver for '${input}'`)
           return drivers.find(driver => {
             const driverInfo = driver(input, robot)
-            appendToOutput(`\n- Testing for '${driverInfo.label}'`)
+            appendToOutput(`\n - [${driverInfo.test() ? 'v' : 'x'}] Testing for ${driverInfo.label} driver`)
 
             return driverInfo.test()
           })
