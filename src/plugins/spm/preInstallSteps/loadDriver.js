@@ -8,9 +8,8 @@ export default function loadDriver (input, robot) {
             failed(`No installation driver found for '${input}', how do we need to install this? :(`)
           }
 
-          appendToOutput(`Loading driver '${driver.name}'`)
-
           const driverInfo = driver(input, robot)
+          appendToOutput(`Loading driver '${driverInfo.label}'`)
           driverInfo.installSteps.reverse().map(step => registerStep(step))
 
           return input
