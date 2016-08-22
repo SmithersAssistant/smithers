@@ -27,6 +27,25 @@ export default robot => {
 
   let chain = Promise.resolve(undefined)
 
+  const timeText = (start, end) => {
+    let diff = end - start
+    let symbol = 'ms'
+    if (diff > 1000) {
+      diff = diff / 1000
+      symbol = 's'
+    }
+
+    return `${diff.toFixed(1)} ${symbol}`
+  }
+
+  const Timing = ({className, start, end}) => {
+    return (
+      <span className={className}>
+        {timeText(start, end)}
+      </span>
+    )
+  }
+
   const Install = React.createClass({
     getInitialState () {
       const steps = []
@@ -68,6 +87,8 @@ export default robot => {
         label,
         output,
         cb,
+        startTime: undefined,
+        endTime: undefined,
         showOutput: false,
         state: STATE_PENDING
       }
@@ -86,12 +107,16 @@ export default robot => {
       this.setState({steps}, () => done(steps.find(step => step.id === id)))
     },
     startStep (id) {
-      this.updateStep(id, (step) => {
-        return {
+      this.updateStep(id, (step) => ({
+        ...step,
+        showOutput: true,
+        state: STATE_BUSY
+      }), (step) => {
+        this.updateStep(id, (step) => ({
           ...step,
-          state: STATE_BUSY
-        }
-      }, (step) => {
+          startTime: window.performance.now()
+        }))
+
         chain = (step.cb || robot.noop)({
           chain,
           registerStep: (step) => {
@@ -113,6 +138,14 @@ export default robot => {
             this.appendToOutput(id, text)
           }
         })
+          .then((args) => {
+            this.updateStep(id, (step) => ({
+              ...step,
+              endTime: window.performance.now()
+            }))
+
+            return args
+          })
           .then((args) => this.stepDone(id, args))
           .catch((err) => {
             robot.notify('Installation failed')
@@ -124,14 +157,12 @@ export default robot => {
       })
     },
     failed (id, text) {
-      this.updateStep(id, (step) => {
-        return {
-          ...step,
-          showOutput: true,
-          output: step.output + text,
-          state: STATE_FAILED
-        }
-      })
+      this.updateStep(id, (step) => ({
+        ...step,
+        showOutput: true,
+        output: step.output + text,
+        state: STATE_FAILED
+      }))
 
       const {verboseMode} = this.state
 
@@ -144,14 +175,10 @@ export default robot => {
         return
       }
 
-      this.updateStep(id, (step) => {
-        const x = {
-          ...step,
-          output: step.output + text
-        }
-
-        return x
-      })
+      this.updateStep(id, (step) => ({
+        ...step,
+        output: step.output + text
+      }))
     },
     stepDone (id, args) {
       let {failed} = this.state
@@ -160,12 +187,11 @@ export default robot => {
         return
       }
 
-      this.updateStep(id, (step) => {
-        return {
-          ...step,
-          state: STATE_DONE
-        }
-      }, () => {
+      this.updateStep(id, (step) => ({
+        ...step,
+        showOutput: false,
+        state: STATE_DONE
+      }), () => {
         const {steps} = this.state
         const step = steps.find(step => step.state === STATE_PENDING)
 
@@ -176,17 +202,29 @@ export default robot => {
       })
     },
     renderVerboseStepTitle (step, index, breathingRoom = 2, borderChar = '-') {
-      const title = `${' '.repeat(breathingRoom)}${index + 1}. ${step.label}${' '.repeat(breathingRoom)}`
+      let time = ''
+      if (step.startTime && step.endTime) {
+        time = timeText(step.startTime, step.endTime)
+      }
+
+      const title = `${' '.repeat(breathingRoom)}${index + 1}. ${step.label} ${time}${' '.repeat(breathingRoom)}`
       return `${borderChar.repeat(title.length)}\n${title}\n${borderChar.repeat(title.length)}\n\n`
     },
     renderVerboseMode () {
       const {steps} = this.state
+      let start = 0
+      let end = 0
 
       // Only show items that are done and are busy
       // Pending items are useless at this moment
-      return steps.filter(step => step.state !== STATE_PENDING).map((step, i) => {
+      const output = steps.filter(step => step.state !== STATE_PENDING).map((step, i) => {
+        start += step.startTime
+        end += step.endTime
+
         return `${this.renderVerboseStepTitle(step, i)}${step.output}\n`
       }).join('\n')
+
+      return `${output}\n\nTotal Execution Time: ${timeText(start, end)}`
     },
     render () {
       let {plugin, ...other} = this.props
@@ -261,12 +299,10 @@ export default robot => {
                       {![STATE_PENDING].includes(step.state) && step.output.trim() && (
                         <A
                           onClick={() => {
-                            this.updateStep(step.id, (step) => {
-                              return {
-                                ...step,
-                                showOutput: !step.showOutput
-                              }
-                            })
+                            this.updateStep(step.id, (step) => ({
+                              ...step,
+                              showOutput: !step.showOutput
+                            }))
                           }}
                           className='right'
                         >
@@ -275,13 +311,35 @@ export default robot => {
                             : 'show output'}
                         </A>
                       )}
-                      {step.showOutput && (
-                        <PinToBottom>
-                          <pre className={css(styles.verboseModeBox, styles.verboseModeAsInfo)}>{step.output}</pre>
-                        </PinToBottom>
+                      {step.endTime && step.startTime && (
+                        <Timing
+                          className={css(styles.timing, styles.right)}
+                          start={step.startTime}
+                          end={step.endTime}
+                        />
+                      )}
+                      {step.showOutput && step.output.trim() && (
+                        <div>
+                          {step.state === STATE_BUSY && (
+                            <Icon
+                              className={css(styles.busyIcon)}
+                              icon='spinner fa-pulse'
+                            />
+                          )}
+                          <PinToBottom>
+                            <pre className={css(styles.verboseModeBox, styles.verboseModeAsInfo)}>{step.output}</pre>
+                          </PinToBottom>
+                        </div>
                       )}
                     </CollectionItem>
                   ))}
+                  <CollectionItem className='clearfix'>
+                    {'Total Execution Time: '}
+                    <Timing
+                      start={steps.map(step => step.startTime).reduce((total, curr) => total + curr, 0)}
+                      end={steps.map(step => step.endTime).reduce((total, curr) => total + curr, 0)}
+                    />
+                  </CollectionItem>
                 </Collection>
               </PinToBottom>
             ) : (
