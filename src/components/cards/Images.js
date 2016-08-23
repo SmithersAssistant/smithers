@@ -41,15 +41,9 @@ const Images = ({title, images, ...other}) => (
     <ul style={cardImagesStyles}>
       <div className={css(styles.imagesStyles)}>
         {images && images.map((img, i) => {
-          if (typeof img === 'string') {
-            return (
-              <img style={imgStyles} key={i} src={img} />
-            )
-          } else {
-            return (
-              <img style={imgStyles} key={i} alt={img.title} title={img.title} src={img.src} />
-            )
-          }
+          return typeof img === 'string'
+            ? <img style={imgStyles} key={i} src={img} />
+            : <img style={imgStyles} key={i} alt={img.title} title={img.title} src={img.src} />
         })}
       </div>
     </ul>

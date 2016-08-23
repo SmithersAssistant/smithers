@@ -177,11 +177,9 @@ const Navbar = React.createClass({
 
     if (this.isContext(CONTEXT_VARIABLES)) {
       if (e.keyCode === Keys.ENTER) {
-        if (this.refs.variables) {
-          this.handleVariableSelection()
-        } else {
-          this.setState({ context: CONTEXT_EMPTY })
-        }
+        this.refs.variables
+          ? this.handleVariableSelection()
+          : this.setState({ context: CONTEXT_EMPTY })
       }
     }
 
@@ -287,11 +285,11 @@ const Navbar = React.createClass({
   handleSuggestionSelection (suggestion, currIndex = null) {
     if (suggestion.command.arguments.length > 0 || suggestion.command.arguments.length > 0) {
       this.setSuggestionInInput(suggestion, currIndex)
-    } else {
-      this.executeCommand(suggestion.command.usage)
-
-      this.resetSuggestions()
+      return
     }
+
+    this.executeCommand(suggestion.command.usage)
+    this.resetSuggestions()
   },
 
   setSuggestionInInput (_suggestion, currIndex = null) {
@@ -319,9 +317,10 @@ const Navbar = React.createClass({
         }, () => {
           this.showVariables(vars.length > 0)
         })
-      } else {
-        this.showVariables(vars.length > 0)
+        return
       }
+
+      this.showVariables(vars.length > 0)
     })
   },
 

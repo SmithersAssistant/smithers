@@ -36,10 +36,11 @@ const utils = {
       if (typeof obj[val] === 'object') {
         const query = utils.httpBuildQuery(obj[val], key)
         output.push(query)
-      } else {
-        const value = encodeURIComponent(`${obj[val]}`.replace(/[!'()*]/g, escape))
-        output.push(`${key}=${value}`)
+        return
       }
+
+      const value = encodeURIComponent(`${obj[val]}`.replace(/[!'()*]/g, escape))
+      output.push(`${key}=${value}`)
     })
 
     return output.join('&')

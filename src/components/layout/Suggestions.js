@@ -34,15 +34,16 @@ const Suggestions = React.createClass({
       .then(suggestions => {
         if (this.isMounted()) {
           this.setState({ suggestions, resolved: true })
-        } else {
-          setTimeout(() => {
-            // We have to check it again because at this time
-            // it can happen that the component has been unmounted
-            if (this.isMounted()) {
-              this.setState({ suggestions, resolved: true })
-            }
-          }, 20)
+          return
         }
+
+        setTimeout(() => {
+          // We have to check it again because at this time
+          // it can happen that the component has been unmounted
+          if (this.isMounted()) {
+            this.setState({ suggestions, resolved: true })
+          }
+        }, 20)
       })
   },
   getStylesFor (styles, active) {

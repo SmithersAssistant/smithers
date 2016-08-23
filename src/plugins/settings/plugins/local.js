@@ -112,10 +112,11 @@ export default ({state, setState, robot}) => {
               if (plugin) {
                 resetAddLocalPlugin()
                 robot.notify(`Plugin '${plugin.name}' has been installed!`)
-              } else {
-                console.log('Plugin already installed')
-                setState({addLocalPluginErrorText: 'Plugin already installed'})
+                return
               }
+
+              console.log('Plugin already installed')
+              setState({addLocalPluginErrorText: 'Plugin already installed'})
             }}
           >
             ADD
