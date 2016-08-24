@@ -48,7 +48,11 @@ export default ({StyleSheet, color, px, theme}) => {
       fontSize: 12,
       color: color('grey', 400),
       margin: px(0, 20),
-      float: 'right'
+      position: 'absolute',
+      right: 110
+    },
+    relative: {
+      position: 'relative'
     }
   })
 }
