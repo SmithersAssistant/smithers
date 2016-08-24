@@ -1,7 +1,7 @@
-import checkPackageJSON from '../sharedSteps/checkPackageJSON'
-import checkLocationPath from '../sharedSteps/checkLocationPath'
-import checkPluginExists from './local/checkPluginExists'
-import linkPlugin from './local/linkPlugin'
+import checkPackageJSON from '../../sharedSteps/checkPackageJSON'
+import checkLocationPath from '../../sharedSteps/checkLocationPath'
+import checkPluginExists from './checkPluginExists'
+import linkPlugin from './linkPlugin'
 
 export default function local (input, robot) {
   return {
