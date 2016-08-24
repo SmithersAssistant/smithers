@@ -11,7 +11,7 @@ const INSTALL_COMPONENT = 'com.robinmalfait.spm.install'
 
 export default robot => {
   const {Blank} = robot.cards
-  const {css, color, A, Icon, Collection, CollectionItem, PinToBottom, material} = robot.UI
+  const {css, A, Icon, Collection, CollectionItem, PinToBottom, material} = robot.UI
   const {LinearProgress} = material
 
   const styles = installStyles(robot.UI)
@@ -226,7 +226,9 @@ export default robot => {
         return `${this.renderVerboseStepTitle(step, i)}${step.output}\n`
       }).join('\n')
 
-      return `${output}\n\nTotal Execution Time: ${timeText(start, end)}`
+      const hasPendingTasks = steps.filter(step => step.state === STATE_PENDING).length > 0
+
+      return `${output}${!hasPendingTasks ? `\n\nTotal Execution Time: ${timeText(start, end)}` : ''}`
     },
     render () {
       let {plugin, ...other} = this.props
@@ -282,59 +284,57 @@ export default robot => {
             </PinToBottom>
           ) : (
             detailView ? (
-              <PinToBottom>
-                <Collection className={css(styles.boxHeight)}>
-                  {steps.map((step, i) => (
-                    <CollectionItem key={i} className='clearfix'>
-                      <StateViewer state={step.state}>
-                        {step.label}
-                      </StateViewer>
-                      {![STATE_PENDING].includes(step.state) && step.output.trim() && (
-                        <A
-                          onClick={() => {
-                            this.updateStep(step.id, (step) => ({
-                              ...step,
-                              showOutput: !step.showOutput
-                            }))
-                          }}
-                          className='right'
-                        >
-                          {step.showOutput
-                            ? 'hide output'
-                            : 'show output'}
-                        </A>
-                      )}
-                      {step.endTime && step.startTime && (
-                        <Timing
-                          className={css(styles.timing, styles.right)}
-                          start={step.startTime}
-                          end={step.endTime}
-                        />
-                      )}
-                      {step.showOutput && step.output.trim() && (
-                        <div>
-                          {step.state === STATE_BUSY && (
-                            <Icon
-                              className={css(styles.busyIcon)}
-                              icon='spinner fa-pulse'
-                            />
-                          )}
-                          <PinToBottom>
-                            <pre className={css(styles.verboseModeBox, styles.verboseModeAsInfo)}>{step.output}</pre>
-                          </PinToBottom>
-                        </div>
-                      )}
-                    </CollectionItem>
-                  ))}
-                  <CollectionItem className='clearfix'>
-                    {'Total Execution Time: '}
-                    <Timing
-                      start={sumStartTime}
-                      end={sumEndTime}
-                    />
+              <Collection>
+                {steps.map((step, i) => (
+                  <CollectionItem key={i} className={`clearfix ${css(styles.relative)}`}>
+                    <StateViewer state={step.state}>
+                      {step.label}
+                    </StateViewer>
+                    {![STATE_PENDING].includes(step.state) && step.output.trim() && (
+                      <A
+                        onClick={() => {
+                          this.updateStep(step.id, (step) => ({
+                            ...step,
+                            showOutput: !step.showOutput
+                          }))
+                        }}
+                        className='right'
+                      >
+                        {step.showOutput
+                          ? 'hide output'
+                          : 'show output'}
+                      </A>
+                    )}
+                    {step.endTime && step.startTime && (
+                      <Timing
+                        className={css(styles.timing, styles.right)}
+                        start={step.startTime}
+                        end={step.endTime}
+                      />
+                    )}
+                    {step.showOutput && step.output.trim() && (
+                      <div>
+                        {step.state === STATE_BUSY && (
+                          <Icon
+                            className={css(styles.busyIcon)}
+                            icon='spinner fa-pulse'
+                          />
+                        )}
+                        <PinToBottom>
+                          <pre className={css(styles.verboseModeBox, styles.verboseModeAsInfo)}>{step.output}</pre>
+                        </PinToBottom>
+                      </div>
+                    )}
                   </CollectionItem>
-                </Collection>
-              </PinToBottom>
+                ))}
+                <CollectionItem className='clearfix'>
+                  {'Total Execution Time: '}
+                  <Timing
+                    start={sumStartTime}
+                    end={sumEndTime}
+                  />
+                </CollectionItem>
+              </Collection>
             ) : (
               <Collection>
                 {stepsDone > 0 && (
