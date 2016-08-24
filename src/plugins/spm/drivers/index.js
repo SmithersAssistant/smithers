@@ -1,5 +1,7 @@
-import local from './local'
+import local from './local/index'
+import npm from './npm/index'
 
 export default [
-  local
+  local,
+  npm
 ]
