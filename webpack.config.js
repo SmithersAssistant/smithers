@@ -1,19 +1,16 @@
 const webpack = require('webpack');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
+const fs = require('fs');
 const path = require('path');
-const _ = require('lodash');
-const packageJson = require('./package.json');
-
+const nodeExternals = require('webpack-node-externals');
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
 const noop = () => {};
 
+const node_modules = fs.readdirSync('node_modules').filter((x) => x !== '.bin');
+
 module.exports = {
   devtool: isProduction ? 'hidden-source-map' : null,
-  entry: {
-    app: './src/index.js',
-    vendor: Object.keys(packageJson.dependencies).filter(item => ! _.includes(['lodash'], item))
-  },
+  entry: './src/index.js',
   output: {
     path: path.join(__dirname, 'app', 'dist'),
     filename: 'bundle.js'
@@ -47,7 +44,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new CommonsChunkPlugin("vendor", "vendor.chunk.js"),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify(nodeEnv)
@@ -64,5 +60,6 @@ module.exports = {
   standard: {
     parser: 'babel-eslint'
   },
-  target: 'electron-renderer'
+  target: 'electron-renderer',
+  externals: [nodeExternals()]
 };
