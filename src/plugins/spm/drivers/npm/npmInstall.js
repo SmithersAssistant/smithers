@@ -2,8 +2,7 @@ import {resolve} from 'path'
 import config from 'config'
 import {writeFile} from 'fs'
 import mkdirp from 'mkdirp'
-const npmi = window.require('npmi')
-
+import npmi from 'npmi'
 import pluginManager from 'pluginSystem/pluginManager'
 
 import {
