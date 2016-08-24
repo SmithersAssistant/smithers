@@ -1,4 +1,4 @@
-import fs from 'fs'
+import {existsSync, statSync, existsSync} from 'fs'
 import path from 'path'
 
 export default function checkLocationPath (input, robot) {
@@ -9,11 +9,11 @@ export default function checkLocationPath (input, robot) {
         .then((locationPath = input) => {
           appendToOutput(`determining if '${locationPath}' is a valid location\n`)
 
-          if (!fs.existsSync(locationPath)) {
+          if (!existsSync(locationPath)) {
             failed('\n - Plugin path does not exist')
-          } else if (!fs.statSync(locationPath).isDirectory()) {
+          } else if (!statSync(locationPath).isDirectory()) {
             failed('\n - Plugin path is not a directory')
-          } else if (!fs.existsSync(path.resolve(locationPath, 'package.json'))) {
+          } else if (!existsSync(path.resolve(locationPath, 'package.json'))) {
             failed('\n - Plugin path does not have a package.json file')
           }
 
