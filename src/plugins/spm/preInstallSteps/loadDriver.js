@@ -10,7 +10,10 @@ export default function loadDriver (input, robot) {
 
           const driverInfo = driver(input, robot)
           appendToOutput(`Loading driver '${driverInfo.label}'`)
-          driverInfo.installSteps.reverse().map(step => registerStep(step))
+
+          driverInfo.installSteps.length > 0
+            ? driverInfo.installSteps.reverse().map(step => registerStep(step))
+            : failed('\n\nIt looks like there are no install steps for this driver\n')
 
           return input
         })
