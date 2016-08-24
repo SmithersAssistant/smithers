@@ -1,4 +1,4 @@
-import {existsSync, statSync, existsSync} from 'fs'
+import {existsSync, statSync} from 'fs'
 import path from 'path'
 
 export default function checkLocationPath (input, robot) {

@@ -1,4 +1,4 @@
-import fs from 'fs'
+import {readFileSync} from 'fs'
 import path from 'path'
 
 export default {
@@ -6,7 +6,7 @@ export default {
   cb ({ chain, appendToOutput, failed }) {
     return chain
       .then((filePath) => {
-        const pckg = JSON.parse(fs.readFileSync(path.resolve(filePath, 'package.json'), 'utf8'))
+        const pckg = JSON.parse(readFileSync(path.resolve(filePath, 'package.json'), 'utf8'))
         const mandatoryKeywords = ['smithers', 'plugin']
 
         appendToOutput(`- checking if package.json file has [${mandatoryKeywords.join(', ')}] as one of the keywords`)
