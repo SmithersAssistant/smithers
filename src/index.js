@@ -55,7 +55,7 @@ config.get('plugins.local').map((plugin) => {
 })
 
 // Load External Plugins
-pluginManager.syncExternalPlugins()
+// pluginManager.syncExternalPlugins()
 config.onConfigChanged(() => {
   pluginManager.syncExternalPlugins()
 })
