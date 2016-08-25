@@ -1,5 +1,5 @@
-import checkPackageJSON from '../../sharedSteps/checkPackageJSON'
 import checkLocationPath from './checkLocationPath'
+import checkPackageJSON from './checkPackageJSON'
 import checkPluginExists from './checkPluginExists'
 import linkPlugin from './linkPlugin'
 
