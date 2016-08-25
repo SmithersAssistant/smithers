@@ -86,11 +86,11 @@ export default (robot) => {
             <Button disabled={isDevMode} className='right' onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
             </Button>
-            {updateAvailable && (
+            {updateAvailable ? (
               <span className='right breathing'>update available{updateDownloaded && (
                 <span>, <A onClick={() => autoUpdater.quitAndInstall()}>install update</A></span>
               )}</span>
-            )}
+            ) : (<span className='right breathing' style={{color: '#ccc'}}>no update available</span>)}
           </CollectionItem>
           <CollectionItem>
             <Checkbox
