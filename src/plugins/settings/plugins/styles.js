@@ -14,10 +14,5 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 0,
     right: 65
-  },
-  rightWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-end'
   }
 })
