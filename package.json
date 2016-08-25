@@ -57,7 +57,7 @@
   },
   "build": {
     "appId": "com.robinmalfait.smithers",
-    "app-category-type": "app-category-type=public.app-category.developer-tools"
+    "category": "app-category-type=public.app-category.developer-tools"
   },
   "scripts": {
     "clean": "./npm_scripts/clean.sh",
