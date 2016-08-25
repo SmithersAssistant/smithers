@@ -415,7 +415,7 @@ const Navbar = React.createClass({
             placeholder='Type your commands here...'
           />
 
-          {/* PRE-FILL VARIABLES*/}
+          {/* PRE-FILL VARIABLES */}
           {showVariables && this.renderVariables()}
 
           {/* SUGGESTIONS */}
