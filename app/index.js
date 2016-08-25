@@ -1,13 +1,41 @@
 const os = require('os');
-const {app, BrowserWindow, autoUpdater} = require('electron');
-
-// Auto Updater
-if (process.env.NODE_ENV !== 'development') {
-  autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`);
-}
+const {app, BrowserWindow, autoUpdater, ipcMain} = require('electron');
 
 // Window Management
 let win;
+
+const registerAutoUpdater = () => {
+  // Auto Updater
+  if (process.env.NODE_ENV !== 'development') {
+    autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`);
+
+    autoUpdater.addListener('update-available', () => {
+      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_AVAILABLE')");
+    });
+    autoUpdater.addListener('update-downloaded', () => {
+      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_DOWNLOADED')");
+    });
+    autoUpdater.addListener('error', () => {
+      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_ERROR')");
+    });
+    autoUpdater.addListener('checking-for-update', () => {
+      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('CHECKING_FOR_UPDATES')");
+    });
+    autoUpdater.addListener('update-not-available', () => {
+      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_NOT_AVAILABLE')");
+    });
+
+    ipcMain.on('CHECK_FOR_UPDATES', () => {
+      autoUpdater.checkForUpdates();
+    })
+
+    setInterval(() => {
+      autoUpdater.checkForUpdates();
+    }, 30000);
+  } else {
+    ipcMain.on('CHECK_FOR_UPDATES', () => {})
+  }
+};
 
 const createWindow = () => {
   win = new BrowserWindow({
@@ -24,6 +52,10 @@ const createWindow = () => {
     win.show();
   });
 
+  win.webContents.once("did-frame-finish-load", () => {
+    autoUpdater.checkForUpdates();
+  })
+
   win.loadURL(`file://${__dirname}/index.html`);
 
   win.on('closed', () => {
@@ -31,7 +63,10 @@ const createWindow = () => {
   });
 };
 
-app.on('ready', createWindow);
+app.on('ready', () => {
+  createWindow();
+  registerAutoUpdater();
+});
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

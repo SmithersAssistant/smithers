@@ -1,6 +1,6 @@
 import {remote, shell} from 'electron'
 import Event, {OPEN_SETTINGS, CHECK_FOR_UPDATES} from './Event'
-const {Menu, app, autoUpdater} = remote
+const {Menu, app, ipcRenderer} = remote
 
 const name = app.getName()
 
@@ -128,7 +128,7 @@ if (process.platform === 'darwin') {
         click () {
           Event.fire(CHECK_FOR_UPDATES)
           if (isProductionMode) {
-            autoUpdater.checkForUpdates()
+            ipcRenderer.send('CHECK_FOR_UPDATES')
           }
         }
       },

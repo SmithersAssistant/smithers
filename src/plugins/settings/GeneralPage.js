@@ -1,5 +1,5 @@
 import React from 'react'
-import {remote} from 'electron'
+import {remote, ipcRenderer} from 'electron'
 const {app, autoUpdater} = remote
 
 const isDevMode = process.env.NODE_ENV === 'development'
@@ -54,7 +54,7 @@ export default (robot) => {
     },
     checkForUpdates () {
       if (!isDevMode) {
-        autoUpdater.checkForUpdates()
+        ipcRenderer.send('CHECK_FOR_UPDATES')
       }
     },
     renderButtonContents () {
