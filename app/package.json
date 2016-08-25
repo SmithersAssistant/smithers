@@ -1,12 +1,28 @@
 {
   "name": "smithers",
-  "productName": "Smithers",
+  "productName": "smithers",
   "version": "0.2.0",
-  "license": "MIT",
   "author": {
     "name": "Robin Malfait",
     "email": "malfait.robin@gmail.com"
   },
   "repository": "SmithersAssistant/smithers",
-  "description": "Your personal assistant"
+  "description": "Your personal assistant",
+  "dependencies": {
+    "aphrodite": "^0.5.0",
+    "classnames": "^2.2.5",
+    "color": "^0.11.3",
+    "lodash": "^4.13.1",
+    "material-ui": "^0.15.0",
+    "mkdirp": "^0.5.1",
+    "npmi": "^2.0.1",
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0",
+    "react-redux": "^4.4.5",
+    "react-sortable-hoc": "0.0.6",
+    "react-tap-event-plugin": "^1.0.0",
+    "redux": "^3.5.2",
+    "rimraf": "^2.5.4",
+    "uuid": "^2.0.2"
+  }
 }
