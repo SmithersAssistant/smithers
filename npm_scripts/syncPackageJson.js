@@ -1,11 +1,11 @@
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var sourcePath = path.resolve('package.json');
-var targetPath = path.resolve('app', 'package.json');
+const sourcePath = path.resolve('package.json');
+const targetPath = path.resolve('app', 'package.json');
 
-var sourcePackage = require(sourcePath);
-var targetPackage = require(targetPath) || {};
+const sourcePackage = require(sourcePath);
+const targetPackage = require(targetPath) || {};
 
 targetPackage.name = sourcePackage.name;
 targetPackage.productName = sourcePackage.name;
