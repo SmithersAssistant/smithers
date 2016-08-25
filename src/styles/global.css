@@ -50,6 +50,10 @@ button {
   clear: both;
 }
 
+.breathing {
+  margin: 0 8px;
+}
+
 .right {
   float: right;
 }
