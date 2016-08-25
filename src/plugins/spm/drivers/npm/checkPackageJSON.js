@@ -1,16 +1,19 @@
 import {readFileSync} from 'fs'
-import path from 'path'
+import {resolve} from 'path'
 import rimraf from 'rimraf'
 
 export default {
   label: 'Package.json check',
   cb ({ chain, appendToOutput, failed }) {
     return chain
-      .then(({ path: filePath, ...other }) => {
-        const pckg = JSON.parse(readFileSync(path.resolve(filePath, 'package.json'), 'utf8'))
+      .then(({ path: filePath, module, ...other }) => {
+        const [moduleName] = module.split('@')
+        const resolvedPath = resolve(filePath, 'node_modules', moduleName, 'package.json')
+
+        const pckg = JSON.parse(readFileSync(resolvedPath, 'utf8'))
         const mandatoryKeywords = ['smithers', 'plugin']
 
-        appendToOutput(`- checking if package.json file has [${mandatoryKeywords.join(', ')}] as one of the keywords`)
+        appendToOutput(`\n- checking if package.json file has [${mandatoryKeywords.join(', ')}] as one of the keywords`)
 
         if (!mandatoryKeywords.every(keyword => (pckg.keywords || []).includes(keyword))) {
           appendToOutput(`\n - Removing ${filePath}`)
@@ -24,6 +27,7 @@ export default {
 
         return {
           path: filePath,
+          module,
           ...other
         }
       })
