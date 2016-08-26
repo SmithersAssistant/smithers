@@ -73,8 +73,8 @@
     "test:watch": "npm test -- --watch",
     "start": "cross-env NODE_ENV=development electron app",
     "postinstall": "install-app-deps",
-    "pack": "npm run build && build -mwl --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
+    "pack": "npm run build && build -m --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
     "dist": "npm run build && build -mwl",
-    "release": "npm run build && npm run tag:create && build -m --publish=always"
+    "release": "npm run build && npm run tag:create && build -mwl --publish=always"
   }
 }
