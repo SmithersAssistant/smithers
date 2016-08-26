@@ -190,6 +190,7 @@ class PluginManager {
     try {
       return window.require(resolve(path))
     } catch (err) {
+      console.error(err)
       return null
     }
   }
