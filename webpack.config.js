@@ -10,7 +10,7 @@ const node_modules = fs.readdirSync('node_modules').filter((x) => x !== '.bin');
 
 module.exports = {
   devtool: isProduction ? 'hidden-source-map' : null,
-  entry: './src/index.js',
+  entry: ['babel-polyfill',   './src/index.js'],
   output: {
     path: path.join(__dirname, 'app', 'dist'),
     filename: 'bundle.js'

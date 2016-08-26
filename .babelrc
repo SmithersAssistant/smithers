@@ -3,14 +3,16 @@
   "env": {
     "development": {
       "plugins": [
-        ["transform-object-rest-spread"],
-        ["transform-react-display-name"]
+        "transform-object-rest-spread",
+        "transform-react-display-name",
+        "transform-regenerator"
       ]
     },
     "production": {
       "plugins": [
-        ["transform-object-rest-spread"],
-        ["transform-react-display-name"]
+        "transform-object-rest-spread",
+        "transform-react-display-name",
+        "transform-regenerator"
       ]
     }
   }
