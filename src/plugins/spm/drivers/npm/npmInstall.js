@@ -1,40 +1,34 @@
-import npmi from 'npmi'
+import co from 'co'
+import npminstall from 'npminstall'
+import {resolve} from 'path'
+import {readFileSync} from 'fs'
 
 export default function npmInstall (input, robot) {
   return {
     label: 'NPM Install',
     cb ({ chain, appendToOutput }) {
       return chain
-        .then(({ moduleName, moduleVersion, path }) => {
-          appendToOutput('Building options config')
-          const options = {
-            name: moduleName,
-            version: moduleVersion,
-            path,
-            forceInstall: true,
-            npmLoad: {
-              loglevel: 'warn',
-              progress: false
-            }
-          }
-
-          appendToOutput(`\n\n${JSON.stringify(options, null, '  ')}\n\n`)
-
+        .then(({ moduleName, moduleVersion = 'latest', path }) => {
           appendToOutput('Actually installing plugin')
-          return new Promise((resolve, reject) => {
-            npmi(options, (err, result) => {
-              err
-                ? reject(err)
-                : resolve({ result, path })
+
+          return co(function* () {
+            yield npminstall({
+              root: path,
+              production: true,
+              pkgs: [
+                { name: moduleName, version: moduleVersion }
+              ]
             })
           })
-        })
-        .then(({ result = [], path }) => {
-          result.map(dependency => appendToOutput(`\n - ${dependency[0]}`))
-          return {
-            path,
-            module: result[result.length - 1][0]
-          }
+            .then(() => {
+              const resolvedPath = resolve(path, 'node_modules', moduleName, 'package.json')
+              const pckg = JSON.parse(readFileSync(resolvedPath, 'utf8'))
+
+              return {
+                module: `${moduleName}@${pckg.version}`,
+                path
+              }
+            })
         })
     }
   }
