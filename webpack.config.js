@@ -61,5 +61,7 @@ module.exports = {
     parser: 'babel-eslint'
   },
   target: 'electron-renderer',
-  externals: [nodeExternals()]
+  externals: [nodeExternals({
+    whitelist: ['babel-polyfill', 'lodash', 'regenerator-runtime/runtime']
+  })]
 };
