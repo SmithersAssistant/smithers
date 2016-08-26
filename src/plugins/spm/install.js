@@ -12,7 +12,7 @@ const INSTALL_COMPONENT = 'com.robinmalfait.spm.install'
 export default robot => {
   const {Blank} = robot.cards
   const {css, A, Icon, Collection, CollectionItem, PinToBottom, material} = robot.UI
-  const {LinearProgress} = material
+  const {LinearProgress, Toggle} = material
 
   const styles = installStyles(robot.UI)
 
@@ -252,31 +252,36 @@ export default robot => {
       const titleParts = [
         <span>Installing <em>{plugin.split(/[ /]/g).filter(x => !!x).pop()}</em></span>,
         <span>{steps.length} steps</span>,
-        <A onClick={() => {
-          this.setState({verboseMode: !verboseMode})
-        }}>Turn verbose mode {verboseMode ? 'off' : 'on'}</A>
-      ]
-
-      if (!verboseMode) {
-        titleParts.push(<A onClick={() => {
+        !verboseMode && <A onClick={() => {
           this.setState({detailView: !detailView})
-        }}>{detailView ? 'less' : 'more'} details</A>)
-      }
+        }}>{detailView ? 'less' : 'more'} details</A>
+      ].filter(x => !!x)
 
       return (
         <Blank
           {...other}
           title={`Installing ${plugin}`}
         >
-          <ul className={css(styles.title)}>
-            {titleParts.map((part, i) => (
-              <li className={css(
-                styles.titlePart,
-                i === 0 && styles.firstTitlePart,
-                i === titleParts.length - 1 && styles.lastTitlePart
-              )} key={i}>{part}</li>
-            ))}
-          </ul>
+          <div className='clearfix'>
+            <div className='left'>
+              <ul className={css(styles.title)}>
+                {titleParts.map((part, i) => (
+                  <li className={css(
+                    styles.titlePart,
+                    i === 0 && styles.firstTitlePart,
+                    i === titleParts.length - 1 && styles.lastTitlePart
+                  )} key={i}>{part}</li>
+                ))}
+              </ul>
+            </div>
+            <div className='right' style={{width: 190}}>
+              <Toggle
+                label={`verbose mode is ${verboseMode ? 'on' : 'off'}`}
+                toggled={verboseMode}
+                onToggle={() => this.setState({verboseMode: !verboseMode})}
+              />
+            </div>
+          </div>
 
           {verboseMode ? (
             <PinToBottom>
@@ -390,6 +395,9 @@ export default robot => {
   }, (res) => {
     const {plugin} = res.matches
 
-    robot.addCard(INSTALL_COMPONENT, {plugin: plugin.trim()})
+    const multiplePlugins = plugin.trim().split(' ')
+    multiplePlugins.forEach((singlePlugin) => {
+      robot.addCard(INSTALL_COMPONENT, {plugin: singlePlugin})
+    })
   })
 }
