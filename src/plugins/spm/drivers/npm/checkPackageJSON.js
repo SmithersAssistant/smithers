@@ -13,7 +13,7 @@ export default {
         const pckg = JSON.parse(readFileSync(resolvedPath, 'utf8'))
         const mandatoryKeywords = ['smithers', 'plugin']
 
-        appendToOutput(`\n- checking if package.json file has [${mandatoryKeywords.join(', ')}] as one of the keywords`)
+        appendToOutput(`- checking if package.json file has [${mandatoryKeywords.join(', ')}] as one of the keywords`)
 
         if (!mandatoryKeywords.every(keyword => (pckg.keywords || []).includes(keyword))) {
           appendToOutput(`\n - Removing ${filePath}`)
