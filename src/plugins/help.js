@@ -3,10 +3,55 @@ import orderBy from 'lodash/orderBy'
 const HELP_COMPONENT = 'com.robinmalfait.help'
 
 export default robot => {
-  const {
-    color
-  } = robot.UI
-  const {Table} = robot.cards
+  const {StyleSheet, css, px, color} = robot.UI
+  const {Blank} = robot.cards
+  const {List, Subheader, ListItem} = robot.UI.material
+
+  const styles = StyleSheet.create({
+    wrapper: {
+      margin: 0,
+      padding: 0,
+      columnCount: 3,
+      columnGap: 16,
+      '@media (max-width: 1200px)': {
+        columnCount: 2
+      },
+      '@media (max-width: 800px)': {
+        columnCount: 1
+      }
+    },
+    plugin: {
+      pageBreakInside: 'avoid',
+      WebkitColumnBreakInside: 'avoid',
+      breakInside: 'avoid',
+
+      border: '1px solid #d9d9d9',
+      overflow: 'hidden',
+      width: '100%'
+    },
+    pluginTitle: {
+      borderBottom: `1px solid ${color('grey', 200)}`
+    },
+    command: {
+      cursor: 'default',
+      ':hover': {
+        backgroundColor: color('grey', 300)
+      }
+    },
+    argument: {
+      borderBottom: `2px solid ${color(robot.getPrimaryColor())}`,
+      borderRadius: 3,
+      padding: px(0, 4)
+    },
+    optional: {
+      borderBottom: `2px solid ${color(robot.getPrimaryColor(), 100)}`,
+      borderRadius: 3,
+      padding: px(0, 4)
+    },
+    item: {
+      marginRight: 4
+    }
+  })
 
   const Help = React.createClass({
     countPlugins () {
@@ -23,11 +68,7 @@ export default robot => {
         args.forEach(arg => {
           result = result.map(item => {
             if (item === arg.match) {
-              return <span style={{
-                borderBottom: `2px solid ${color(robot.getPrimaryColor())}`,
-                borderRadius: 4,
-                padding: 2
-              }}>{arg.humanized}</span>
+              return <span className={css(styles.argument)}>{arg.humanized}</span>
             }
 
             return item
@@ -39,11 +80,7 @@ export default robot => {
         optionals.forEach(arg => {
           result = result.map(item => {
             if (item === arg.match) {
-              return <span style={{
-                borderBottom: `2px solid ${color(robot.getPrimaryColor(), 100)}`,
-                borderRadius: 4,
-                padding: 2
-              }}>{arg.humanized}</span>
+              return <span className={css(styles.optional)}>{arg.humanized}</span>
             }
 
             return item
@@ -53,9 +90,7 @@ export default robot => {
 
       return (
         <span>
-          {result.map((item, i) => <span key={i} style={{
-            marginRight: 4
-          }}>{item}</span>)}
+          {result.map((item, i) => <span key={i} className={css(styles.item)}>{item}</span>)}
         </span>
       )
     },
@@ -66,17 +101,34 @@ export default robot => {
         : robot.plugins()
 
       orderBy(installedPlugins, ['name']).forEach(plugin => {
-        let showed = false
-
+        const commands = []
         orderBy(plugin.commands, ['usage']).forEach(command => {
-          plugins.push([
-            showed ? '' : String(plugin.name),
-            this.parseUsage(command),
-            String(command.description)
-          ])
-
-          showed = true
+          commands.push({
+            title: this.parseUsage(command),
+            description: String(command.description)
+          })
         })
+
+        plugins.push((
+          <li>
+            <List className={css(styles.plugin)}>
+              <Subheader className={css(styles.pluginTitle)}>
+                {String(plugin.name)}
+              </Subheader>
+
+              {commands.map((command, i) => (
+                <ListItem
+                  className={css(styles.command)}
+                  disabled
+                  key={i}
+                  primaryText={command.title}
+                  secondaryText={command.description}
+                />
+              ))}
+            </List>
+            <br />
+          </li>
+        ))
       })
 
       return plugins
@@ -89,16 +141,16 @@ export default robot => {
       ])
 
       return (
-        <Table
+        <Blank
           {...props}
-          title='Help'
-          header={['Plugin Name', 'Usage', 'Description']}
-          body={this.renderPlugins()}
-          footer={[{
-            colSpan: 3,
-            value: `${pluginCount} plugin${pluginCount === 1 ? '' : 's'} installed`
-          }]}
-        />
+          title={(
+            <span>Help &middot; {`${pluginCount} plugin${pluginCount === 1 ? '' : 's'} installed`}</span>
+          )}
+        >
+          <ul className={css(styles.wrapper)}>
+            {this.renderPlugins()}
+          </ul>
+        </Blank>
       )
     }
   })
