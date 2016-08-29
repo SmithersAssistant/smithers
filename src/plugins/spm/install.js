@@ -1,5 +1,4 @@
 import React from 'react'
-import {clipboard} from 'electron'
 
 import stepper from './stepper'
 import preInstallSteps from './preInstallSteps'
@@ -37,12 +36,7 @@ export default robot => {
 
   robot.listen(/^install (.*)$/, {
     description: 'install a plugin. this can be a package from npm, or a local path, we\'ll figure it out for you!',
-    usage: 'install <plugin>',
-    args: {
-      plugin: () => {
-        return [clipboard.readText().trim()]
-      }
-    }
+    usage: 'install <plugin>'
   }, (res) => {
     const {plugin} = res.matches
 
