@@ -1,7 +1,4 @@
-import checkLocationPath from './checkLocationPath'
-import checkPackageJSON from './checkPackageJSON'
-import checkPluginExists from './checkPluginExists'
-import linkPlugin from './linkPlugin'
+import installSteps from './installSteps'
 
 export default function local (input, robot) {
   return {
@@ -11,12 +8,7 @@ export default function local (input, robot) {
       // if it starts with *:\\ => C:\\some\\path it is probably a windows path
       return input.startsWith('/') || input.startsWith(':\\', 1)
     },
-    installSteps: [
-      checkLocationPath,
-      checkPackageJSON,
-      checkPluginExists,
-      linkPlugin
-    ]
+    installSteps
   }
 }
 
