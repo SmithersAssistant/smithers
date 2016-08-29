@@ -100,7 +100,7 @@ export default robot => {
         ? robot.plugins().filter(plugin => this.props.plugin === plugin.name)
         : robot.plugins()
 
-      orderBy(installedPlugins, ['name']).forEach(plugin => {
+      orderBy(installedPlugins, ['name']).forEach((plugin, i) => {
         const commands = []
         orderBy(plugin.commands, ['usage']).forEach(command => {
           commands.push({
@@ -110,7 +110,7 @@ export default robot => {
         })
 
         plugins.push((
-          <li>
+          <li key={i}>
             <List className={css(styles.plugin)}>
               <Subheader className={css(styles.pluginTitle)}>
                 {String(plugin.name)}
