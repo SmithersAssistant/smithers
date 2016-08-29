@@ -1,5 +1,5 @@
 import React from 'react'
-import stateViewerStyles from './StateViewerStyles'
+import stateViewerStyles from './stateViewerStyles'
 
 export default (RobotUI, {STATE_PENDING, STATE_BUSY, STATE_DONE, STATE_FAILED}) => {
   const {Icon, css} = RobotUI
