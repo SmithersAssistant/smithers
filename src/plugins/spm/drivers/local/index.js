@@ -1,8 +1,10 @@
+import {LOCAL_PLUGIN} from 'pluginSystem/sources'
 import installSteps from './installSteps'
 
 export default function local (input, robot) {
   return {
     label: 'local',
+    handles: [LOCAL_PLUGIN],
     test () {
       // if it starts with a / => /plugins/mkj it is probably a linux/mac path
       // if it starts with *:\\ => C:\\some\\path it is probably a windows path

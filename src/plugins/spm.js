@@ -1,20 +1,10 @@
 import install from './spm/install'
+import uninstall from './spm/uninstall'
+import update from './spm/update'
 
 // SPM: Smithers Package/Plugin Manager
 export default robot => {
   install(robot)
-
-  robot.listen(/^uninstall (.*)$/, {
-    description: 'uninstall a plugin',
-    usage: 'uninstall <plugin>'
-  }, () => {
-
-  })
-
-  robot.listen(/^update (.*)$/, {
-    description: 'update a plugin. these plugins will only be npm remote plugins.',
-    usage: 'update <plugin>'
-  }, () => {
-
-  })
+  uninstall(robot)
+  update(robot)
 }

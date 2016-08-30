@@ -1,8 +1,10 @@
+import {EXTERNAL_PLUGIN} from 'pluginSystem/sources'
 import installSteps from './installSteps'
 
 export default function npm (input, robot) {
   return {
     label: 'npm',
+    handles: [EXTERNAL_PLUGIN],
     test () {
       return !(
         input.startsWith('/') ||        // We don't want this, it is probably a linux/mac file path

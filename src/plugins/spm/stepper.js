@@ -59,7 +59,9 @@ export default (robot, initialSteps = []) => {
       this.setState({steps}, () => {
         const step = steps.find(step => step.state === STATE_PENDING)
 
-        this.startStep(step.id)
+        if (step) {
+          this.startStep(step.id)
+        }
       })
     },
     registerStep (step) {
