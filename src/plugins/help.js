@@ -58,6 +58,13 @@ export default robot => {
     },
     item: {
       marginRight: 4
+    },
+    versionNumber: {
+      float: 'right',
+      color: color('grey', 400),
+      fontSize: 12,
+      marginRight: 16,
+      fontWeight: 200
     }
   })
 
@@ -121,7 +128,7 @@ export default robot => {
           <li key={i}>
             <List className={css(styles.plugin)}>
               <Subheader className={css(styles.pluginTitle)}>
-                {String(plugin.name)}
+                {String(plugin.name)} <span className={css(styles.versionNumber)}>v{plugin.version}</span>
               </Subheader>
 
               {commands.map((command, i) => (
