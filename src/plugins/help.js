@@ -7,12 +7,13 @@ export default robot => {
   const {Blank} = robot.cards
   const {List, Subheader, ListItem} = robot.UI.material
 
+  const gap = 16
   const styles = StyleSheet.create({
     wrapper: {
       margin: 0,
       padding: 0,
       columnCount: 3,
-      columnGap: 16,
+      columnGap: gap,
       '@media (max-width: 1200px)': {
         columnCount: 2
       },
@@ -20,14 +21,21 @@ export default robot => {
         columnCount: 1
       }
     },
+    clean: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: gap,
+      pointerEvents: 'none',
+      border: '1px solid #d9d9d9'
+    },
     plugin: {
+      position: 'relative',
       pageBreakInside: 'avoid',
       WebkitColumnBreakInside: 'avoid',
       breakInside: 'avoid',
-
-      border: '1px solid #d9d9d9',
-      overflow: 'hidden',
-      width: '100%'
+      paddingBottom: gap
     },
     pluginTitle: {
       borderBottom: `1px solid ${color('grey', 200)}`
@@ -35,7 +43,7 @@ export default robot => {
     command: {
       cursor: 'default',
       ':hover': {
-        backgroundColor: color('grey', 300)
+        backgroundColor: color('grey', 100)
       }
     },
     argument: {
@@ -125,8 +133,8 @@ export default robot => {
                   secondaryText={command.description}
                 />
               ))}
+              <div className={css(styles.clean)} />
             </List>
-            <br />
           </li>
         ))
       })
