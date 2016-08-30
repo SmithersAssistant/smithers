@@ -8,9 +8,6 @@ import {
   LOCAL_PLUGIN
 } from 'pluginSystem/sources'
 
-import IconButton from 'material-ui/IconButton/IconButton'
-import RemoveIcon from 'material-ui/svg-icons/content/remove-circle-outline'
-
 export default ({robot}) => {
   const {
     Collection,
@@ -26,15 +23,6 @@ export default ({robot}) => {
           {localPlugins.map((plugin, i) => (
             <CollectionItem className={css(styles.pluginItem)} key={i}>
               {plugin.name}
-
-              <IconButton
-                className={css(styles.removePluginButton)}
-                onClick={() => {
-                  robot.removePlugin(plugin)
-                  robot.notify(`Plugin '${plugin.name}' has been uninstalled!`)
-                }}
-              ><RemoveIcon /></IconButton>
-
               <span className={css(styles.info)}>(v{plugin.version})</span>
             </CollectionItem>
           ))}
