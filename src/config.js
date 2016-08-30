@@ -11,15 +11,7 @@ const PLUGINS_PATH = resolve(app.getPath('userData'), 'plugins')
 class Config {
   constructor () {
     this.config = this.loadConfig()
-    this.watchers = []
-
     mkdirp(PLUGINS_PATH)
-
-    fs.watchFile(this.getConfigPath(), (curr, prev) => {
-      this.config = this.loadConfig()
-
-      this.watchers.map(watcher => watcher(this.config, curr, prev))
-    })
   }
 
   defaultConfig () {
@@ -29,10 +21,6 @@ class Config {
         external: []
       }
     }
-  }
-
-  onConfigChanged (cb = () => {}) {
-    this.watchers.push(cb)
   }
 
   get (key, defaultValue) {

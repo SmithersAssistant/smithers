@@ -2,6 +2,7 @@ import React from 'react'
 
 import {LOCAL_PLUGIN, EXTERNAL_PLUGIN} from 'pluginSystem/sources'
 import preUninstallSteps from './preUninstallSteps'
+import postUninstallSteps from './postUninstallSteps'
 
 import stepper from './stepper'
 
@@ -11,7 +12,8 @@ export default robot => {
   const {Blank} = robot.cards
 
   const Stepper = stepper(robot, [
-    ...preUninstallSteps
+    ...preUninstallSteps,
+    ...postUninstallSteps
   ])
 
   const Uninstall = React.createClass({

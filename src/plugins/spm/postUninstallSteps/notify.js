@@ -4,7 +4,7 @@ export default function notify () {
     cb ({ chain, appendToOutput }) {
       return chain
         .then((plugin) => {
-          const msg = 'Plugin has been installed'
+          const msg = 'Plugin has been uninstalled'
 
           appendToOutput(msg)
           window.Robot.notify(msg)

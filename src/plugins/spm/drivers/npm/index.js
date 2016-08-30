@@ -1,5 +1,6 @@
 import {EXTERNAL_PLUGIN} from 'pluginSystem/sources'
 import installSteps from './installSteps'
+import uninstallSteps from './uninstallSteps'
 
 export default function npm (input, robot) {
   return {
@@ -13,7 +14,8 @@ export default function npm (input, robot) {
         input.startsWith('https://')    // We don't want this, it is probably a more secure url
       )
     },
-    installSteps
+    installSteps,
+    uninstallSteps
   }
 }
 

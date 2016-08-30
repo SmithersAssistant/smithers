@@ -79,30 +79,13 @@ const mapMatchesToUsages = (plugin, matches) => {
 }
 
 export default {
-  removePlugin (pluginToBeUninstalled) {
-    pluginManager.removeLocalPlugin(pluginToBeUninstalled)
+  removePlugin (module) {
+    pluginManager.removePlugin(module)
 
     plugins = plugins.filter(plugin => {
-      if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
-        return null
-      }
-
-      return plugin
-    }).filter(x => !!x)
-  },
-
-  removeExternalPlugin (pluginToBeUninstalled) {
-    pluginManager.removeExternalPlugin(pluginToBeUninstalled)
-
-    plugins = plugins.filter(plugin => {
-      if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
-      }
-
-      if (this._isCurrentPlugin(plugin, pluginToBeUninstalled)) {
-        return null
-      }
-
-      return plugin
+      return this._isCurrentPlugin(plugin, module)
+        ? null
+        : plugin
     }).filter(x => !!x)
   },
 

@@ -53,12 +53,6 @@ config.get('plugins.local').map((plugin) => {
   )
 })
 
-// Load External Plugins
-// pluginManager.syncExternalPlugins()
-// config.onConfigChanged(() => {
-//   pluginManager.syncExternalPlugins()
-// })
-
 config.get('plugins.external').map((plugin) => {
   const [pluginName] = plugin.split('@')
   const location = resolve(config.getExternalPluginsPath(), pluginName)
