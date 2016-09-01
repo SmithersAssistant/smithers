@@ -4,7 +4,6 @@ export default ({StyleSheet, color, px, theme}) => {
       height: 24,
       lineHeight: px(24),
       whiteSpace: 'nowrap',
-      overflow: 'hidden',
       textOverflow: 'ellipsis'
     },
     title: {

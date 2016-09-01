@@ -1,5 +1,6 @@
 import React from 'react'
 import orderBy from 'lodash/orderBy'
+
 const HELP_COMPONENT = 'com.robinmalfait.help'
 
 export default robot => {
@@ -38,6 +39,9 @@ export default robot => {
       paddingBottom: gap
     },
     pluginTitle: {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      height: 49,
       borderBottom: `1px solid ${color('grey', 200)}`
     },
     command: {
@@ -63,10 +67,23 @@ export default robot => {
       float: 'right',
       color: color('grey', 400),
       fontSize: 12,
-      marginRight: 16,
+      marginRight: gap,
+      fontWeight: 200
+    },
+    badge: {
+      float: 'right',
+      color: color('grey', 400),
+      fontSize: 12,
+      marginRight: gap,
       fontWeight: 200
     }
   })
+
+  const Kind = ({ source, ...other }) => {
+    return (
+      <span className={css(styles.badge)} {...other}>{source.replace('_PLUGIN', '').toLowerCase()}</span>
+    )
+  }
 
   const Help = React.createClass({
     countPlugins () {
@@ -128,7 +145,9 @@ export default robot => {
           <li key={i}>
             <List className={css(styles.plugin)}>
               <Subheader className={css(styles.pluginTitle)}>
-                {String(plugin.name)} <span className={css(styles.versionNumber)}>v{plugin.version}</span>
+                {String(plugin.name)}
+                <span className={css(styles.versionNumber)}>v{plugin.version}</span>
+                <Kind source={plugin.source} />
               </Subheader>
 
               {commands.map((command, i) => (

@@ -261,7 +261,7 @@ export default (robot, initialSteps = []) => {
                 ))}
               </ul>
             </div>
-            <div className='right' style={{width: 190}}>
+            <div className='right'>
               <Toggle
                 label={`verbose mode is ${verboseMode ? 'on' : 'off'}`}
                 toggled={verboseMode}
