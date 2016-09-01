@@ -1,5 +1,12 @@
 export default ({StyleSheet, color, px, theme}) => {
   return StyleSheet.create({
+    header: {
+      height: 24,
+      lineHeight: px(24),
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis'
+    },
     title: {
       padding: 0,
       margin: 0

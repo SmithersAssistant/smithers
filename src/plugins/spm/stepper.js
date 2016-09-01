@@ -249,7 +249,7 @@ export default (robot, initialSteps = []) => {
 
       return (
         <div>
-          <div className='clearfix'>
+          <div className={`clearfix ${css(styles.header)}`}>
             <div className='left'>
               <ul className={css(styles.title)}>
                 {titleParts.map((part, i) => (
