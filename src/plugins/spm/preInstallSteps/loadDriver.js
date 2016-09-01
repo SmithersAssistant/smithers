@@ -13,7 +13,7 @@ export default function loadDriver (input, robot) {
 
           const {installSteps = []} = driverInfo
           installSteps.length > 0
-            ? installSteps.reverse().map(step => registerStep(step))
+            ? installSteps.map(step => registerStep(step))
             : failed('\n\nIt looks like there are no install steps for this driver\n')
 
           return input

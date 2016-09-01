@@ -13,7 +13,7 @@ export default function loadDriver (input, robot) {
 
           const {uninstallSteps = []} = driverInfo
           uninstallSteps.length > 0
-            ? uninstallSteps.reverse().map(step => registerStep(step))
+            ? uninstallSteps.map(step => registerStep(step))
             : failed('\n\nIt looks like there are no uninstall steps for this driver\n')
 
           return robot.plugins().find(plugin => plugin.name === input.trim())

@@ -8,7 +8,7 @@ import registerInConfigFile from './registerInConfigFile'
 import createLoader from './createLoader'
 import registerInPluginManager from './registerInPluginManager'
 
-export default [
+const steps = [
   preparing,
   checkAlreadyExists,
   createPackageJsonFile,
@@ -18,4 +18,6 @@ export default [
   registerInConfigFile,
   createLoader,
   registerInPluginManager
-]
+].reverse()
+
+export default steps
