@@ -5,16 +5,16 @@ export default function loadDriver (input, robot) {
       return chain
         .then((driver) => {
           if (driver === undefined) {
-            failed(`No uninstall driver found for '${input}', how do we need to uninstall this? :(`)
+            failed(`No update driver found for '${input}', how do we need to update this? :(`)
           }
 
           const driverInfo = driver(input, robot)
           appendToOutput(`Loading driver '${driverInfo.label}'`)
 
-          const {uninstallSteps = []} = driverInfo
-          uninstallSteps.length > 0
-            ? uninstallSteps.map(step => registerStep(step))
-            : failed('\n\nIt looks like there are no uninstall steps for this driver\n')
+          const {updateSteps = []} = driverInfo
+          updateSteps.length > 0
+            ? updateSteps.map(step => registerStep(step))
+            : failed('\n\nIt looks like there are no update steps for this driver\n')
 
           return robot.plugins().find(plugin => plugin.name === input.trim())
         })

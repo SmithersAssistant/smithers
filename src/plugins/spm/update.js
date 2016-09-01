@@ -1,6 +1,9 @@
 import React from 'react'
 
 import {EXTERNAL_PLUGIN} from 'pluginSystem/sources'
+import preUpdateSteps from './preUpdateSteps'
+import postUpdateSteps from './postUpdateSteps'
+
 import stepper from './stepper'
 
 const UPDATE_COMPONENT = 'com.robinmalfait.spm.update'
@@ -8,7 +11,10 @@ const UPDATE_COMPONENT = 'com.robinmalfait.spm.update'
 export default robot => {
   const {Blank} = robot.cards
 
-  const Stepper = stepper(robot, [])
+  const Stepper = stepper(robot, [
+    ...preUpdateSteps,
+    ...postUpdateSteps
+  ])
 
   const Update = React.createClass({
     render () {
