@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {EXTERNAL_PLUGIN} from 'pluginSystem/sources'
 import stepper from './stepper'
 
 const UPDATE_COMPONENT = 'com.robinmalfait.spm.update'
@@ -31,7 +32,12 @@ export default robot => {
 
   robot.listen(/^update (.*)$/, {
     description: 'update a plugin. these plugins will only be npm remote plugins.',
-    usage: 'update <plugin>'
+    usage: 'update <plugin>',
+    args: {
+      plugin: () => {
+        return robot.plugins().filter(plugin => [EXTERNAL_PLUGIN].includes(plugin.source)).map(plugin => plugin.name)
+      }
+    }
   }, (res) => {
     const {plugin} = res.matches
 
