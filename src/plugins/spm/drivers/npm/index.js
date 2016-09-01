@@ -1,6 +1,7 @@
 import {EXTERNAL_PLUGIN} from 'pluginSystem/sources'
 import installSteps from './installSteps'
 import uninstallSteps from './uninstallSteps'
+import updateSteps from './updateSteps'
 
 export default function npm (input, robot) {
   return {
@@ -15,7 +16,8 @@ export default function npm (input, robot) {
       )
     },
     installSteps,
-    uninstallSteps
+    uninstallSteps,
+    updateSteps
   }
 }
 

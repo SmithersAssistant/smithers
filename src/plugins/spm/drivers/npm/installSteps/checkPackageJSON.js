@@ -1,6 +1,6 @@
 import {readFileSync} from 'fs'
 import {resolve} from 'path'
-import rimraf from 'rimraf'
+import validatePackageJSON from './_validatePackageJSON'
 
 export default {
   label: 'Package.json check',
@@ -11,25 +11,19 @@ export default {
         const resolvedPath = resolve(filePath, 'node_modules', moduleName, 'package.json')
 
         const pckg = JSON.parse(readFileSync(resolvedPath, 'utf8'))
-        const mandatoryKeywords = ['smithers', 'plugin']
 
-        appendToOutput(`- checking if package.json file has [${mandatoryKeywords.join(', ')}] as one of the keywords`)
-
-        if (!mandatoryKeywords.every(keyword => (pckg.keywords || []).includes(keyword))) {
-          appendToOutput(`\n - Removing ${filePath}`)
-          return new Promise((resolve, reject) => {
-            rimraf(filePath, (err) => err ? reject(err) : resolve())
+        return validatePackageJSON(pckg, {
+          appendToOutput,
+          failed,
+          filePath
+        })
+          .then(() => {
+            return {
+              path: filePath,
+              module,
+              ...other
+            }
           })
-            .then(() => {
-              failed(`\n - it does not contain one of the mandatory keywords: [${mandatoryKeywords.join(', ')}]`)
-            })
-        }
-
-        return {
-          path: filePath,
-          module,
-          ...other
-        }
       })
   }
 }
