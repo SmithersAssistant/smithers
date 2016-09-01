@@ -1,5 +1,6 @@
 import {LOCAL_PLUGIN} from 'pluginSystem/sources'
 import installSteps from './installSteps'
+import uninstallSteps from './uninstallSteps'
 
 export default function local (input, robot) {
   return {
@@ -10,7 +11,8 @@ export default function local (input, robot) {
       // if it starts with *:\\ => C:\\some\\path it is probably a windows path
       return input.startsWith('/') || input.startsWith(':\\', 1)
     },
-    installSteps
+    installSteps,
+    uninstallSteps
   }
 }
 
