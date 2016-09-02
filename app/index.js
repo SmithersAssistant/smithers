@@ -10,6 +10,7 @@ const registerAutoUpdater = () => {
     autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`);
 
     autoUpdater.addListener('update-available', () => {
+      clearInterval(this._checkUpdatesInterval)
       win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_AVAILABLE')");
     });
     autoUpdater.addListener('update-downloaded', () => {
@@ -29,7 +30,7 @@ const registerAutoUpdater = () => {
       autoUpdater.checkForUpdates();
     })
 
-    setInterval(() => {
+    this._checkUpdatesInterval = setInterval(() => {
       autoUpdater.checkForUpdates();
     }, 30000);
   } else {
