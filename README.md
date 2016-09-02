@@ -22,7 +22,7 @@ You can find some plugins on [npm](https://www.npmjs.com/search?q=smithers+assis
 
 1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device
 2. Install the dependencies: `npm install`
-3. Build the code and watch for changes: `npm run dev`
+3. Build the code and watch for changes: `npm start dev`
 4. In a new tab, start the application: `npm start`
 
 ### NOTE:
@@ -51,5 +51,5 @@ Notice how this doesn't work for the other non-imperative forms:
 If you want to build the binaries for all specified platforms, run the command:
 
 ```bash
-$ npm run pack
+$ npm start pack
 ```
