@@ -17,7 +17,10 @@ export default function checkUpdateExists (input, robot) {
                 failed(`\n\n - No update available`)
               }
 
-              return plugin
+              return {
+                plugin,
+                version: result.version
+              }
             })
         })
     }
