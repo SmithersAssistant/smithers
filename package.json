@@ -52,6 +52,7 @@
     "expect": "^1.18.0",
     "json-loader": "^0.5.4",
     "mocha": "^2.4.5",
+    "p-s": "^2.4.3",
     "react-hot-loader": "^1.3.0",
     "standard": "^8.0.0",
     "standard-loader": "^5.0.0",
@@ -64,18 +65,7 @@
     "category": "app-category-type=public.app-category.developer-tools"
   },
   "scripts": {
-    "clean": "./npm_scripts/clean.sh",
-    "tag:create": "node ./npm_scripts/createTag.js",
-    "sync:dependencies": "node ./npm_scripts/syncPackageJson.js",
-    "dev": "npm run clean && cross-env NODE_ENV=development webpack --watch",
-    "build": "npm run clean && npm run sync:dependencies && cross-env NODE_ENV=production webpack",
-    "pretest": "standard ./src/**/*.js",
-    "test": "cross-env NODE_ENV=production ./node_modules/.bin/mocha './tests/**/*.spec.js' --compilers js:babel-core/register",
-    "test:watch": "npm test -- --watch",
-    "start": "cross-env NODE_ENV=development electron app",
-    "postinstall": "install-app-deps",
-    "pack": "npm run build && build -m --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js",
-    "dist": "npm run build && build -mwl",
-    "release": "npm run build && npm run tag:create && build -mwl --publish=always"
+    "start": "package-scripts",
+    "test": "package-scripts test"
   }
 }
