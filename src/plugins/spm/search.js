@@ -145,7 +145,7 @@ export default robot => {
     getInitialState () {
       return {
         query: this.props.q,
-        result: [],
+        results: [],
         active: undefined,
         filters: {
           installed: true,
@@ -169,7 +169,7 @@ export default robot => {
     search () {
       return robot.fetchJson(`${BASE}?${robot.httpBuildQuery(options)}`)
         .then(({results}) => {
-          this.setState({result: results.map(item => {
+          this.setState({results: results.map(item => {
             return {
               name: item.name.join(''),
               keywords: item.keywords,
@@ -229,12 +229,12 @@ export default robot => {
     },
     render () {
       const {...other} = this.props
-      let {query, result} = this.state
+      let {query, results} = this.state
       const props = robot.deleteProps(other, [
         'q'
       ])
 
-      result = this.applyFilters(result)
+      results = this.applyFilters(results)
 
       return (
         <Blank
@@ -284,7 +284,7 @@ export default robot => {
           </div>
 
           <ul className={css(styles.wrapper)}>
-            {result.map((item, i) => (
+            {results.length > 0 && results.map((item, i) => (
               <li key={i} className={css(styles.item)}>
                 {this.renderItem(item, i)}
                 <div
@@ -295,6 +295,11 @@ export default robot => {
               </li>
             ))}
           </ul>
+
+          {results.length <= 0 && (
+            <div>There are no plugins available{!Object.keys(this.state.filters).some(filter => this.state.filters[filter]) ? ', but it looks like all the filters are unchecked!' : ''}</div>
+          )}
+
           {this.state.active && (
             <Dialog
               open
