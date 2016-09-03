@@ -4,6 +4,7 @@ import config from 'config'
 import marked from 'marked'
 import {shell} from 'electron'
 import md5 from 'md5'
+import getPackageReadme from 'get-package-readme'
 
 const SEARCH_COMPONENT = 'com.robinmalfait.spm.search'
 
@@ -179,17 +180,38 @@ export default robot => {
               return undefined
             }
 
+            this.fetchReadme(module.name)
+
             return {
               name: module.name,
               keywords,
               version: module.version,
               description: module.description,
               author: module.publisher,
-              readme: '## AW YEAH',
-              rendered: marked('## AW YEAH')
+              readme: undefined,
+              rendered: undefined
             }
           }).filter(x => !!x)})
         })
+    },
+    fetchReadme (name) {
+      getPackageReadme(name, (err, readme) => {
+        if (!err) {
+          this.setState({
+            results: this.state.results.map(result => {
+              if (result.name === name) {
+                return {
+                  ...result,
+                  readme,
+                  rendered: marked(readme)
+                }
+              }
+
+              return result
+            })
+          })
+        }
+      })
     },
     handleChange (value) {
       this.setState({query: value})
@@ -243,7 +265,9 @@ export default robot => {
               <A onClick={() => {
                 robot.execute(`${this.isInstalled(item.name) ? 'uninstall' : 'install'} ${item.name}`)
               }} className={css(styles.action)}>{this.isInstalled(item.name) ? 'Uninstall' : 'Install'}</A>
-              <A onClick={() => this.setState({active: item})} className={css(styles.action)}>Read Me</A>
+              {item.readme && (
+                <A onClick={() => this.setState({active: item})} className={css(styles.action)}>Read Me</A>
+              )}
             </div>
           </div>
         </div>
