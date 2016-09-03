@@ -3,6 +3,7 @@ import debounce from 'lodash/debounce'
 import config from 'config'
 import marked from 'marked'
 import {shell} from 'electron'
+import md5 from 'md5'
 
 const SEARCH_COMPONENT = 'com.robinmalfait.spm.search'
 
@@ -77,6 +78,15 @@ export default robot => {
       ':hover': {
         color: color('grey', 400)
       }
+    },
+    authorImage: {
+      width: 24,
+      height: 24,
+      backgroundColor: color('grey'),
+      lineHeight: px(24),
+      marginRight: gap / 2,
+      verticalAlign: 'middle',
+      borderRadius: '50%'
     },
     actions: {
       position: 'absolute',
@@ -174,6 +184,7 @@ export default robot => {
               keywords,
               version: module.version,
               description: module.description,
+              author: module.publisher,
               readme: '## AW YEAH',
               rendered: marked('## AW YEAH')
             }
@@ -203,6 +214,18 @@ export default robot => {
       return (
         <div>
           <div className={css(styles.title)}>
+            <A
+              target='_blank'
+              href={`https://www.npmjs.com/~${item.author.username}`}
+              title={item.author.username}
+            >
+              <img
+                className={css(styles.authorImage)}
+                src={`https://s.gravatar.com/avatar/${md5(item.author.email)}?size=24&default=retro`}
+                title={item.author.username}
+                alt={item.author.username}
+              />
+            </A>
             <A target='_blank' href={`https://www.npmjs.com/package/${item.name}`}>{item.name}</A>
             <span className={css(styles.version)}>v{item.version}</span>
             {this.isInstalled(item.name) && <span className={css(styles.badge)}>installed</span>}
