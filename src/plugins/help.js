@@ -157,6 +157,7 @@ export default robot => {
                   key={i}
                   primaryText={command.title}
                   secondaryText={command.description}
+                  title={command.description}
                 />
               ))}
               <div className={css(styles.clean)} />
