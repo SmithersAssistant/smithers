@@ -68,3 +68,8 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.max-100-percent,
+.max-100-percent img {
+  max-width: 100%;
+}

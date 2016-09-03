@@ -67,7 +67,7 @@ export default robot => {
       return (
         <Blank
           {...other}
-          title={`Update Available for ${plugin.name}!`}
+          title={`Update available for ${plugin.name}!`}
         >
           <h1 style={{
             textAlign: 'center',

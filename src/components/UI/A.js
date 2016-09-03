@@ -18,10 +18,10 @@ const A = React.createClass({
   },
 
   render () {
-    const {className = '', children, ...other} = this.props
+    const {externalStyles, className = '', children, ...other} = this.props
 
     return (
-      <a className={`${css(styles().a)} ${className}`} {...other} onClick={this.handleOnClick}>{children}</a>
+      <a className={`${className} ${css(styles().a, externalStyles)}`} {...other} onClick={this.handleOnClick}>{children}</a>
     )
   }
 })

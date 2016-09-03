@@ -13,6 +13,7 @@
     "co": "^4.6.0",
     "color": "^0.11.3",
     "lodash": "^4.13.1",
+    "marked": "^0.3.6",
     "material-ui": "^0.15.0",
     "mkdirp": "^0.5.1",
     "npminstall": "^2.1.0",
