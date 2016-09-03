@@ -256,8 +256,6 @@ export default robot => {
         'q'
       ])
 
-      console.log(results)
-
       results = this.applyFilters(results)
 
       return (
