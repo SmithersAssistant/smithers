@@ -3,6 +3,7 @@ const {app, BrowserWindow, autoUpdater, ipcMain} = require('electron');
 
 // Window Management
 let win;
+let updateAvailableMessageShown = false;
 
 const registerAutoUpdater = () => {
   // Auto Updater
@@ -10,8 +11,11 @@ const registerAutoUpdater = () => {
     autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`);
 
     autoUpdater.addListener('update-available', () => {
-      clearInterval(this._checkUpdatesInterval)
-      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_AVAILABLE')");
+      clearInterval(this._checkUpdatesInterval);
+      if (!updateAvailableMessageShown) {
+        win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_AVAILABLE')");
+      }
+      updateAvailableMessageShown = true;
     });
     autoUpdater.addListener('update-downloaded', () => {
       win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_DOWNLOADED')");
