@@ -110,6 +110,17 @@ export default robot => {
     },
     readme: {
       marginTop: 20
+    },
+    filters: {
+      height: 24,
+      lineHeight: px(24),
+      display: 'inline-flex',
+      verticalAlign: 'middle'
+    },
+    filter: {
+      display: 'inline-flex',
+      marginLeft: gap,
+      whiteSpace: 'nowrap'
     }
   })
 
@@ -242,7 +253,10 @@ export default robot => {
           />
 
           <div className={css(styles.filters)}>
+            Show:
+
             <Checkbox
+              className={css(styles.filter)}
               checked={this.state.filters.installed}
               onCheck={(event, checked) => {
                 this.setState({
@@ -255,6 +269,7 @@ export default robot => {
               label='installed'
             />
             <Checkbox
+              className={css(styles.filter)}
               checked={this.state.filters.notInstalled}
               onCheck={(event, checked) => {
                 this.setState({
