@@ -48,7 +48,6 @@ export default robot => {
             onFinished={(state) => {
               if (window.confirm('Plugin has been updated, restart for the best experience')) {
                 setTimeout(() => {
-                  other.removeCard()
                   window.location.reload()
                 }, 1500)
               }
