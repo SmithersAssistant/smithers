@@ -124,22 +124,8 @@ export default robot => {
     }
   })
 
-  const BASE = 'http://npmsearch.com/query'
-  const options = {
-    q: [
-      'smithers',
-      'plugin'
-    ].join(','),
-    fields: [
-      'description',
-      'keywords',
-      'author',
-      'name',
-      'readme',
-      'repository',
-      'version'
-    ].join(',')
-  }
+  const BASE = 'https://api.npms.io/search'
+  const mandatoryKeywords = ['smithers', 'plugin']
 
   const Search = React.createClass({
     getInitialState () {
@@ -147,6 +133,8 @@ export default robot => {
         query: this.props.q,
         results: [],
         active: undefined,
+        start: 0,
+        itemsPerPage: 25,
         filters: {
           installed: true,
           notInstalled: true
@@ -167,23 +155,29 @@ export default robot => {
       return config.get('plugins.external').includes(plugin)
     },
     search () {
-      let opts = {
-        ...options,
-        q: `${this.state.query},${options.q}`
-      }
-
-      return robot.fetchJson(`${BASE}?${robot.httpBuildQuery(opts)}`)
+      return robot.fetchJson(`${BASE}?${robot.httpBuildQuery({
+        size: this.state.itemsPerPage,
+        from: this.state.start,
+        term: `${this.state.query} ${mandatoryKeywords.join(',')}`
+      })}`)
         .then(({results}) => {
-          this.setState({results: results.map(item => {
-            return {
-              name: item.name.join(''),
-              keywords: item.keywords,
-              version: item.version.join(', '),
-              description: item.description.join(', '),
-              readme: item.readme.join('\n'),
-              rendered: marked(item.readme.join('\n'))
+          this.setState({results: results.map(({module}) => {
+            const keywords = (module.keywords || []).filter(keyword => !mandatoryKeywords.includes(keyword))
+
+            // Filter out plugins that don't have the [plugin, smithers] keywords
+            if (!mandatoryKeywords.every(mandatoryKeyword => (module.keywords || []).includes(mandatoryKeyword))) {
+              return undefined
             }
-          })})
+
+            return {
+              name: module.name,
+              keywords,
+              version: module.version,
+              description: module.description,
+              readme: '## AW YEAH',
+              rendered: marked('## AW YEAH')
+            }
+          }).filter(x => !!x)})
         })
     },
     handleChange (value) {
@@ -217,7 +211,7 @@ export default robot => {
             <p className={css(styles.description)}>{item.description}</p>
 
             <div className={css(styles.keywords)}>
-              {item.keywords.map(keyword => (
+              {(item.keywords || []).map(keyword => (
                 <A target='_blank' href={`https://www.npmjs.com/search?q=${keyword}`} key={keyword} externalStyles={styles.keyword}>{keyword}</A>
               ))}
             </div>
@@ -238,6 +232,8 @@ export default robot => {
       const props = robot.deleteProps(other, [
         'q'
       ])
+
+      console.log(results)
 
       results = this.applyFilters(results)
 
