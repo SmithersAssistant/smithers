@@ -167,7 +167,12 @@ export default robot => {
       return config.get('plugins.external').includes(plugin)
     },
     search () {
-      return robot.fetchJson(`${BASE}?${robot.httpBuildQuery(options)}`)
+      let opts = {
+        ...options,
+        q: `${this.state.query},${options.q}`
+      }
+
+      return robot.fetchJson(`${BASE}?${robot.httpBuildQuery(opts)}`)
         .then(({results}) => {
           this.setState({results: results.map(item => {
             return {
@@ -282,6 +287,7 @@ export default robot => {
               label='not installed'
             />
           </div>
+          <span className='right'>{results.length} result{results.length === 1 ? '' : 's'}</span>
 
           <ul className={css(styles.wrapper)}>
             {results.length > 0 && results.map((item, i) => (
