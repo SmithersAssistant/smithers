@@ -133,12 +133,16 @@ export default robot => {
               version: result.version
             })
           }
+
+          return true
         }
+
+        return false
       })
   }
 
   const checkForUpdates = () => {
-    robot.plugins()
+    return robot.plugins()
       .filter(plugin => [EXTERNAL_PLUGIN].includes(plugin.source))
       .map(plugin => checkRegistry(plugin))
   }
@@ -149,5 +153,19 @@ export default robot => {
     setInterval(() => {
       checkForUpdates()
     }, UPDATE_INTERVAL * 60 * 1000)
+  })
+
+  robot.listen(/^check for updates$/, {
+    description: 'check if there are any updates for plugins.',
+    usage: 'check for updates'
+  }, () => {
+    Promise.all(checkForUpdates())
+      .then((values) => {
+        robot.notify(
+          values.some(hasUpdate => hasUpdate === true)
+            ? 'There are some updates available'
+            : 'There are no plugins that need to be updated'
+        )
+      })
   })
 }
