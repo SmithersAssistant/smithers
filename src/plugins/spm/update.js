@@ -34,6 +34,14 @@ export default robot => {
           <Stepper
             title={<span>Updating <em>{plugin.split(/[ /]/g).filter(x => !!x).pop()}</em></span>}
             plugin={plugin}
+            onFinished={() => {
+              if (window.confirm('Plugin has been updated, restart for the best experience')) {
+                setTimeout(() => {
+                  other.removeCard()
+                  window.location.reload()
+                }, 1500)
+              }
+            }}
           />
         </Blank>
       )

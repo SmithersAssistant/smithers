@@ -49,6 +49,11 @@ export default (robot, initialSteps = []) => {
         steps
       }
     },
+    getDefaultProps () {
+      return {
+        onFinished: robot.noop
+      }
+    },
     componentDidMount () {
       const {steps} = this.state
 
@@ -188,6 +193,10 @@ export default (robot, initialSteps = []) => {
         if (step) {
           chain = chain.then(() => args)
           this.startStep(step.id)
+        } else {
+          chain = chain.then(() => {
+            this.props.onFinished()
+          })
         }
       })
     },
