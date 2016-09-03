@@ -9,6 +9,7 @@ import RobotEvents from './parts/RobotEvents'
 import RobotActions from './parts/RobotActions'
 import RobotState from './parts/RobotState'
 import RobotConfig from './parts/RobotConfig'
+import RobotDependencies from './parts/RobotDependencies'
 
 const Robot = {
   ...RobotActions,
@@ -20,7 +21,8 @@ const Robot = {
   ...RobotPlugins,
   ...RobotUtils,
   ...RobotEvents,
-  ...RobotConfig
+  ...RobotConfig,
+  ...RobotDependencies
 }
 
 Robot.loadVoices()
