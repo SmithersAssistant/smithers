@@ -46,26 +46,39 @@ export default (robot, initialSteps = []) => {
         detailView: false,
         verboseMode: false,
         failed: false,
-        steps
+        steps,
+        ...this.props.state
       }
     },
     getDefaultProps () {
       return {
-        onFinished: robot.noop
+        onFinished: robot.noop,
+        onFailed: robot.noop,
+        done: false,
+        state: {}
       }
     },
+    componentWillReceiveProps ({state}) {
+      this.setState(state)
+    },
     componentDidMount () {
-      const {steps} = this.state
+      setTimeout(() => {
+        const {done} = this.props
 
-      initialSteps.map(step => {
-        steps.push(this.registerStep(step))
-      })
+        if (!done) {
+          const {steps} = this.state
 
-      this.setState({steps}, () => {
-        const step = steps.find(step => step.state === STATE_PENDING)
+          initialSteps.map(step => {
+            steps.push(this.registerStep(step))
+          })
 
-        if (step) {
-          this.startStep(step.id)
+          this.setState({steps}, () => {
+            const step = steps.find(step => step.state === STATE_PENDING)
+
+            if (step) {
+              this.startStep(step.id)
+            }
+          })
         }
       })
     },
@@ -107,6 +120,9 @@ export default (robot, initialSteps = []) => {
         showOutput: true,
         state: STATE_BUSY
       }), (step) => {
+        if (!step) {
+          return
+        }
         this.updateStep(id, (step) => ({
           ...step,
           startTime: window.performance.now()
@@ -148,6 +164,9 @@ export default (robot, initialSteps = []) => {
               ? err.message
               : err
             )
+            setTimeout(() => {
+              this.props.onFailed(this.state)
+            })
           })
       })
     },
@@ -195,7 +214,7 @@ export default (robot, initialSteps = []) => {
           this.startStep(step.id)
         } else {
           chain = chain.then(() => {
-            this.props.onFinished()
+            this.props.onFinished(this.state)
           })
         }
       })

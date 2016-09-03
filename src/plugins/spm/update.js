@@ -23,6 +23,15 @@ export default robot => {
   ])
 
   const Update = React.createClass({
+    getInitialState () {
+      return {
+        done: this.props.done,
+        state: {}
+      }
+    },
+    markAsDone (state) {
+      this.setState({ done: true, state })
+    },
     render () {
       let {plugin, ...other} = this.props
 
@@ -32,16 +41,20 @@ export default robot => {
           title={`Updating ${plugin}`}
         >
           <Stepper
+            done={this.state.done}
+            state={this.state.state}
             title={<span>Updating <em>{plugin.split(/[ /]/g).filter(x => !!x).pop()}</em></span>}
             plugin={plugin}
-            onFinished={() => {
+            onFinished={(state) => {
               if (window.confirm('Plugin has been updated, restart for the best experience')) {
                 setTimeout(() => {
                   other.removeCard()
                   window.location.reload()
                 }, 1500)
               }
+              this.markAsDone(state)
             }}
+            onFailed={(state) => this.markAsDone(state)}
           />
         </Blank>
       )

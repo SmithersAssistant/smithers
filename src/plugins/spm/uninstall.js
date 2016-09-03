@@ -17,6 +17,15 @@ export default robot => {
   ])
 
   const Uninstall = React.createClass({
+    getInitialState () {
+      return {
+        done: false,
+        state: {}
+      }
+    },
+    markAsDone (state) {
+      this.setState({ done: true, state })
+    },
     render () {
       let {plugin, ...other} = this.props
 
@@ -26,8 +35,12 @@ export default robot => {
           title={`Uninstalling ${plugin}`}
         >
           <Stepper
+            done={this.state.done}
+            state={this.state.state}
             title={<span>Uninstalling <em>{plugin.split(/[ /]/g).filter(x => !!x).pop()}</em></span>}
             plugin={plugin}
+            onFinished={(state) => this.markAsDone(state)}
+            onFailed={(state) => this.markAsDone(state)}
           />
         </Blank>
       )
