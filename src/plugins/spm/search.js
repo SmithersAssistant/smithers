@@ -9,7 +9,7 @@ const SEARCH_COMPONENT = 'com.robinmalfait.spm.search'
 export default robot => {
   const {Blank} = robot.cards
   const {A, StyleSheet, css, color, px} = robot.UI
-  const {TextField, Dialog} = robot.UI.material
+  const {TextField, Dialog, Checkbox} = robot.UI.material
 
   const gap = 16
   const styles = StyleSheet.create({
@@ -135,7 +135,11 @@ export default robot => {
       return {
         query: this.props.q,
         result: [],
-        active: undefined
+        active: undefined,
+        filters: {
+          installed: true,
+          notInstalled: true
+        }
       }
     },
     getDefaultProps () {
@@ -170,6 +174,21 @@ export default robot => {
       this.setState({query: value})
       this.search()
     },
+    applyFilters (items) {
+      return items.filter(item => {
+        const isInstalled = this.isInstalled(item.name)
+
+        if (isInstalled) {
+          return this.state.filters.installed
+            ? item
+            : undefined
+        }
+
+        return this.state.filters.notInstalled
+          ? item
+          : undefined
+      }).filter(x => !!x)
+    },
     renderItem (item) {
       return (
         <div>
@@ -199,10 +218,12 @@ export default robot => {
     },
     render () {
       const {...other} = this.props
-      const {query, result} = this.state
+      let {query, result} = this.state
       const props = robot.deleteProps(other, [
         'q'
       ])
+
+      result = this.applyFilters(result)
 
       return (
         <Blank
@@ -219,6 +240,34 @@ export default robot => {
             autoFocus
             fullWidth
           />
+
+          <div className={css(styles.filters)}>
+            <Checkbox
+              checked={this.state.filters.installed}
+              onCheck={(event, checked) => {
+                this.setState({
+                  filters: {
+                    ...this.state.filters,
+                    installed: checked
+                  }
+                })
+              }}
+              label='installed'
+            />
+            <Checkbox
+              checked={this.state.filters.notInstalled}
+              onCheck={(event, checked) => {
+                this.setState({
+                  filters: {
+                    ...this.state.filters,
+                    notInstalled: checked
+                  }
+                })
+              }}
+              label='not installed'
+            />
+          </div>
+
           <ul className={css(styles.wrapper)}>
             {result.map((item, i) => (
               <li key={i} className={css(styles.item)}>
@@ -245,7 +294,7 @@ export default robot => {
                   event.stopPropagation()
                   let found = false
                   let node = event.target
-                  while(node != event.currentTarget && !found) {
+                  while (node !== event.currentTarget && !found) {
                     if (node.tagName === 'A') {
                       found = true
                       break
