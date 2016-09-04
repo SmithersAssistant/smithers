@@ -62,6 +62,6 @@ module.exports = {
   },
   target: 'electron-renderer',
   externals: [nodeExternals({
-    whitelist: ['babel-polyfill', 'lodash', 'regenerator-runtime/runtime']
+    whitelist: ['babel-polyfill', 'regenerator-runtime/runtime']
   })]
 };
