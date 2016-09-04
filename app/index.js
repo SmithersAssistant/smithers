@@ -1,9 +1,11 @@
 const os = require('os');
-const {app, BrowserWindow, autoUpdater, ipcMain} = require('electron');
+const {app, BrowserWindow, autoUpdater} = require('electron');
+const menuFactory = require('./Menu');
 
 // Window Management
 let win;
 let updateAvailableMessageShown = false;
+const noop = () => {}
 
 const registerAutoUpdater = () => {
   // Auto Updater
@@ -30,19 +32,36 @@ const registerAutoUpdater = () => {
       win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_NOT_AVAILABLE')");
     });
 
-    ipcMain.on('CHECK_FOR_UPDATES', () => {
-      autoUpdater.checkForUpdates();
-    })
-
     this._checkUpdatesInterval = setInterval(() => {
       autoUpdater.checkForUpdates();
     }, 30000);
-  } else {
-    ipcMain.on('CHECK_FOR_UPDATES', () => {})
   }
 };
 
-const createWindow = () => {
+const _executeOnWindow = (cb) => {
+  if (win === undefined) {
+    createWindow({
+      onLoaded () {
+        cb()
+      }
+    })
+    return
+  }
+
+  cb()
+}
+
+const checkForUpdates = () => {
+  if (process.env.NODE_ENV !== 'development') {
+    _executeOnWindow(() => autoUpdater.checkForUpdates())
+  }
+}
+
+const openSettings = () => {
+  _executeOnWindow(() => win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('OPEN_SETTINGS')"))
+}
+
+const createWindow = ({onLoaded = noop} = {}) => {
   win = new BrowserWindow({
     width: 1000,
     height: 800,
@@ -59,16 +78,22 @@ const createWindow = () => {
 
   win.webContents.once("did-frame-finish-load", () => {
     autoUpdater.checkForUpdates();
+    onLoaded()
   })
 
   win.loadURL(`file://${__dirname}/index.html`);
 
   win.on('closed', () => {
-    win = null;
+    win = undefined;
+    clearInterval(this._checkUpdatesInterval);
   });
 };
 
 app.on('ready', () => {
+  menuFactory({
+    checkForUpdates,
+    openSettings
+  });
   createWindow();
   registerAutoUpdater();
 });
@@ -80,7 +105,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  if (win === null) {
+  if (win === undefined) {
     createWindow();
   };
 });

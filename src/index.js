@@ -3,7 +3,6 @@ import {webFrame, remote} from 'electron'
 import React from 'react'
 import {render} from 'react-dom'
 import config from 'config'
-import menuFactory from 'Menu'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {getThemePalette} from 'state'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
@@ -73,9 +72,6 @@ notifications.start()
 
 // Disable pinch zoom
 webFrame.setZoomLevelLimits(1, 1)
-
-// Render menu bar items
-menuFactory()
 
 // Render
 render((
