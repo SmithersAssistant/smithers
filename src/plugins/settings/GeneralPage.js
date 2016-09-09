@@ -1,5 +1,7 @@
 import React from 'react'
 import {remote, ipcRenderer} from 'electron'
+import config from 'config'
+import KeyboardRecorder from './KeyboardRecorder'
 const {app, autoUpdater} = remote
 
 const isDevMode = process.env.NODE_ENV === 'development'
@@ -81,7 +83,7 @@ export default (robot) => {
 
       return (
         <Collection>
-          <CollectionItem>
+          <CollectionItem className='clearfix'>
             Current version: v{app.getVersion()}
             <Button disabled={isDevMode} className='right' onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
@@ -92,13 +94,25 @@ export default (robot) => {
               )}</span>
             ) : (<span className='right breathing' style={{color: '#ccc'}}>no update available</span>)}
           </CollectionItem>
-          <CollectionItem>
+          <CollectionItem className='clearfix'>
             <Checkbox
               label='Show tabs'
               labelPosition='left'
               onCheck={(e, isChecked) => isChecked ? robot.showTabs() : robot.hideTabs()}
               checked={window.state().tabs.visible}
             />
+          </CollectionItem>
+          <CollectionItem className='clearfix'>
+            Smithers Hotkey
+            <div className='right'>
+              <KeyboardRecorder
+                shortcut={config.get('keyboardShortcuts.toggleWindow', 'Alt+S')}
+                onDone={(combination) => {
+                  config.set('keyboardShortcuts.toggleWindow', combination)
+                  ipcRenderer.send('register_all_shortcuts', JSON.stringify(config.get('keyboardShortcuts')))
+                }}
+              />
+            </div>
           </CollectionItem>
         </Collection>
       )

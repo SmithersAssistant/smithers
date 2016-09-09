@@ -19,6 +19,9 @@ class Config {
       plugins: {
         local: [],
         external: []
+      },
+      keyboardShortcuts: {
+        toggleWindow: 'Alt+S'
       }
     }
   }
