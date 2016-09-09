@@ -81,8 +81,6 @@ ipcMain.on('unregister_all_shortcuts', (event) => {
 })
 
 ipcMain.on('register_all_shortcuts', (event, shortcuts) => {
-  console.log(shortcuts)
-
   registerShortcuts(
     shortcuts
       ? JSON.parse(shortcuts)
