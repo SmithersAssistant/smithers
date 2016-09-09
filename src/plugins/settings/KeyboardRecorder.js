@@ -259,7 +259,7 @@ const KeyboardRecorder = React.createClass({
     return (
       <div>
         <div
-          className={css(styles.keyboard, recording && styles.recording, styles[state])}
+          className={[styles.keyboard, recording && styles.recording, styles[state]].filter(x => !!x).map(x => css(x)).join(' ')}
           onClick={() => {
             !recording
               ? this.startRecording()
