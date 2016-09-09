@@ -1,40 +1,7 @@
-export const deleteProps = (component, toBeDeleted) => {
-  let returnProps = {
-    ...component
-  }
+import deleteProps from './deleteProps'
+import fuzzysearch from './fuzzysearch'
 
-  toBeDeleted.forEach(prop => {
-    delete returnProps[prop]
-  })
-
-  return returnProps
-}
-
-/**
- * Copyright https://github.com/bevacqua/fuzzysearch
- */
-export const fuzzysearch = (needle, haystack) => {
-  var hlen = haystack.length
-  var nlen = needle.length
-
-  if (nlen > hlen) {
-    return false
-  }
-
-  if (nlen === hlen) {
-    return needle === haystack
-  }
-
-  outer: for (var i = 0, j = 0; i < nlen; i++) { // eslint-disable-line no-labels
-    var nch = needle.charCodeAt(i)
-    while (j < hlen) {
-      if (haystack.charCodeAt(j++) === nch) {
-        continue outer // eslint-disable-line no-labels
-      }
-    }
-
-    return false
-  }
-
-  return true
+export {
+  deleteProps,
+  fuzzysearch
 }
