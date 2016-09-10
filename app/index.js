@@ -102,6 +102,7 @@ const createWindow = ({onLoaded = noop} = {}) => {
 
   win.on('ready-to-show', () => {
     win.show()
+    win.webContents.openDevTools()
   })
 
   win.webContents.once("did-frame-finish-load", () => {
@@ -112,8 +113,8 @@ const createWindow = ({onLoaded = noop} = {}) => {
   win.loadURL(`file://${__dirname}/index.html`)
 
   win.on('closed', () => {
-    win = undefined
     clearInterval(this._checkUpdatesInterval)
+    win = undefined
   })
 }
 

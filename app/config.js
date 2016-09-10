@@ -1,9 +1,13 @@
 const {resolve} = require('path')
 const {writeFile, existsSync, readFileSync} = require('fs')
-const {app} = require('electron')
+const {app, ipcMain} = require('electron')
 const _ = require('lodash')
+const mkdirp = require('mkdirp')
 
 const CONFIG_PATH = resolve(app.getPath('userData'), 'user.config.json')
+const PLUGINS_PATH = resolve(app.getPath('userData'), 'plugins')
+
+mkdirp(PLUGINS_PATH)
 
 const persist = () => {
   writeFile(CONFIG_PATH, JSON.stringify(config, null, '  '))
@@ -47,6 +51,23 @@ const set = (key, value) => {
 
   persist()
 }
+
+ipcMain.on('config:get', (event, key, defaultValue) => {
+  event.returnValue = get(key, defaultValue)
+})
+
+ipcMain.on('config:set', (event, key, value) => {
+  set(key, value)
+  event.returnValue = true
+})
+
+ipcMain.on('config:getConfigPath', (event) => {
+  event.returnValue = CONFIG_PATH
+})
+
+ipcMain.on('config:getPluginPath', (event) => {
+  event.returnValue = PLUGINS_PATH
+})
 
 module.exports = {
   get,

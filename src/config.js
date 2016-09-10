@@ -1,67 +1,16 @@
-import fs from 'fs'
-import {resolve} from 'path'
-import {remote} from 'electron'
-import _ from 'lodash'
-import mkdirp from 'mkdirp'
+import {ipcRenderer} from 'electron'
 
-const {app} = remote
-const CONFIG_PATH = resolve(app.getPath('userData'), 'user.config.json')
-const PLUGINS_PATH = resolve(app.getPath('userData'), 'plugins')
-
-class Config {
-  constructor () {
-    this.config = this.loadConfig()
-    mkdirp(PLUGINS_PATH)
-  }
-
-  defaultConfig () {
-    return {
-      plugins: {
-        local: [],
-        external: []
-      },
-      keyboardShortcuts: {
-        toggleWindow: 'Alt+S'
-      }
-    }
-  }
-
-  get (key, defaultValue) {
-    return _.get(this.config, key, defaultValue)
-  }
-
-  set (key, value) {
-    this.config = _.set(this.config, key, value)
-    this.persist()
-  }
-
+export default {
   getConfigPath () {
-    return CONFIG_PATH
-  }
-
+    return ipcRenderer.sendSync('config:getConfigPath')
+  },
   getExternalPluginsPath () {
-    return PLUGINS_PATH
-  }
-
-  loadConfig () {
-    if (fs.existsSync(CONFIG_PATH)) {
-      const config = fs.readFileSync(CONFIG_PATH, 'utf8')
-      try {
-        return JSON.parse(config)
-      } catch (e) {
-        console.error(`ERROR\n  Could not load config file (${CONFIG_PATH})\n  Check the file, and see what's going on`)
-        window.Robot.notify('Could not load config file')
-        return this.defaultConfig()
-      }
-    }
-
-    fs.writeFile(CONFIG_PATH, JSON.stringify(this.defaultConfig(), null, '  '))
-    return this.defaultConfig()
-  }
-
-  persist () {
-    fs.writeFile(CONFIG_PATH, JSON.stringify(this.config, null, '  '))
+    return ipcRenderer.sendSync('config:getPluginPath')
+  },
+  get (key, defaultValue) {
+    return ipcRenderer.sendSync('config:get', key, defaultValue)
+  },
+  set (key, value) {
+    ipcRenderer.sendSync('config:set', key, value)
   }
 }
-
-export default new Config()
