@@ -1,12 +1,12 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import styles from './styles'
+import {withStyles} from 'components/functions'
 
 import {
   EXTERNAL_PLUGIN
 } from 'pluginSystem/sources'
 
-export default ({robot}) => {
+export default withStyles(styles)(({styles, robot}) => {
   const {
     A,
     Collection,
@@ -22,10 +22,10 @@ export default ({robot}) => {
           {externalPlugins.map((plugin, i) => (
             <CollectionItem
               key={i}
-              className={css(styles.pluginItem)}
+              className={styles.pluginItem}
             >
               {plugin.name}
-              <span className={css(styles.info)}>(v{plugin.version})</span>
+              <span className={styles.info}>(v{plugin.version})</span>
             </CollectionItem>
           ))}
         </Collection>
@@ -34,4 +34,4 @@ export default ({robot}) => {
       )}
     </div>
   )
-}
+})

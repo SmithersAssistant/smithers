@@ -1,5 +1,4 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import styles from './AppStyles'
 
 import Navbar from './layout/NavbarContainer'
@@ -8,8 +7,9 @@ import Tabs from './layout/TabsContainer'
 
 import store from 'store'
 import {areTabsVisible} from 'state'
+import {withStyles, classNames} from 'components/functions'
 
-export default React.createClass({
+const App = React.createClass({
   getInitialState () {
     return {
       visibleTabs: areTabsVisible()
@@ -24,12 +24,13 @@ export default React.createClass({
     this._unsubscribe()
   },
   render () {
+    let {styles} = this.props
     let {visibleTabs} = this.state
 
     return (
-      <div className={css(styles.bodyStyles)}>
+      <div className={styles.bodyStyles}>
         <Navbar />
-        <div className={css(styles.contentStyles, visibleTabs ? undefined : styles.scrollBar)}>
+        <div className={classNames(styles.contentStyles, visibleTabs ? undefined : styles.scrollBar)}>
           <Tabs />
         </div>
         <Tools />
@@ -37,3 +38,5 @@ export default React.createClass({
     )
   }
 })
+
+export default withStyles(styles)(App)

@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {theme, px, rgba} from 'styles/theme'
-
-export default StyleSheet.create({
+export default ({theme, px, rgba}) => ({
   collectionStyles: {
     display: 'block',
     listStyleType: 'none',

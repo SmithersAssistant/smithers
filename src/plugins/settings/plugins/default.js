@@ -1,12 +1,12 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import styles from './styles'
+import {withStyles} from 'components/functions'
 
 import {
   DEFAULT_PLUGIN
 } from 'pluginSystem/sources'
 
-export default ({state, setState, robot}) => {
+export default withStyles(styles)(({styles, state, setState, robot}) => {
   const {
     Collection,
     CollectionItem
@@ -20,14 +20,14 @@ export default ({state, setState, robot}) => {
         {defaultPlugins.map((plugin, i) => (
           <CollectionItem
             key={i}
-            className={css(styles.pluginItem)}
+            className={styles.pluginItem}
           >
             {plugin.name}
 
-            <span className={css(styles.info)}>(v{plugin.version})</span>
+            <span className={styles.info}>(v{plugin.version})</span>
           </CollectionItem>
         ))}
       </Collection>
     </div>
   )
-}
+})

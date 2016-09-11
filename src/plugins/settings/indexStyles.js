@@ -1,7 +1,4 @@
-import {theme} from 'styles/theme'
-import {StyleSheet} from 'aphrodite'
-
-export default StyleSheet.create({
+export default ({ theme, important }) => ({
   tabs: {
     borderTop: 'none',
     backgroundColor: 'white',
@@ -30,7 +27,7 @@ export default StyleSheet.create({
     color: 'black'
   },
   saveButtonStyles: {
-    position: 'absolute',
+    position: important('absolute'),
     right: 48,
     top: 0
   }

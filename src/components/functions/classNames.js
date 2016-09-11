@@ -1,3 +1,5 @@
+import flatten from 'lodash/flattenDeep'
+
 export default (...classNames) => {
-  return classNames.filter(x => !!x).join(' ')
+  return (flatten(classNames)).filter(x => !!x).join(' ')
 }

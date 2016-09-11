@@ -1,53 +1,24 @@
 import React from 'react'
 import Base from './Base'
-import {StyleSheet, css} from 'aphrodite'
-import {cardStyles, itemStyles} from './_styles'
+import styles from './_styles'
+import {withStyles, classNames} from 'components/functions'
 
-const cardImagesStyles = {
-  margin: 0,
-  padding: 0
-}
-
-const gap = 10
-
-const styles = StyleSheet.create({
-  imagesStyles: {
-    lineHeight: 0,
-    columnCount: 5,
-    columnGap: gap,
-    '@media (max-width: 1200px)': {
-      columnCount: 4
-    },
-    '@media (max-width: 1000px)': {
-      columnCount: 3
-    },
-    '@media (max-width: 800px)': {
-      columnCount: 2
-    },
-    '@media (max-width: 400px)': {
-      columnCount: 1
-    }
-  }
-})
-
-const imgStyles = {
-  width: '100%',
-  height: 'auto',
-  margin: [(gap / 2), 0].map(i => `${i}px`).join(' ')
-}
-
-const Images = ({title, images, ...other}) => (
-  <Base {...other} title={title} style={{...cardStyles, ...itemStyles}}>
-    <ul style={cardImagesStyles}>
-      <div className={css(styles.imagesStyles)}>
+const Images = ({title, images, className, styles, ...other}) => (
+  <Base
+    {...other}
+    title={title}
+    className={classNames(styles.cardStyles, styles.itemStyles, className)}
+  >
+    <ul className={styles.cardImagesStyles}>
+      <div className={styles.imagesStyles}>
         {images && images.map((img, i) => {
           return typeof img === 'string'
-            ? <img style={imgStyles} key={i} src={img} />
-            : <img style={imgStyles} key={i} alt={img.title} title={img.title} src={img.src} />
+            ? <img className={styles.imgStyles} key={i} src={img} />
+            : <img className={styles.imgStyles} key={i} alt={img.title} title={img.title} src={img.src} />
         })}
       </div>
     </ul>
   </Base>
 )
 
-export default Images
+export default withStyles(styles)(Images)

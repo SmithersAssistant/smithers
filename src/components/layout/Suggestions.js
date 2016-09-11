@@ -72,7 +72,7 @@ const Suggestions = React.createClass({
     let {currentSuggestion, suggestions, resolved} = this.state
 
     return (!(resolved && suggestions.length <= 0)) && (
-      <Collection externalStyles={externalStyles}>
+      <Collection className={externalStyles}>
         {title && (
           <CollectionItem>
             <strong>{title.toUpperCase()}</strong>
@@ -94,7 +94,7 @@ const Suggestions = React.createClass({
           return (
             <CollectionItem
               key={`suggestion_${i}`}
-              externalStyles={itemStyles}
+              className={itemStyles}
               scrollIntoView={isActive}
               onClick={() => onSelect(suggestion, i)}
             >{isActive && <Icon icon='angle-double-right' />} {suggestion.value || suggestion}</CollectionItem>

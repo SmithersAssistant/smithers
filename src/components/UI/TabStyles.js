@@ -1,9 +1,6 @@
-import {StyleSheet} from 'aphrodite'
-import {theme, color, rgba, px} from 'styles/theme'
-
 const tabBorderSize = 2
 
-export default StyleSheet.create({
+export default ({theme, color, rgba, px}) => ({
   tab: {
     position: 'relative',
     display: 'inline-block',

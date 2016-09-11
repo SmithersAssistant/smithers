@@ -1,7 +1,7 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import {shell} from 'electron'
 import styles from './AStyles'
+import {withStyles, classNames} from 'components/functions'
 const noop = () => {}
 
 const A = React.createClass({
@@ -18,12 +18,16 @@ const A = React.createClass({
   },
 
   render () {
-    const {externalStyles, className = '', children, ...other} = this.props
+    const {styles, className, children, ...other} = this.props
 
     return (
-      <a className={`${className} ${css(styles().a, externalStyles)}`} {...other} onClick={this.handleOnClick}>{children}</a>
+      <a
+        {...other}
+        className={classNames(styles.a, className)}
+        onClick={this.handleOnClick}
+      >{children}</a>
     )
   }
 })
 
-export default A
+export default withStyles(styles)(A)

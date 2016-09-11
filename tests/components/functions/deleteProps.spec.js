@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
-import {deleteProps} from '../../../src/components/functions/index';
+import deleteProps from '../../../src/components/functions/deleteProps';
 
 export default () => {
   describe('deleteProps', () => {

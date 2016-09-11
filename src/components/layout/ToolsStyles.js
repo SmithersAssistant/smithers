@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {color, rgba, theme, px} from 'styles/theme'
-
-export default StyleSheet.create({
+export default ({color, rgba, theme, px}) => ({
   toolbar: {
     borderTop: `1px solid ${color('grey', 300)}`,
     backgroundColor: `${rgba(color('grey', 300), 0.6)}`,

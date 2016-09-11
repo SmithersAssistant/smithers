@@ -1,11 +1,9 @@
 import React from 'react'
-import {css} from 'aphrodite'
-import {deleteProps} from '../functions'
 import {SortableElement} from 'react-sortable-hoc'
 import styles from './TabStyles'
-import flatten from 'lodash/flatten'
+import {withStyles, classNames, deleteProps} from 'components/functions'
 
-export const TabHolder = ({
+export const TabHolder = withStyles(styles)(({
   externalStyles,
   externalStylesActive,
   externalAnchorStyles,
@@ -14,6 +12,8 @@ export const TabHolder = ({
   isActive,
   onClick,
   scrollIntoView = false,
+  styles,
+  className,
   ...other
 }) => {
   const otherProps = deleteProps(other, [
@@ -24,12 +24,12 @@ export const TabHolder = ({
     <li
       ref={e => scrollIntoView ? (e !== null && isActive ? e.scrollIntoView({block: 'end', behavior: 'smooth'}) : null) : null}
       {...otherProps}
-      className={css(...flatten([
-        styles.tab,
-        isActive ? styles.tabActive : undefined,
-        externalStyles !== undefined ? externalStyles : undefined,
-        externalStylesActive !== undefined && isActive ? externalStylesActive : undefined
-      ]))}
+      className={classNames(
+        styles.tab, isActive ? styles.tabActive : undefined,
+        externalStyles,
+        externalStylesActive !== undefined && isActive ? externalStylesActive : undefined,
+        className
+      )}
     >
       <a
         onClick={(e) => {
@@ -39,16 +39,16 @@ export const TabHolder = ({
           return false
         }}
         href='#'
-        className={css(...flatten([
+        className={classNames(
           styles.a,
           isActive ? styles.aActive : undefined,
           externalAnchorStyles,
           isActive ? externalAnchorStylesActive : undefined
-        ]))}
+        )}
       >{item.props.label}</a>
     </li>
   )
-}
+})
 
 export const SortableItem = SortableElement((props) => <TabHolder {...props} />)
 

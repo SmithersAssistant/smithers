@@ -1,14 +1,14 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import {sep} from 'path'
 import {homedir} from 'os'
 import styles from './styles'
+import {withStyles} from 'components/functions'
 
 import {
   LOCAL_PLUGIN
 } from 'pluginSystem/sources'
 
-export default ({robot}) => {
+export default withStyles(styles)(({styles, robot}) => {
   const {
     Collection,
     CollectionItem
@@ -21,9 +21,9 @@ export default ({robot}) => {
       {localPlugins.length > 0 ? (
         <Collection>
           {localPlugins.map((plugin, i) => (
-            <CollectionItem className={css(styles.pluginItem)} key={i}>
+            <CollectionItem className={styles.pluginItem} key={i}>
               {plugin.name}
-              <span className={css(styles.info)}>(v{plugin.version})</span>
+              <span className={styles.info}>(v{plugin.version})</span>
             </CollectionItem>
           ))}
         </Collection>
@@ -37,4 +37,4 @@ export default ({robot}) => {
       )}
     </div>
   )
-}
+})

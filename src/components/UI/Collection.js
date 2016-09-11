@@ -1,28 +1,22 @@
 import React from 'react'
-import cx from 'classnames'
-import {css} from 'aphrodite'
+import {withStyles, classNames} from 'components/functions'
 import styles from './CollectionStyles'
-import flatten from 'lodash/flatten'
 
-const styleMerger = (...styles) => {
-  return css(...flatten(styles))
-}
+const styleMe = withStyles(styles)
 
-export const Collection = ({externalStyles, className = false, ...other}) => (
-  <ul {...other} className={cx({
-    [styleMerger(styles.collectionStyles, externalStyles)]: true,
-    [className]: className
-  })} />
-)
+export const Collection = styleMe(({styles, className = false, ...other}) => (
+  <ul
+    {...other}
+    className={classNames(styles.collectionStyles, className)}
+  />
+))
 
-export const CollectionItem = ({externalStyles, className = false, scrollIntoView = false, ...other}) => (
+export const CollectionItem = styleMe(({styles, className = false, scrollIntoView = false, ...other}) => (
   <li
     {...other}
     ref={e => e !== null && scrollIntoView ? e.scrollIntoView(false) : null}
-    className={cx({
-      [styleMerger(styles.collectionItemStyles, externalStyles)]: true,
-      [className]: className
-    })} />
-)
+    className={classNames(styles.collectionItemStyles, className)}
+  />
+))
 
 export default Collection

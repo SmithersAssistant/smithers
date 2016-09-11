@@ -1,7 +1,7 @@
 import React from 'react'
 import Toolbar from '../Toolbar'
 
-const Base = ({__CARD_ID__, removeCard, children, title, actions, ...other}) => {
+const Base = ({ removeCard, children, title, actions, ...other }) => {
   return (
     <div {...other}>
       <Toolbar

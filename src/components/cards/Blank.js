@@ -1,11 +1,16 @@
 import React from 'react'
 import Base from './Base'
-import {cardStyles, itemStyles} from './_styles'
+import styles from './_styles'
+import {withStyles, classNames} from 'components/functions'
 
-const Blank = ({children, title, style = {}, ...other}) => (
-  <Base {...other} title={title} style={{...cardStyles, ...itemStyles, ...style}}>
+const Blank = ({styles, children, title, className, ...other}) => (
+  <Base
+    {...other}
+    title={title}
+    className={classNames(styles.cardStyles, styles.itemStyles, className)}
+  >
     {children}
   </Base>
 )
 
-export default Blank
+export default withStyles(styles)(Blank)

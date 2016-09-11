@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {theme, lighten, color} from '../../styles/theme'
-
-export default StyleSheet.create({
+export default ({theme, lighten, color}) => ({
   headerStyles: {
     height: theme.headerOffset,
     WebkitAppRegion: 'drag',

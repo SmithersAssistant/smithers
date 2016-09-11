@@ -14,11 +14,16 @@ import PinToBottom from 'components/UI/PinToBottom'
 import {StyleSheet, css} from 'aphrodite'
 import * as material from 'material-ui'
 
+import {withStyles, classNames} from 'components/functions'
+
 export default {
   UI: {
     ...theme,
     theme: theme.theme,
     colors,
+
+    withStyles,
+    classNames,
 
     material,
 

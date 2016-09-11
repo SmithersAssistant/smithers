@@ -1,9 +1,8 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import Event, {FOCUS_INPUT, PUT_INPUT} from 'Event'
 import styles from './NavbarStyles'
 import flatMap from 'lodash/flatMap'
-import {fuzzysearch} from 'components/functions'
+import {fuzzysearch, withStyles} from 'components/functions'
 import debounce from 'lodash/debounce'
 import {areTabsVisible} from 'state'
 import Suggestions from './Suggestions'
@@ -103,13 +102,14 @@ const Navbar = React.createClass({
   },
 
   parseUsage ({usage, arguments: args, optionals}) {
+    const {styles} = this.props
     let result = usage.split(' ')
 
     if (args.length > 0) {
       args.forEach(arg => {
         result = result.map(item => {
           if (item === arg.match) {
-            return <span className={css(styles.argument)}>{arg.humanized}</span>
+            return <span className={styles.argument}>{arg.humanized}</span>
           }
 
           return item
@@ -121,7 +121,7 @@ const Navbar = React.createClass({
       optionals.forEach(arg => {
         result = result.map(item => {
           if (item === arg.match) {
-            return <span className={css(styles.optional)}>{arg.humanized}</span>
+            return <span className={styles.optional}>{arg.humanized}</span>
           }
 
           return item
@@ -335,10 +335,16 @@ const Navbar = React.createClass({
 
   selectInputText () {
     const input = this.getInput()
-    input && input.setSelectionRange(isTextSelected(input) ? input.value.length : 0, input.value.length)
+    input && input.setSelectionRange(
+      isTextSelected(input)
+        ? input.value.length
+        : 0,
+      input.value.length
+    )
   },
 
   renderVariables () {
+    const {styles} = this.props
     const {suggestion, variables} = this.state
 
     if (!suggestion) {
@@ -395,16 +401,17 @@ const Navbar = React.createClass({
   },
 
   render () {
+    const {styles} = this.props
     const {suggestions, showVariables} = this.state
 
     return (
-      <div className={css(styles.headerStyles)} onClick={() => this.getInput().focus()}>
-        <div className={css(styles.inputWrapperStyles)}>
-          <div className={css(styles.inputIconStyles)}>
+      <div className={styles.headerStyles} onClick={() => this.getInput().focus()}>
+        <div className={styles.inputWrapperStyles}>
+          <div className={styles.inputIconStyles}>
             <Icon icon='terminal' />
           </div>
           <input
-            className={css(styles.inputStyles)}
+            className={styles.inputStyles}
             onKeyDown={this.handleKeyDown}
             onKeyUp={this.handleKeyUp}
             onChange={(e) => {
@@ -436,4 +443,4 @@ const Navbar = React.createClass({
   }
 })
 
-export default Navbar
+export default withStyles(styles)(Navbar)

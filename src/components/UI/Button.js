@@ -1,13 +1,10 @@
 import React from 'react'
-import {css} from 'aphrodite'
-import {theme, color as getColor} from 'styles/theme'
-import cx from 'classnames'
 import styles from './ButtonStyles'
-import MaterialFlatButton from 'material-ui/FlatButton/FlatButton'
 import TouchRipple from 'material-ui/internal/TouchRipple'
+import {withStyles, classNames} from 'components/functions'
+import {getPrimaryColor} from 'state'
 
 export const ButtonColors = {
-  THEME: '__THEME__',
   AMBER: 'amber',
   BLUE_GREY: 'blueGrey',
   BLUE_GRAY: 'blueGray',
@@ -31,26 +28,15 @@ export const ButtonColors = {
   YELLOW: 'yellow'
 }
 
-const Button = ({color = ButtonColors.THEME, children, className, ...other}) => (
-  <button {...other} className={cx({
-    [`${css(styles().button)}`]: true,
-    [`${css(styles(color === ButtonColors.THEME ? theme.primaryColor : color).buttonColor)}`]: true,
-    [className]: className !== undefined
-  })}>
-    <TouchRipple>{children}</TouchRipple>
-  </button>
-)
+const Button = ({styles, color = getPrimaryColor(), className, children, ...other}) => {
+  return (
+    <button
+      {...other}
+      className={classNames(styles.button, styles[`buttonColor_${color}`], className)}
+    >
+      <TouchRipple>{children}</TouchRipple>
+    </button>
+  )
+}
 
-export const FlatButton = ({disabled = false, color = ButtonColors.THEME, children, ...other}) => (
-  <MaterialFlatButton
-    disabled={disabled}
-    {...other}
-    style={disabled ? {} : {
-      color: getColor(color === ButtonColors.THEME ? theme.primaryColor : color)
-    }}
-  >
-    {children}
-  </MaterialFlatButton>
-)
-
-export default Button
+export default withStyles(styles)(Button)

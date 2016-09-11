@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {theme, color} from 'styles/theme'
-
-export default () => StyleSheet.create({
+export default ({ theme, color }) => ({
   a: {
     color: color(theme.primaryColor, 500),
     textDecoration: 'none',

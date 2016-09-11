@@ -1,13 +1,10 @@
 import React from 'react'
-import cx from 'classnames'
+import {classNames} from 'components/functions'
 
 const Icon = ({icon, className, ...other}) => (
   <span
     {...other}
-    className={cx({
-      [`fa fa-${icon}`]: true,
-      [className]: !!className
-    })}
+    className={classNames(`fa fa-${icon}`, className)}
   />
 )
 

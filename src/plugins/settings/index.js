@@ -1,5 +1,4 @@
 import React from 'react'
-import {css} from 'aphrodite'
 import styles from './indexStyles'
 
 import IconButton from 'material-ui/IconButton/IconButton'
@@ -17,6 +16,9 @@ export default robot => {
   const {
     theme,
 
+    withStyles,
+    classNames,
+
     Tabs,
     Tab
   } = robot.UI
@@ -25,7 +27,7 @@ export default robot => {
   const ThemePage = themePage(robot)
   const PluginsPage = pluginsPage(robot)
 
-  const Settings = React.createClass({
+  const Settings = withStyles(styles)(React.createClass({
     getInitialState () {
       return {
         activePage: 0,
@@ -50,6 +52,8 @@ export default robot => {
       }
     },
     pages () {
+      const {styles} = this.props
+
       return [{
         label: 'General',
         body: (
@@ -99,10 +103,15 @@ export default robot => {
       }]
     },
     render () {
+      const {styles, ...other} = this.props
+
       return (
-        <Blank {...this.props} title='Settings'>
+        <Blank
+          {...other}
+          title='Settings'
+        >
           <Tabs
-            externalStyles={[styles.tabs, styles.tabsInBar]}
+            externalStyles={classNames(styles.tabs, styles.tabsInBar)}
             selectedIndex={this.state.activePage}
             disableSorting
           >
@@ -120,7 +129,7 @@ export default robot => {
           </Tabs>
 
           <IconButton
-            className={css(styles.saveButtonStyles)}
+            className={styles.saveButtonStyles}
             onClick={() => {
               robot.notify('Saved settings!')
 
@@ -130,7 +139,7 @@ export default robot => {
         </Blank>
       )
     }
-  })
+  }))
 
   robot.registerComponent(Settings, SETTINGS_COMPONENT)
 

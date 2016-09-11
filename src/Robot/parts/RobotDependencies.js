@@ -1,6 +1,5 @@
 import React from 'react'
 import aphrodite from 'aphrodite'
-import classnames from 'classnames'
 import co from 'co'
 import color from 'color'
 import lodash from 'lodash'
@@ -13,7 +12,6 @@ export default {
   dependencies: {
     React,
     aphrodite,
-    classnames,
     co,
     color,
     lodash,

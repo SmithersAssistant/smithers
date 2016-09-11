@@ -1,16 +1,13 @@
 import React from 'react'
-import cx from 'classnames'
-import {css} from 'aphrodite'
-import {deleteProps} from '../functions'
 import styles from './TabsStyles'
 import {TabHolder, SortableItem} from './Tab'
-import flatten from 'lodash/flatten'
+import {withStyles, classNames, deleteProps} from 'components/functions'
 
 import {SortableContainer} from 'react-sortable-hoc'
 
 const noop = () => null
 
-const TabsHolder = ({externalStyles, headers, ...rest}) => {
+const TabsHolder = withStyles(styles)(({externalStyles, styles, headers, ...rest}) => {
   const other = deleteProps(rest, [
     'onActive', 'onSortEnd', 'onSortMove', 'onSortStart',
     'pressDelay', 'lockToContainerEdges', 'axis', 'lockAxis',
@@ -22,14 +19,14 @@ const TabsHolder = ({externalStyles, headers, ...rest}) => {
   return (
     <ul
       {...other}
-      className={css(...flatten([styles.tabsBar, externalStyles]))}
+      className={classNames(styles.tabsBar, externalStyles)}
     >{headers}</ul>
   )
-}
+})
 
 const SortableList = SortableContainer((props) => (<TabsHolder {...props} />))
 
-export const Tabs = React.createClass({
+export const Tabs = withStyles(styles)(React.createClass({
   getDefaultProps () {
     return {
       onActive: noop,
@@ -57,6 +54,7 @@ export const Tabs = React.createClass({
       onSortMove,
       onSortEnd,
       pressDelay,
+      styles,
       ...other
     } = this.props
     let headers = []
@@ -90,10 +88,7 @@ export const Tabs = React.createClass({
       panels.push(
         <div
           key={i}
-          className={cx({
-            [css(styles.tabsPane)]: true,
-            [css(styles.tabsPaneActive)]: isActive
-          })}
+          className={classNames(styles.tabsPane, isActive ? styles.tabsPaneActive : undefined)}
         >
           {item}
         </div>
@@ -118,11 +113,11 @@ export const Tabs = React.createClass({
             lockToContainerEdges
             axis='x'
             lockAxis='x'
-            helperClass={css(styles.tab)}
+            helperClass={styles.tab}
           />
         )}
         {panels}
       </div>
     )
   }
-})
+}))

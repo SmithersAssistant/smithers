@@ -1,6 +1,5 @@
 // Dependencies
 import React from 'react'
-import {css} from 'aphrodite'
 import styles from './TabsStyles'
 import {remote} from 'electron'
 const {Menu} = remote
@@ -11,6 +10,8 @@ import Main from 'components/Main'
 // UI Elements
 import {Tabs as TabsHolder} from 'components/UI/Tabs'
 import {Tab} from 'components/UI/Tab'
+
+import {withStyles} from 'components/functions'
 
 const triggerMouseEvent = (node, eventType) => {
   const clickEvent = document.createEvent('MouseEvents')
@@ -25,7 +26,7 @@ const hackMouseDown = (targetNode) => {
   triggerMouseEvent(targetNode, 'click')
 }
 
-const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, removeTabsToTheLeft, removeTabsToTheRight, removeOtherTabs, activeTab, activateTab, focusInput, editTab, saveCardStates}) => {
+const Tabs = ({styles, tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, removeTabsToTheLeft, removeTabsToTheRight, removeOtherTabs, activeTab, activateTab, focusInput, editTab, saveCardStates}) => {
   const onTabHolderContextMenu = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -112,7 +113,7 @@ const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, remove
           key={tab.id}
           label={tab.title}
         >
-          <div className={css(styles.outputStyles)}>
+          <div className={styles.outputStyles}>
             <Main
               cards={tab.cards}
               saveCardStates={saveCardStates}
@@ -124,4 +125,4 @@ const Tabs = ({tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, remove
   )
 }
 
-export default Tabs
+export default withStyles(styles)(Tabs)

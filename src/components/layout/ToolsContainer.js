@@ -9,7 +9,9 @@ import {clearCards} from 'actions/index'
 import Tools from './Tools'
 
 const currentTab = (active, cards, visible) => {
-  return visible ? cards.filter(card => card.relation === active) : cards
+  return visible
+    ? cards.filter(card => card.relation === active)
+    : cards
 }
 
 const currentTabHasCards = (active, cards, visible) => {

@@ -5,135 +5,14 @@ import marked from 'marked'
 import {shell} from 'electron'
 import md5 from 'md5'
 import getPackageReadme from 'get-package-readme'
+import styles from './searchStyles'
 
 const SEARCH_COMPONENT = 'com.robinmalfait.spm.search'
 
 export default robot => {
   const {Blank} = robot.cards
-  const {A, StyleSheet, css, color, px} = robot.UI
+  const {A, withStyles} = robot.UI
   const {TextField, Dialog, Checkbox} = robot.UI.material
-
-  const gap = 16
-  const styles = StyleSheet.create({
-    wrapper: {
-      margin: 0,
-      marginTop: 20 + gap,
-      padding: 0,
-      columnCount: 3,
-      columnGap: gap,
-      '@media (max-width: 1200px)': {
-        columnCount: 2
-      },
-      '@media (max-width: 800px)': {
-        columnCount: 1
-      }
-    },
-    clean: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: gap,
-      pointerEvents: 'none',
-      border: '1px solid #d9d9d9'
-    },
-    item: {
-      listStyle: 'none',
-      position: 'relative',
-      pageBreakInside: 'avoid',
-      WebkitColumnBreakInside: 'avoid',
-      breakInside: 'avoid',
-      paddingBottom: gap
-    },
-    contents: {
-      padding: gap
-    },
-    title: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      height: 49,
-      borderBottom: `1px solid ${color('grey', 200)}`,
-      color: 'rgba(0, 0, 0, 0.541176)',
-      fontSize: 14,
-      fontWeight: 500,
-      lineHeight: px(48),
-      paddingLeft: gap
-    },
-    description: {
-      marginTop: 0
-    },
-    keywords: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      width: '100%',
-      display: 'inline-block',
-      height: 22,
-      whiteSpace: 'nowrap'
-    },
-    keyword: {
-      color: color('grey'),
-      padding: px(4, 2),
-      fontSize: 12,
-      marginRight: 3,
-      display: 'inline-block',
-      ':hover': {
-        color: color('grey', 400)
-      }
-    },
-    authorImage: {
-      width: 24,
-      height: 24,
-      backgroundColor: color('grey'),
-      lineHeight: px(24),
-      marginRight: gap / 2,
-      verticalAlign: 'middle',
-      borderRadius: '50%'
-    },
-    actions: {
-      position: 'absolute',
-      right: 16,
-      bottom: 36,
-      paddingLeft: 3,
-      backgroundColor: 'white'
-    },
-    action: {
-      backgroundColor: color('grey', 100),
-      padding: px(4, 8),
-      fontSize: 12,
-      marginRight: 3,
-      borderRadius: 2,
-      display: 'inline-block',
-      float: 'right'
-    },
-    version: {
-      float: 'right',
-      color: color('grey', 400),
-      fontSize: 12,
-      marginRight: gap,
-      fontWeight: 200
-    },
-    badge: {
-      float: 'right',
-      color: color('grey', 400),
-      fontSize: 12,
-      marginRight: gap,
-      fontWeight: 200
-    },
-    readme: {
-      marginTop: 20
-    },
-    filters: {
-      height: 24,
-      lineHeight: px(24),
-      display: 'inline-flex',
-      verticalAlign: 'middle'
-    },
-    filter: {
-      display: 'inline-flex',
-      marginLeft: gap,
-      whiteSpace: 'nowrap'
-    }
-  })
 
   const BASE = 'https://api.npms.io/search'
   const mandatoryKeywords = ['smithers', 'plugin']
@@ -233,40 +112,42 @@ export default robot => {
       }).filter(x => !!x)
     },
     renderItem (item) {
+      const {styles} = this.props
+
       return (
         <div>
-          <div className={css(styles.title)}>
+          <div className={styles.title}>
             <A
               target='_blank'
               href={`https://www.npmjs.com/~${item.author.username}`}
               title={item.author.username}
             >
               <img
-                className={css(styles.authorImage)}
+                className={styles.authorImage}
                 src={`https://s.gravatar.com/avatar/${md5(item.author.email)}?size=24&default=retro`}
                 title={item.author.username}
                 alt={item.author.username}
               />
             </A>
             <A target='_blank' href={`https://www.npmjs.com/package/${item.name}`}>{item.name}</A>
-            <span className={css(styles.version)}>v{item.version}</span>
-            {this.isInstalled(item.name) && <span className={css(styles.badge)}>installed</span>}
+            <span className={styles.version}>v{item.version}</span>
+            {this.isInstalled(item.name) && <span className={styles.badge}>installed</span>}
           </div>
-          <div className={css(styles.contents)}>
-            <p className={css(styles.description)}>{item.description}</p>
+          <div className={styles.contents}>
+            <p className={styles.description}>{item.description}</p>
 
-            <div className={css(styles.keywords)}>
+            <div className={styles.keywords}>
               {(item.keywords || []).map(keyword => (
-                <A target='_blank' href={`https://www.npmjs.com/search?q=${keyword}`} key={keyword} externalStyles={styles.keyword}>{keyword}</A>
+                <A target='_blank' href={`https://www.npmjs.com/search?q=${keyword}`} key={keyword} className={styles.keyword}>{keyword}</A>
               ))}
             </div>
 
-            <div className={css(styles.actions)}>
+            <div className={styles.actions}>
               <A onClick={() => {
                 robot.execute(`${this.isInstalled(item.name) ? 'uninstall' : 'install'} ${item.name}`)
-              }} className={css(styles.action)}>{this.isInstalled(item.name) ? 'Uninstall' : 'Install'}</A>
+              }} className={styles.action}>{this.isInstalled(item.name) ? 'Uninstall' : 'Install'}</A>
               {item.readme && (
-                <A onClick={() => this.setState({active: item})} className={css(styles.action)}>Read Me</A>
+                <A onClick={() => this.setState({active: item})} className={styles.action}>Read Me</A>
               )}
             </div>
           </div>
@@ -274,7 +155,7 @@ export default robot => {
       )
     },
     render () {
-      const {...other} = this.props
+      const {styles, ...other} = this.props
       let {query, results} = this.state
       const props = robot.deleteProps(other, [
         'q'
@@ -298,11 +179,11 @@ export default robot => {
             fullWidth
           />
 
-          <div className={css(styles.filters)}>
+          <div className={styles.filters}>
             Show:
 
             <Checkbox
-              className={css(styles.filter)}
+              className={styles.filter}
               checked={this.state.filters.installed}
               onCheck={(event, checked) => {
                 this.setState({
@@ -315,7 +196,7 @@ export default robot => {
               label='installed'
             />
             <Checkbox
-              className={css(styles.filter)}
+              className={styles.filter}
               checked={this.state.filters.notInstalled}
               onCheck={(event, checked) => {
                 this.setState({
@@ -330,15 +211,15 @@ export default robot => {
           </div>
           <span className='right'>{results.length} result{results.length === 1 ? '' : 's'}</span>
 
-          <ul className={css(styles.wrapper)}>
+          <ul className={styles.wrapper}>
             {results.length > 0 && results.map((item, i) => (
-              <li key={i} className={css(styles.item)}>
+              <li key={i} className={styles.item}>
                 {this.renderItem(item, i)}
                 <div
                   style={{display: 'none'}}
                   dangerouslySetInnerHTML={{__html: item.rendered}}
                 />
-                <div className={css(styles.clean)} />
+                <div className={styles.clean} />
               </li>
             ))}
           </ul>
@@ -355,7 +236,7 @@ export default robot => {
               onRequestClose={() => this.setState({active: undefined})}
             >
               <div
-                className={`max-100-percent ${css(styles.readme)}`}
+                className={`max-100-percent ${styles.readme}`}
                 onClick={(event) => {
                   event.preventDefault()
                   event.stopPropagation()
@@ -382,7 +263,7 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(Search, SEARCH_COMPONENT)
+  robot.registerComponent(withStyles(styles)(Search), SEARCH_COMPONENT)
 
   robot.listen(/^search ?(.*)?$/, {
     description: 'Search for available plugins',

@@ -3,15 +3,15 @@ import React from 'react'
 import Button from 'components/UI/Button'
 import Icon from 'components/UI/Icon'
 import styles from './ToolsStyles'
-import {css} from 'aphrodite'
+import {withStyles, classNames} from 'components/functions'
 
-let Tools = ({canClear, clear, activeCards}) => (
-  <div className={css(styles.toolbar)}>
+let Tools = ({styles, canClear, clear, activeCards, className}) => (
+  <div className={classNames(styles.toolbar, className)}>
     <Button disabled={!canClear} onClick={() => clear()}>
       <Icon icon='trash-o' /> Clear
     </Button>
-    <span className={css(styles.info)}>There {activeCards === 1 ? 'is' : 'are'} {activeCards} card{activeCards === 1 ? '' : 's'} active</span>
+    <span className={styles.info}>There {activeCards === 1 ? 'is' : 'are'} {activeCards} card{activeCards === 1 ? '' : 's'} active</span>
   </div>
 )
 
-export default Tools
+export default withStyles(styles)(Tools)

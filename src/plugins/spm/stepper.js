@@ -1,21 +1,11 @@
 import React from 'react'
 import stepperStyles from './stepperStyles'
-import stateViewer from './StateViewer'
+import StateViewer from './StateViewer'
+import {STATE_PENDING, STATE_BUSY, STATE_DONE, STATE_FAILED} from './states'
 
 export default (robot, initialSteps = []) => {
-  const {css, A, Icon, Collection, CollectionItem, PinToBottom, material} = robot.UI
+  const {withStyles, classNames, A, Icon, Collection, CollectionItem, PinToBottom, material} = robot.UI
   const {LinearProgress, Toggle} = material
-
-  const styles = stepperStyles(robot.UI)
-
-  const STATE_PENDING = 'STATE_PENDING'
-  const STATE_BUSY = 'STATE_BUSY'
-  const STATE_DONE = 'STATE_DONE'
-  const STATE_FAILED = 'STATE_FAILED'
-
-  const StateViewer = stateViewer(robot.UI, {
-    STATE_PENDING, STATE_BUSY, STATE_DONE, STATE_FAILED
-  })
 
   let chain = Promise.resolve(undefined)
 
@@ -249,7 +239,7 @@ export default (robot, initialSteps = []) => {
       return `${output}${!hasPendingTasks ? `\n\nTotal Execution Time: ${timeText(start, end)}` : ''}`
     },
     render () {
-      let {title} = this.props
+      let {title, styles} = this.props
       let {detailView, verboseMode, steps} = this.state
 
       const stepsDone = steps.filter(step => step.state === STATE_DONE).length
@@ -277,11 +267,11 @@ export default (robot, initialSteps = []) => {
 
       return (
         <div>
-          <div className={`clearfix ${css(styles.header)}`}>
+          <div className={`clearfix ${styles.header}`}>
             <div className='left'>
-              <ul className={css(styles.title)}>
+              <ul className={styles.title}>
                 {titleParts.map((part, i) => (
-                  <li className={css(
+                  <li className={classNames(
                     styles.titlePart,
                     i === 0 && styles.firstTitlePart,
                     i === titleParts.length - 1 && styles.lastTitlePart
@@ -300,14 +290,14 @@ export default (robot, initialSteps = []) => {
 
           {verboseMode ? (
             <PinToBottom>
-              <pre className={css(styles.verboseModeBox, styles.boxHeight)}>{this.renderVerboseMode()}</pre>
+              <pre className={classNames(styles.verboseModeBox, styles.boxHeight)}>{this.renderVerboseMode()}</pre>
             </PinToBottom>
           ) : (
             detailView ? (
               <Collection>
                 {steps.map((step, i) => (
-                  <CollectionItem key={i} className={`clearfix ${css(styles.relative)}`}>
-                    <StateViewer state={step.state}>
+                  <CollectionItem key={i} className={classNames('clearfix', styles.relative)}>
+                    <StateViewer robot={robot} state={step.state}>
                       {step.label}
                     </StateViewer>
                     {![STATE_PENDING].includes(step.state) && step.output.trim() && (
@@ -327,7 +317,7 @@ export default (robot, initialSteps = []) => {
                     )}
                     {step.endTime && step.startTime && (
                       <Timing
-                        className={css(styles.timing, styles.right)}
+                        className={classNames(styles.timing, styles.right)}
                         start={step.startTime}
                         end={step.endTime}
                       />
@@ -336,12 +326,12 @@ export default (robot, initialSteps = []) => {
                       <div>
                         {step.state === STATE_BUSY && (
                           <Icon
-                            className={css(styles.busyIcon)}
+                            className={styles.busyIcon}
                             icon='spinner fa-pulse'
                           />
                         )}
                         <PinToBottom>
-                          <pre className={css(styles.verboseModeBox, styles.verboseModeAsInfo)}>{step.output}</pre>
+                          <pre className={classNames(styles.verboseModeBox, styles.verboseModeAsInfo)}>{step.output}</pre>
                         </PinToBottom>
                       </div>
                     )}
@@ -359,21 +349,21 @@ export default (robot, initialSteps = []) => {
               <Collection>
                 {stepsDone > 0 && (
                   <CollectionItem>
-                    <StateViewer state={STATE_DONE}>
+                    <StateViewer robot={robot} state={STATE_DONE}>
                       {stepsDone} step{stepsDone === 1 ? '' : 's'} done
                     </StateViewer>
                   </CollectionItem>
                 )}
                 {[...stepsBusy, ...stepsFailed].map((step, i) => (
                   <CollectionItem key={i}>
-                    <StateViewer state={step.state}>
+                    <StateViewer robot={robot} state={step.state}>
                       {step.label}
                     </StateViewer>
                   </CollectionItem>
                 ))}
                 {stepsPending > 0 && (
                   <CollectionItem>
-                    <StateViewer state={STATE_PENDING}>
+                    <StateViewer robot={robot} state={STATE_PENDING}>
                       {stepsPending} step{stepsPending === 1 ? '' : 's'} pending
                     </StateViewer>
                   </CollectionItem>
@@ -397,5 +387,5 @@ export default (robot, initialSteps = []) => {
     }
   })
 
-  return Stepper
+  return withStyles(stepperStyles)(Stepper)
 }

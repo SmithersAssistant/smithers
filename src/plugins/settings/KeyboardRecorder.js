@@ -1,8 +1,7 @@
 import React from 'react'
 import { ipcRenderer } from 'electron'
 import debounce from 'lodash/debounce'
-import { StyleSheet, css } from 'aphrodite'
-import { px, color } from 'styles/theme'
+import { withStyles, classNames } from 'components/functions'
 import { getSecondaryColor, getPrimaryColor } from 'state'
 import uniq from 'lodash/uniq'
 
@@ -94,55 +93,6 @@ const keys = [
   { keys: [ 45 ], accelerator: 'Insert' },
   { keys: [ 46 ], accelerator: 'Delete' }
 ]
-
-const styles = StyleSheet.create({
-  help: {
-    float: 'left',
-    fontSize: 12,
-    color: color('grey', 400),
-    marginRight: 4
-  },
-  [SUCCESS_STATE]: {
-    border: `1px solid ${color('green')}`
-  },
-  [ERROR_STATE]: {
-    border: `1px solid ${color('red')}`
-  },
-  keyboard: {
-    position: 'relative',
-    display: 'inline-block',
-    padding: px(0, 10),
-    backgroundColor: color('grey', 50),
-    border: `1px solid ${color('grey', 200)}`,
-    height: 34,
-    lineHeight: px(34),
-    verticalAlign: 'middle'
-  },
-  recorder: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-    bottom: 0,
-    opacity: 0
-  },
-  key: {
-    color: color('grey', 400),
-    fontFamily: 'monospace',
-    fontSize: 18,
-    margin: px(0, 2)
-  },
-  keyActive: {
-    color: color(getSecondaryColor(), 700)
-  },
-  keyGeneral: {
-    fontFamily: 'Roboto, sans-serif',
-    paddingLeft: 15
-  },
-  recording: {
-    border: `1px solid ${color(getPrimaryColor(), 200)}`
-  }
-})
 
 const KeyboardRecorder = React.createClass({
   getInitialState () {
@@ -242,10 +192,12 @@ const KeyboardRecorder = React.createClass({
     event.stopPropagation()
   },
   renderKey ({ symbol, accelerator }, active, extraClass) {
+    const { styles } = this.props
+
     return (
       <span
         key={accelerator}
-        className={css(styles.key, active.includes(accelerator) && styles.keyActive, extraClass)}
+        className={classNames(styles.key, active.includes(accelerator) && styles.keyActive, extraClass)}
       >
         {symbol || accelerator}
       </span>
@@ -253,13 +205,13 @@ const KeyboardRecorder = React.createClass({
   },
   render () {
     const { active, helpText, recording, state } = this.state
-    const {showHelp} = this.props
+    const { showHelp, styles } = this.props
     const splitted = active.split('+')
 
     return (
       <div>
         <div
-          className={[styles.keyboard, recording && styles.recording, styles[state]].filter(x => !!x).map(x => css(x)).join(' ')}
+          className={classNames(styles.keyboard, recording && styles.recording, styles[state])}
           onClick={() => {
             !recording
               ? this.startRecording()
@@ -267,7 +219,7 @@ const KeyboardRecorder = React.createClass({
           }}
         >
           <input
-            className={css(styles.recorder)}
+            className={styles.recorder}
             type='text'
             ref={(input) => { this._recorder = input }}
             onKeyDown={(event) => this.handleKeyDown(event)}
@@ -277,10 +229,57 @@ const KeyboardRecorder = React.createClass({
           {modifiers.map(modifier => this.renderKey(modifier, splitted))}
           {keys.filter(key => splitted.includes(key.accelerator)).map(key => this.renderKey(key, splitted, styles.keyGeneral))}
         </div>
-        {showHelp && (<span className={css(styles.help)}>{helpText}</span>)}
+        {showHelp && (<span className={styles.help}>{helpText}</span>)}
       </div>
     )
   }
 })
 
-export default KeyboardRecorder
+export default withStyles(({ px, color, important }) => ({
+  help: {
+    float: 'left',
+    fontSize: 12,
+    color: color('grey', 400),
+    marginRight: 4
+  },
+  [SUCCESS_STATE]: {
+    border: important(`1px solid ${color('green')}`)
+  },
+  [ERROR_STATE]: {
+    border: important(`1px solid ${color('red')}`)
+  },
+  keyboard: {
+    position: 'relative',
+    display: 'inline-block',
+    padding: px(0, 10),
+    backgroundColor: color('grey', 50),
+    border: `1px solid ${color('grey', 200)}`,
+    height: 34,
+    lineHeight: px(34),
+    verticalAlign: 'middle'
+  },
+  recorder: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    bottom: 0,
+    opacity: 0
+  },
+  key: {
+    color: color('grey', 400),
+    fontFamily: 'monospace',
+    fontSize: 18,
+    margin: px(0, 2)
+  },
+  keyActive: {
+    color: color(getSecondaryColor(), 700)
+  },
+  keyGeneral: {
+    fontFamily: 'Roboto, sans-serif',
+    paddingLeft: 15
+  },
+  recording: {
+    border: `1px solid ${color(getPrimaryColor(), 200)}`
+  }
+}))(KeyboardRecorder)

@@ -5,24 +5,8 @@ import pluginManager from 'pluginSystem/pluginManager'
 
 import {dispatch} from 'store'
 import {removeCard} from 'actions/index'
-
-import {StyleSheet, css} from 'aphrodite'
-import {theme, px} from 'styles/theme'
-
 import Event, {OPEN_HELP} from 'Event'
-
-const styles = StyleSheet.create({
-  cardsStyles: {
-    display: 'flex',
-    flexDirection: 'column-reverse',
-    marginTop: theme.cardSpace
-  },
-  noCardsTitleStyles: {
-    color: '#ccc',
-    textAlign: 'center',
-    cursor: 'default'
-  }
-})
+import {withStyles} from 'components/functions'
 
 const RestorableComponent = React.createClass({
   getDefaultProps () {
@@ -55,10 +39,10 @@ const RestorableComponent = React.createClass({
     }
   },
   render () {
-    let {Component, componentProps, isFunctional} = this.props
+    let {Component, componentProps, isFunctional, __CARD_ID__} = this.props
     componentProps = {
       ...componentProps,
-      removeCard: () => dispatch(removeCard(componentProps.__CARD_ID__))
+      removeCard: () => dispatch(removeCard(__CARD_ID__))
     }
 
     return isFunctional ? <Component {...componentProps} /> : <Component {...componentProps} ref='component' />
@@ -69,25 +53,33 @@ const isFunctionalComponent = (Component) => {
   return Component.length === 1
 }
 
-const NoCards = () => (
-  <div style={{
+const NoCards = withStyles(({ theme, px }) => ({
+  noCardsWrapper: {
     ...theme.center,
     width: '80%'
-  }}>
-    <h1 className={css(styles.noCardsTitleStyles)}>Type <kbd
-      style={{
-        fontFamily: 'Roboto',
-        background: 'white',
-        padding: px(5, 14),
-        borderRadius: 3,
-        ...theme.shadow1
-      }}
+  },
+  noCardsTitleStyles: {
+    color: '#ccc',
+    textAlign: 'center',
+    cursor: 'default'
+  },
+  noCardsHelpKey: {
+    fontFamily: 'Roboto',
+    background: 'white',
+    padding: px(5, 14),
+    borderRadius: 3,
+    ...theme.shadow1
+  }
+}))(({ styles }) => (
+  <div className={styles.noCardsWrapper}>
+    <h1 className={styles.noCardsTitleStyles}>Type <kbd
+      className={styles.noCardsHelpKey}
       onClick={() => {
         Event.fire(OPEN_HELP)
       }}
     >help</kbd> to see available commands</h1>
   </div>
-)
+))
 
 const Card = (cardContainer, registerCard, unRegisterCard) => {
   const C = pluginManager.resolveComponent(cardContainer.card)
@@ -96,19 +88,15 @@ const Card = (cardContainer, registerCard, unRegisterCard) => {
     return null
   }
 
-  const props = {
-    ...cardContainer.props,
-    __CARD_ID__: cardContainer.id
-  }
-
   const isFunctional = isFunctionalComponent(C)
 
   return (
     <div key={cardContainer.id}>
       <RestorableComponent
         key={cardContainer.id}
+        __CARD_ID__={cardContainer.id}
         Component={C}
-        componentProps={props}
+        componentProps={cardContainer.props}
         cardContainer={cardContainer}
         isFunctional={isFunctional}
         registerCard={registerCard}
@@ -167,16 +155,22 @@ const Main = React.createClass({
     this.cards = this.cards.filter(c => c.id !== id)
   },
   render () {
-    let {cards} = this.props
+    let {cards, styles} = this.props
 
     cards = cards.map((c) => Card(c, this.registerCard, this.unRegisterCard)).filter(c => c !== null)
 
     return (
-      <div className={css(styles.cardsStyles)}>
+      <div className={styles.cardsStyles}>
         {cards.length > 0 ? cards : NoCards()}
       </div>
     )
   }
 })
 
-export default Main
+export default withStyles(({ theme }) => ({
+  cardsStyles: {
+    display: 'flex',
+    flexDirection: 'column-reverse',
+    marginTop: theme.cardSpace
+  }
+}))(Main)

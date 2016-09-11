@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {theme, color} from 'styles/theme'
-
-export default StyleSheet.create({
+export default ({ theme, color }) => ({
   tabsBar: {
     backgroundColor: color(theme.primaryColor, 700),
     listStyle: 'none',

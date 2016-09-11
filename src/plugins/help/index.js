@@ -1,89 +1,22 @@
 import React from 'react'
 import orderBy from 'lodash/orderBy'
+import styleFactory from './styles'
 
 const HELP_COMPONENT = 'com.robinmalfait.help'
 
 export default robot => {
-  const {StyleSheet, css, px, color} = robot.UI
+  const {withStyles} = robot.UI
   const {Blank} = robot.cards
   const {List, Subheader, ListItem} = robot.UI.material
 
-  const gap = 16
-  const styles = StyleSheet.create({
-    wrapper: {
-      margin: 0,
-      padding: 0,
-      columnCount: 3,
-      columnGap: gap,
-      '@media (max-width: 1200px)': {
-        columnCount: 2
-      },
-      '@media (max-width: 800px)': {
-        columnCount: 1
-      }
-    },
-    clean: {
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      top: 0,
-      bottom: gap,
-      pointerEvents: 'none',
-      border: '1px solid #d9d9d9'
-    },
-    plugin: {
-      position: 'relative',
-      pageBreakInside: 'avoid',
-      WebkitColumnBreakInside: 'avoid',
-      breakInside: 'avoid',
-      paddingBottom: gap
-    },
-    pluginTitle: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      height: 49,
-      borderBottom: `1px solid ${color('grey', 200)}`
-    },
-    command: {
-      cursor: 'default',
-      ':hover': {
-        backgroundColor: color('grey', 100)
-      }
-    },
-    argument: {
-      borderBottom: `2px solid ${color(robot.getPrimaryColor())}`,
-      borderRadius: 3,
-      padding: px(0, 4)
-    },
-    optional: {
-      borderBottom: `2px solid ${color(robot.getPrimaryColor(), 100)}`,
-      borderRadius: 3,
-      padding: px(0, 4)
-    },
-    item: {
-      marginRight: 4
-    },
-    versionNumber: {
-      float: 'right',
-      color: color('grey', 400),
-      fontSize: 12,
-      marginRight: gap,
-      fontWeight: 200
-    },
-    badge: {
-      float: 'right',
-      color: color('grey', 400),
-      fontSize: 12,
-      marginRight: gap,
-      fontWeight: 200
-    }
-  })
+  const styles = styleFactory(robot)
+  const ws = withStyles(styles)
 
-  const Kind = ({ source, ...other }) => {
+  const Kind = ws(({ styles, source, ...other }) => {
     return (
-      <span className={css(styles.badge)} {...other}>{source.replace('_PLUGIN', '').toLowerCase()}</span>
+      <span className={styles.badge} {...other}>{source.replace('_PLUGIN', '').toLowerCase()}</span>
     )
-  }
+  })
 
   const Help = React.createClass({
     countPlugins () {
@@ -94,13 +27,14 @@ export default robot => {
       return installedPlugins.length
     },
     parseUsage ({usage, arguments: args, optionals}) {
+      const {styles} = this.props
       let result = usage.split(' ')
 
       if (args.length > 0) {
         args.forEach(arg => {
           result = result.map(item => {
             if (item === arg.match) {
-              return <span className={css(styles.argument)}>{arg.humanized}</span>
+              return <span className={styles.argument}>{arg.humanized}</span>
             }
 
             return item
@@ -112,7 +46,7 @@ export default robot => {
         optionals.forEach(arg => {
           result = result.map(item => {
             if (item === arg.match) {
-              return <span className={css(styles.optional)}>{arg.humanized}</span>
+              return <span className={styles.optional}>{arg.humanized}</span>
             }
 
             return item
@@ -122,11 +56,12 @@ export default robot => {
 
       return (
         <span>
-          {result.map((item, i) => <span key={i} className={css(styles.item)}>{item}</span>)}
+          {result.map((item, i) => <span key={i} className={styles.item}>{item}</span>)}
         </span>
       )
     },
     renderPlugins () {
+      const {styles} = this.props
       const plugins = []
       const installedPlugins = this.props.plugin !== undefined
         ? robot.plugins().filter(plugin => this.props.plugin === plugin.name)
@@ -143,16 +78,16 @@ export default robot => {
 
         plugins.push((
           <li key={i}>
-            <List className={css(styles.plugin)}>
-              <Subheader className={css(styles.pluginTitle)}>
+            <List className={styles.plugin}>
+              <Subheader className={styles.pluginTitle}>
                 {String(plugin.name)}
-                <span className={css(styles.versionNumber)}>v{plugin.version}</span>
+                <span className={styles.versionNumber}>v{plugin.version}</span>
                 <Kind source={plugin.source} />
               </Subheader>
 
               {commands.map((command, i) => (
                 <ListItem
-                  className={css(styles.command)}
+                  className={styles.command}
                   disabled
                   key={i}
                   primaryText={command.title}
@@ -160,7 +95,7 @@ export default robot => {
                   title={command.description}
                 />
               ))}
-              <div className={css(styles.clean)} />
+              <div className={styles.clean} />
             </List>
           </li>
         ))
@@ -169,7 +104,7 @@ export default robot => {
       return plugins
     },
     render () {
-      const {...other} = this.props
+      const {styles, ...other} = this.props
       const pluginCount = this.countPlugins()
       const props = robot.deleteProps(other, [
         'plugin'
@@ -182,7 +117,7 @@ export default robot => {
             <span>Help &middot; {`${pluginCount} plugin${pluginCount === 1 ? '' : 's'} installed`}</span>
           )}
         >
-          <ul className={css(styles.wrapper)}>
+          <ul className={styles.wrapper}>
             {this.renderPlugins()}
           </ul>
         </Blank>
@@ -190,7 +125,7 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(Help, HELP_COMPONENT)
+  robot.registerComponent(ws(Help), HELP_COMPONENT)
 
   robot.listen(/^help$/, {
     description: 'Help Plugin',

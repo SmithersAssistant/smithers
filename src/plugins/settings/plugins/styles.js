@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {color} from 'styles/theme'
-
-export default StyleSheet.create({
+export default ({ color }) => ({
   info: {
     fontSize: 12,
     float: 'right',

@@ -1,28 +1,25 @@
 import React from 'react'
-import stateViewerStyles from './stateViewerStyles'
+import styles from './stateViewerStyles'
+import {withStyles} from 'components/functions'
+import {STATE_PENDING, STATE_BUSY, STATE_DONE, STATE_FAILED} from './states'
 
-export default (RobotUI, {STATE_PENDING, STATE_BUSY, STATE_DONE, STATE_FAILED}) => {
-  const {Icon, css} = RobotUI
-  const styles = stateViewerStyles(RobotUI, {STATE_PENDING, STATE_BUSY, STATE_DONE, STATE_FAILED})
+export default withStyles(styles)(({styles, robot, state, children}) => {
+  const {Icon} = robot.UI
 
-  const StateViewer = ({state, children}) => {
-    const icon = {
-      [STATE_PENDING]: 'ellipsis-h',
-      [STATE_BUSY]: 'clock-o',
-      [STATE_DONE]: 'check',
-      [STATE_FAILED]: 'times'
-    }
-
-    return (
-      <span>
-        <Icon
-          className={css(styles[`${state}_icon`])}
-          icon={icon[state]}
-        />
-        <span className={css(styles[`${state}_value`])}>{children}</span>
-      </span>
-    )
+  const icon = {
+    [STATE_PENDING]: 'ellipsis-h',
+    [STATE_BUSY]: 'clock-o',
+    [STATE_DONE]: 'check',
+    [STATE_FAILED]: 'times'
   }
 
-  return StateViewer
-}
+  return (
+    <span>
+      <Icon
+        className={styles[`${state}_icon`]}
+        icon={icon[state]}
+      />
+      <span className={styles[`${state}_value`]}>{children}</span>
+    </span>
+  )
+})

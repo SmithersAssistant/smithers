@@ -1,7 +1,4 @@
-import {StyleSheet} from 'aphrodite'
-import {theme} from 'styles/theme'
-
-export default StyleSheet.create({
+export default ({ theme }) => ({
   scrollBar: {
     ...theme.scrollBar
   },
