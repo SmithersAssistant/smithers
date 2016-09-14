@@ -6,7 +6,6 @@ import debounce from 'lodash/debounce'
 // Actions
 import {
   addTab,
-  saveCardStates,
   removeTab,
   removeTabsToTheLeft,
   removeTabsToTheRight,
@@ -56,7 +55,6 @@ const mapDispatchToProps = (dispatch) => ({
     focusInput()
   },
   addTab: () => dispatch(addTab()),
-  saveCardStates: (data) => dispatch(saveCardStates(data)),
   removeTab: (id) => dispatch(removeTab(id)),
   removeTabsToTheLeft: (id) => removeTabsToTheLeft(id),
   removeTabsToTheRight: (id) => removeTabsToTheRight(id),
