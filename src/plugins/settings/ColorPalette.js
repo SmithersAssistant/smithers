@@ -10,13 +10,14 @@ export default (robot) => {
     Icon
   } = robot.UI
 
-  return withStyles(styleFactory(colors))(({ styles, activeColor, onChooseColor }) => {
+  const ColorPalette = ({ styles, activeColor, onChooseColor }) => {
     return (
-      <div style={{
-        display: 'inline-block',
-        textAlign: 'center'
-      }}>
+      <div className={styles.wrapper}>
         {Object.keys(colors).map(c => {
+          if (['gray', 'blueGray'].includes(c)) {
+            return
+          }
+
           return (
             <div
               key={c}
@@ -24,26 +25,34 @@ export default (robot) => {
                 onChooseColor(c)
               }}
               className={classNames(
-                styles[`circle_${c}`],
-                styles.circle,
-                activeColor === c
-                  ? styles.active
-                  : undefined
+                styles[`color_${c}`],
+                styles.color
               )}
-            >{activeColor === c ? (
-              <Icon
+            >
+              <span
                 className={classNames(
-                  styles.icon,
-                  activeColor === c
-                    ? styles[`activeIcon_${c}`]
-                    : undefined
+                  styles.name,
+                  styles[`activeIcon_${c}`],
+                  styles[`name_${c}`]
                 )}
-                icon='paint-brush'
-              />
-            ) : undefined}</div>
+              >{c.toUpperCase()}</span>
+              {activeColor === c && (
+                <Icon
+                  className={classNames(
+                    styles.icon,
+                    activeColor === c
+                      ? styles[`activeIcon_${c}`]
+                      : undefined
+                  )}
+                  icon='check'
+                />
+              )}
+            </div>
           )
         })}
       </div>
     )
-  })
+  }
+
+  return withStyles(styleFactory(colors))(ColorPalette)
 }

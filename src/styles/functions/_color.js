@@ -13,3 +13,15 @@ export const color = (color, weight = 500) => {
 
   return colors[color][weight] || colors[color][500]
 }
+
+export const isDarkColor = (color) => {
+  let {r, g, b} = Color(color).rgb()
+
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000
+
+  return yiq >= 128
+}
+
+export const isLightColor = (color) => {
+  return !isDarkColor(color)
+}
