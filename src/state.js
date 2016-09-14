@@ -16,3 +16,4 @@ export const getThemePalette = () => {
     accent1Color: color(getSecondaryColor(), 'A200')
   }
 }
+export const getStateForCard = (id) => getState().cards.cards.find(card => card.id === id).state || {}

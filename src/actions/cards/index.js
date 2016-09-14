@@ -3,7 +3,7 @@ import {getActiveTab} from 'state'
 
 import {
   ADD_CARD,
-  SAVE_CARD_STATES,
+  SAVE_CARD_STATE,
   REMOVE_CARD,
   CLEAR_CARD_HISTORY
 } from './types'
@@ -16,9 +16,10 @@ export const addCard = (card, props = {}, relation = getActiveTab()) => ({
   relation
 })
 
-export const saveCardStates = (data) => ({
-  type: SAVE_CARD_STATES,
-  data
+export const saveCardState = (id, state) => ({
+  type: SAVE_CARD_STATE,
+  id,
+  state
 })
 
 export const clearCards = () => ({

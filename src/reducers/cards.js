@@ -1,6 +1,6 @@
 import {
   ADD_CARD,
-  SAVE_CARD_STATES,
+  SAVE_CARD_STATE,
   CLEAR_CARD_HISTORY,
   REMOVE_CARD,
   REMOVE_TAB
@@ -28,20 +28,21 @@ const cards = (state = [], action) => {
         ...state,
         cards: [...state.cards, card(undefined, action)]
       }
-    case SAVE_CARD_STATES:
+    case SAVE_CARD_STATE:
       return {
         ...state,
-        cards: state.cards.map(item => {
-          action.data.forEach(cardState => {
-            if (item.id === cardState.id) {
-              item = {
-                ...item,
-                state: cardState.state || {}
+        cards: state.cards.map(card => {
+          if (card.id === action.id) {
+            card = {
+              ...card,
+              state: {
+                ...card.state,
+                ...(action.state || {})
               }
             }
-          })
+          }
 
-          return item
+          return card
         })
       }
     case REMOVE_CARD:
