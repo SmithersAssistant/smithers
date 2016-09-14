@@ -4,6 +4,7 @@ import RobotCards from './parts/RobotCards'
 import RobotUI from './parts/RobotUI'
 import RobotTalk from './parts/RobotTalk'
 import RobotPlugins from './parts/RobotPlugins'
+import RobotPluginEnhancers from './parts/RobotPluginEnhancers'
 import RobotUtils from './parts/RobotUtils'
 import RobotEvents from './parts/RobotEvents'
 import RobotActions from './parts/RobotActions'
@@ -19,6 +20,7 @@ const Robot = {
   ...RobotUI,
   ...RobotTalk,
   ...RobotPlugins,
+  ...RobotPluginEnhancers,
   ...RobotUtils,
   ...RobotEvents,
   ...RobotConfig,
