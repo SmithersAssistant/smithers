@@ -6,6 +6,8 @@ import postUninstallSteps from './postUninstallSteps'
 
 import stepper from './stepper'
 
+import {enhance, restorableComponent} from 'components/functions'
+
 const UNINSTALL_COMPONENT = 'com.robinmalfait.spm.uninstall'
 
 export default robot => {
@@ -47,7 +49,9 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(Uninstall, UNINSTALL_COMPONENT)
+  robot.registerComponent(enhance(Uninstall, [
+    restorableComponent
+  ]), UNINSTALL_COMPONENT)
 
   robot.listen(/^uninstall (.*)$/, {
     description: 'uninstall a plugin',

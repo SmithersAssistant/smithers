@@ -4,6 +4,8 @@ import stepper from './stepper'
 import preInstallSteps from './preInstallSteps'
 import postInstallSteps from './postInstallSteps'
 
+import {enhance, restorableComponent} from 'components/functions'
+
 const INSTALL_COMPONENT = 'com.robinmalfait.spm.install'
 
 export default robot => {
@@ -45,7 +47,9 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(Install, INSTALL_COMPONENT)
+  robot.registerComponent(enhance(Install, [
+    restorableComponent
+  ]), INSTALL_COMPONENT)
 
   robot.listen(/^install (.*)$/, {
     description: 'install a plugin. this can be a package from npm, or a local path, we\'ll figure it out for you!',

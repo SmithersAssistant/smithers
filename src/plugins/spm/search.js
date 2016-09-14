@@ -6,6 +6,7 @@ import {shell} from 'electron'
 import md5 from 'md5'
 import getPackageReadme from 'get-package-readme'
 import styles from './searchStyles'
+import {enhance, restorableComponent} from 'components/functions'
 
 const SEARCH_COMPONENT = 'com.robinmalfait.spm.search'
 
@@ -263,7 +264,10 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(withStyles(styles)(Search), SEARCH_COMPONENT)
+  robot.registerComponent(enhance(Search, [
+    restorableComponent,
+    withStyles(styles)
+  ]), SEARCH_COMPONENT)
 
   robot.listen(/^search ?(.*)?$/, {
     description: 'Search for available plugins',

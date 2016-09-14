@@ -4,6 +4,8 @@ import styles from './indexStyles'
 import IconButton from 'material-ui/IconButton/IconButton'
 import SaveIcon from 'material-ui/svg-icons/content/save'
 
+import {enhance, restorableComponent} from 'components/functions'
+
 // Pages
 import generalPage from './GeneralPage'
 import themePage from './ThemePage'
@@ -27,7 +29,7 @@ export default robot => {
   const ThemePage = themePage(robot)
   const PluginsPage = pluginsPage(robot)
 
-  const Settings = withStyles(styles)(React.createClass({
+  const Settings = React.createClass({
     getInitialState () {
       return {
         activePage: 0,
@@ -139,9 +141,12 @@ export default robot => {
         </Blank>
       )
     }
-  }))
+  })
 
-  robot.registerComponent(Settings, SETTINGS_COMPONENT)
+  robot.registerComponent(enhance(Settings, [
+    restorableComponent,
+    withStyles(styles)
+  ]), SETTINGS_COMPONENT)
 
   robot.listen(/^settings$/, {
     description: 'Settings',

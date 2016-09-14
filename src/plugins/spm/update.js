@@ -7,6 +7,8 @@ import postUpdateSteps from './postUpdateSteps'
 
 import stepper from './stepper'
 
+import {enhance, restorableComponent} from 'components/functions'
+
 const UPDATE_COMPONENT = 'com.robinmalfait.spm.update'
 const UPDATE_AVAILABLE_COMPONENT = 'com.robinmalfait.spm.update_available'
 
@@ -95,7 +97,9 @@ export default robot => {
     }
   })
 
-  robot.registerComponent(Update, UPDATE_COMPONENT)
+  robot.registerComponent(enhance(Update, [
+    restorableComponent
+  ]), UPDATE_COMPONENT)
   robot.registerComponent(UpdateAvailable, UPDATE_AVAILABLE_COMPONENT)
 
   robot.listen(/^update (.*)$/, {

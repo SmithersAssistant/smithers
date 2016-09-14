@@ -26,7 +26,7 @@ const hackMouseDown = (targetNode) => {
   triggerMouseEvent(targetNode, 'click')
 }
 
-const Tabs = ({styles, tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, removeTabsToTheLeft, removeTabsToTheRight, removeOtherTabs, activeTab, activateTab, focusInput, editTab, saveCardStates}) => {
+const Tabs = ({styles, tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab, removeTabsToTheLeft, removeTabsToTheRight, removeOtherTabs, activeTab, activateTab, focusInput, editTab}) => {
   const onTabHolderContextMenu = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -90,7 +90,6 @@ const Tabs = ({styles, tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab
   return !tabsAreVisible ? (
     <Main
       cards={cards}
-      saveCardStates={saveCardStates}
     />
   ) : (
     <TabsHolder
@@ -116,7 +115,6 @@ const Tabs = ({styles, tabsAreVisible, cards, onSortEnd, tabs, addTab, removeTab
           <div className={styles.outputStyles}>
             <Main
               cards={tab.cards}
-              saveCardStates={saveCardStates}
             />
           </div>
         </Tab>
