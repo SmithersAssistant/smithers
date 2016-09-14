@@ -6,7 +6,7 @@ import {
   DEFAULT_PLUGIN
 } from 'pluginSystem/sources'
 
-export default withStyles(styles)(({styles, state, setState, robot}) => {
+export default withStyles(styles)(({styles, robot}) => {
   const {
     Collection,
     CollectionItem

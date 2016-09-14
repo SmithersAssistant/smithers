@@ -9,7 +9,6 @@ import {enhance, restorableComponent} from 'components/functions'
 // Pages
 import generalPage from './GeneralPage'
 import themePage from './ThemePage'
-import pluginsPage from './PluginsPage'
 
 const SETTINGS_COMPONENT = 'com.robinmalfait.settings'
 
@@ -27,7 +26,6 @@ export default robot => {
 
   const GeneralPage = generalPage(robot)
   const ThemePage = themePage(robot)
-  const PluginsPage = pluginsPage(robot)
 
   const Settings = React.createClass({
     getInitialState () {
@@ -42,20 +40,10 @@ export default robot => {
         themePageState: {
           primaryColor: theme.primaryColor,
           secondaryColor: theme.secondaryColor
-        },
-        pluginsPageState: {
-          activeTab: 0,
-          addLocalPluginDialogOpen: false,
-          addLocalPluginLocation: '',
-          addLocalPluginErrorText: '',
-          addExternalPluginDialogOpen: false,
-          addExternalPluginPackage: ''
         }
       }
     },
     pages () {
-      const {styles} = this.props
-
       return [{
         label: 'General',
         body: (
@@ -78,28 +66,6 @@ export default robot => {
               ...this.state.themePageState,
               ...themePageState
             }}, cb)
-          }}
-        />
-      }, {
-        label: 'Plugins',
-        body: <PluginsPage
-          state={this.state.pluginsPageState}
-          setState={(pluginsPageState, cb = robot.noop) => {
-            this.setState({pluginsPageState: {
-              ...this.state.pluginsPageState,
-              ...pluginsPageState
-            }}, cb)
-          }}
-          tabsProps={{
-            externalStyles: [styles.tabs, styles.nestedTabs],
-            selectedIndex: this.state.pluginsPageState.activeTab,
-            disableSorting: true
-          }}
-          tabProps={{
-            externalStyles: styles.tab,
-            externalStylesActive: styles.tabActive,
-            externalAnchorStyles: styles.a,
-            externalAnchorStylesActive: styles.aActive
           }}
         />
       }]
