@@ -102,7 +102,6 @@ const createWindow = ({onLoaded = noop} = {}) => {
 
   win.on('ready-to-show', () => {
     win.show()
-    win.webContents.openDevTools()
   })
 
   win.webContents.once("did-frame-finish-load", () => {
