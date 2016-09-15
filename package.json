@@ -33,6 +33,7 @@
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.5",
     "babel-plugin-react-transform": "^2.0.2",
+    "babel-plugin-transform-class-properties": "^6.11.5",
     "babel-plugin-transform-object-rest-spread": "^6.6.5",
     "babel-plugin-transform-react-display-name": "^6.5.0",
     "babel-plugin-transform-regenerator": "^6.14.0",

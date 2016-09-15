@@ -27,23 +27,22 @@ export default robot => {
   const GeneralPage = generalPage(robot)
   const ThemePage = themePage(robot)
 
-  const Settings = React.createClass({
-    getInitialState () {
-      return {
-        activePage: 0,
-        generalPageState: {
-          checkingForUpdates: false,
-          updateAvailable: false,
-          updateDownloaded: false,
-          downloadingUpdates: false
-        },
-        themePageState: {
-          primaryColor: theme.primaryColor,
-          secondaryColor: theme.secondaryColor
-        }
+  class Settings extends React.Component {
+    state = {
+      activePage: 0,
+      generalPageState: {
+        checkingForUpdates: false,
+        updateAvailable: false,
+        updateDownloaded: false,
+        downloadingUpdates: false
+      },
+      themePageState: {
+        primaryColor: theme.primaryColor,
+        secondaryColor: theme.secondaryColor
       }
-    },
-    pages () {
+    };
+
+    pages = () => {
       return [{
         label: 'General',
         body: (
@@ -69,7 +68,8 @@ export default robot => {
           }}
         />
       }]
-    },
+    };
+
     render () {
       const {styles, ...other} = this.props
 
@@ -107,7 +107,7 @@ export default robot => {
         </Blank>
       )
     }
-  })
+  }
 
   robot.registerComponent(enhance(Settings, [
     restorableComponent,

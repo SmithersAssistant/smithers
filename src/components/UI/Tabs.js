@@ -26,24 +26,22 @@ const TabsHolder = withStyles(styles)(({externalStyles, styles, headers, ...rest
 
 const SortableList = SortableContainer((props) => (<TabsHolder {...props} />))
 
-export const Tabs = withStyles(styles)(React.createClass({
-  getDefaultProps () {
-    return {
-      onActive: noop,
-      onSortStart: noop,
-      onSortMove: noop,
-      onSortEnd: noop,
-      selectedIndex: 0,
-      pressDelay: 120,
-      disableSorting: false
-    }
-  },
+export const Tabs = withStyles(styles)(class extends React.Component {
+  static defaultProps = {
+    onActive: noop,
+    onSortStart: noop,
+    onSortMove: noop,
+    onSortEnd: noop,
+    selectedIndex: 0,
+    pressDelay: 120,
+    disableSorting: false
+  };
 
-  onClick (i, tab) {
+  onClick = (i, tab) => {
     if (i !== this.props.selectedIndex) {
       if (tab.props.onActive) tab.props.onActive(tab)
     }
-  },
+  };
 
   render () {
     let {
@@ -120,4 +118,4 @@ export const Tabs = withStyles(styles)(React.createClass({
       </div>
     )
   }
-}))
+})

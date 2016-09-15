@@ -24,16 +24,16 @@ export default robot => {
     ...postUpdateSteps
   ])
 
-  const Update = React.createClass({
-    getInitialState () {
-      return {
-        done: this.props.done,
-        state: {}
-      }
-    },
-    markAsDone (state) {
+  class Update extends React.Component {
+    state = {
+      done: this.props.done,
+      state: {}
+    };
+
+    markAsDone = (state) => {
       this.setState({ done: true, state })
-    },
+    };
+
     render () {
       let {plugin, ...other} = this.props
 
@@ -60,9 +60,9 @@ export default robot => {
         </Blank>
       )
     }
-  })
+  }
 
-  const UpdateAvailable = React.createClass({
+  class UpdateAvailable extends React.Component {
     render () {
       let {plugin, version, ...other} = this.props
 
@@ -95,7 +95,7 @@ export default robot => {
         </Blank>
       )
     }
-  })
+  }
 
   robot.registerComponent(enhance(Update, [
     restorableComponent

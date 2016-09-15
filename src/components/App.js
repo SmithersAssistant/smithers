@@ -9,20 +9,21 @@ import store from 'store'
 import {areTabsVisible} from 'state'
 import {withStyles, classNames} from 'components/functions'
 
-const App = React.createClass({
-  getInitialState () {
-    return {
-      visibleTabs: areTabsVisible()
-    }
-  },
+class App extends React.Component {
+  state = {
+    visibleTabs: areTabsVisible()
+  };
+
   componentDidMount () {
     this._unsubscribe = store.subscribe(() => {
       this.setState({ visibleTabs: areTabsVisible() })
     })
-  },
+  }
+
   componentWillUnmount () {
     this._unsubscribe()
-  },
+  }
+
   render () {
     let {styles} = this.props
     let {visibleTabs} = this.state
@@ -37,6 +38,6 @@ const App = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default withStyles(styles)(App)

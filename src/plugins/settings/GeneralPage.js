@@ -18,7 +18,7 @@ export default (robot) => {
 
   const {Checkbox} = robot.UI.material
 
-  return React.createClass({
+  return class extends React.Component {
     componentDidMount () {
       this.removeListeners = [
         robot.on(UPDATE_AVAILABLE, () => {
@@ -50,16 +50,19 @@ export default (robot) => {
           })
         })
       ]
-    },
+    }
+
     componentWillUnmount () {
       this.removeListeners.map(removeListener => removeListener())
-    },
-    checkForUpdates () {
+    }
+
+    checkForUpdates = () => {
       if (!isDevMode) {
         ipcRenderer.send('CHECK_FOR_UPDATES')
       }
-    },
-    renderButtonContents () {
+    };
+
+    renderButtonContents = () => {
       const {checkingForUpdates, downloadingUpdates} = this.props.state
 
       if (checkingForUpdates) {
@@ -77,7 +80,8 @@ export default (robot) => {
       return (
         <span>Check for updates</span>
       )
-    },
+    };
+
     render () {
       const {updateAvailable, updateDownloaded} = this.props.state
 
@@ -117,5 +121,5 @@ export default (robot) => {
         </Collection>
       )
     }
-  })
+  }
 }

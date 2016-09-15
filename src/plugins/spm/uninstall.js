@@ -18,16 +18,16 @@ export default robot => {
     ...postUninstallSteps
   ])
 
-  const Uninstall = React.createClass({
-    getInitialState () {
-      return {
-        done: false,
-        state: {}
-      }
-    },
-    markAsDone (state) {
+  class Uninstall extends React.Component {
+    state = {
+      done: false,
+      state: {}
+    };
+
+    markAsDone = (state) => {
       this.setState({ done: true, state })
-    },
+    };
+
     render () {
       let {plugin, ...other} = this.props
 
@@ -47,7 +47,7 @@ export default robot => {
         </Blank>
       )
     }
-  })
+  }
 
   robot.registerComponent(enhance(Uninstall, [
     restorableComponent

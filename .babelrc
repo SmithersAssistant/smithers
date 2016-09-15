@@ -5,6 +5,7 @@
       "plugins": [
         "transform-object-rest-spread",
         "transform-react-display-name",
+        "transform-class-properties",
         "transform-regenerator"
       ]
     },
@@ -12,6 +13,7 @@
       "plugins": [
         "transform-object-rest-spread",
         "transform-react-display-name",
+        "transform-class-properties",
         "transform-regenerator"
       ]
     }

@@ -28,29 +28,31 @@ export default (robot, initialSteps = []) => {
     )
   }
 
-  const Stepper = React.createClass({
-    getInitialState () {
+  class Stepper extends React.Component {
+    static defaultProps = {
+      onFinished: robot.noop,
+      onFailed: robot.noop,
+      done: false,
+      state: {}
+    };
+
+    constructor (props) {
+      super(props)
       const steps = []
 
-      return {
+      this.state = {
         detailView: false,
         verboseMode: false,
         failed: false,
         steps,
-        ...this.props.state
+        ...props.state
       }
-    },
-    getDefaultProps () {
-      return {
-        onFinished: robot.noop,
-        onFailed: robot.noop,
-        done: false,
-        state: {}
-      }
-    },
+    }
+
     componentWillReceiveProps ({state}) {
       this.setState(state)
-    },
+    }
+
     componentDidMount () {
       setTimeout(() => {
         const {done} = this.props
@@ -71,8 +73,9 @@ export default (robot, initialSteps = []) => {
           })
         }
       })
-    },
-    registerStep (step) {
+    }
+
+    registerStep = (step) => {
       const id = robot.uuid()
       const {label, output = '', cb = robot.noop} = typeof step === 'function'
         ? step(
@@ -90,8 +93,9 @@ export default (robot, initialSteps = []) => {
         showOutput: false,
         state: STATE_PENDING
       }
-    },
-    updateStep (id, handler = robot.noop, done = robot.noop) {
+    };
+
+    updateStep = (id, handler = robot.noop, done = robot.noop) => {
       let {steps} = this.state
 
       steps = steps.map((step) => {
@@ -103,8 +107,9 @@ export default (robot, initialSteps = []) => {
       })
 
       this.setState({steps}, () => done(steps.find(step => step.id === id)))
-    },
-    startStep (id) {
+    };
+
+    startStep = (id) => {
       this.updateStep(id, (step) => ({
         ...step,
         showOutput: true,
@@ -159,8 +164,9 @@ export default (robot, initialSteps = []) => {
             })
           })
       })
-    },
-    failed (id, text) {
+    };
+
+    failed = (id, text) => {
       this.updateStep(id, (step) => ({
         ...step,
         showOutput: true,
@@ -171,8 +177,9 @@ export default (robot, initialSteps = []) => {
       const {verboseMode} = this.state
 
       this.setState({detailView: !verboseMode, failed: true})
-    },
-    appendToOutput (id, text) {
+    };
+
+    appendToOutput = (id, text) => {
       let {failed} = this.state
 
       if (failed) {
@@ -183,8 +190,9 @@ export default (robot, initialSteps = []) => {
         ...step,
         output: step.output + text
       }))
-    },
-    stepDone (id, args) {
+    };
+
+    stepDone = (id, args) => {
       let {failed} = this.state
 
       if (failed) {
@@ -208,8 +216,9 @@ export default (robot, initialSteps = []) => {
           })
         }
       })
-    },
-    renderVerboseStepTitle (step, index, breathingRoom = 2, borderChar = '-') {
+    };
+
+    renderVerboseStepTitle = (step, index, breathingRoom = 2, borderChar = '-') => {
       let time = ''
       if (step.startTime && step.endTime) {
         time = timeText(step.startTime, step.endTime)
@@ -217,8 +226,9 @@ export default (robot, initialSteps = []) => {
 
       const title = `${' '.repeat(breathingRoom)}${index + 1}. ${step.label} ${time}${' '.repeat(breathingRoom)}`
       return `${borderChar.repeat(title.length)}\n${title}\n${borderChar.repeat(title.length)}\n\n`
-    },
-    renderVerboseMode () {
+    };
+
+    renderVerboseMode = () => {
       const {steps} = this.state
       let start = 0
       let end = 0
@@ -237,7 +247,8 @@ export default (robot, initialSteps = []) => {
       const hasPendingTasks = steps.filter(step => step.state === STATE_PENDING).length > 0
 
       return `${output}${!hasPendingTasks ? `\n\nTotal Execution Time: ${timeText(start, end)}` : ''}`
-    },
+    };
+
     render () {
       let {title, styles} = this.props
       let {detailView, verboseMode, steps} = this.state
@@ -385,7 +396,7 @@ export default (robot, initialSteps = []) => {
         </div>
       )
     }
-  })
+  }
 
   return withStyles(stepperStyles)(Stepper)
 }

@@ -56,7 +56,7 @@ const Card = (cardContainer) => {
   )
 }
 
-const Main = React.createClass({
+class Main extends React.Component {
   render () {
     let {cards, styles} = this.props
 
@@ -72,7 +72,7 @@ const Main = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default withStyles(({ theme }) => ({
   cardsStyles: {

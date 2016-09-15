@@ -6,24 +6,22 @@ import {shell} from 'electron'
 const noop = () => {
 }
 
-const Webview = React.createClass({
-  getDefaultProps () {
-    return {
-      whenLoading: undefined,
-      onWillNavigate: noop,
-      onDidNavigate: noop,
-      onDidStartLoading: noop,
-      onDidStopLoading: noop,
-      onDidNavigateInPage: noop,
-      onDidGetResponseDetails: noop,
-      onLoadCommit: noop
-    }
-  },
-  getInitialState () {
-    return {
-      isLoading: false
-    }
-  },
+class Webview extends React.Component {
+  static defaultProps = {
+    whenLoading: undefined,
+    onWillNavigate: noop,
+    onDidNavigate: noop,
+    onDidStartLoading: noop,
+    onDidStopLoading: noop,
+    onDidNavigateInPage: noop,
+    onDidGetResponseDetails: noop,
+    onLoadCommit: noop
+  };
+
+  state = {
+    isLoading: false
+  };
+
   componentDidMount () {
     this.attachListeners()
 
@@ -34,12 +32,14 @@ const Webview = React.createClass({
     this._onVisibilityChangeHandlerInterval = setInterval(() => {
       (this._onVisibilityChangeHandler || noop)()
     }, 600)
-  },
+  }
+
   componentWillUnmount () {
     this.removeEventListeners()
     clearInterval(this._onVisibilityChangeHandlerInterval)
-  },
-  getEvents () {
+  }
+
+  getEvents = () => {
     return [{
       key: 'wil-navigate',
       cb: this.props.onWillNavigate
@@ -71,28 +71,35 @@ const Webview = React.createClass({
       key: 'load-commit',
       cb: this.props.onLoadCommit
     }]
-  },
-  attachListeners () {
+  };
+
+  attachListeners = () => {
     this.getEvents().map(event => {
       this.callMethod('addEventListener', event.key, event.cb)
     })
-  },
-  callMethod (method, ...args) {
+  };
+
+  callMethod = (method, ...args) => {
     return this.refs.webview && this.refs.webview[method](...args)
-  },
-  canGoBack () {
+  };
+
+  canGoBack = () => {
     return this.callMethod('canGoBack')
-  },
-  canGoForward () {
+  };
+
+  canGoForward = () => {
     return this.callMethod('canGoForward')
-  },
-  goBack () {
+  };
+
+  goBack = () => {
     return this.callMethod('goBack')
-  },
-  goForward () {
+  };
+
+  goForward = () => {
     return this.callMethod('goForward')
-  },
-  newWindowEventListener (e) {
+  };
+
+  newWindowEventListener = (e) => {
     try {
       const protocol = parse(e.url).protocol
 
@@ -104,30 +111,36 @@ const Webview = React.createClass({
     } catch (err) {
       console.log(`Ignoring ${e.url} due to ${err.message}`)
     }
-  },
-  reload () {
+  };
+
+  reload = () => {
     this.callMethod('reload')
-  },
-  removeEventListeners () {
+  };
+
+  removeEventListeners = () => {
     this.getEvents().map(event => {
       this.refs.webview.removeEventListener(event.key, event.cb)
     })
-  },
-  startLoading () {
+  };
+
+  startLoading = () => {
     this.setState({isLoading: true})
-  },
-  stopLoading () {
+  };
+
+  stopLoading = () => {
     this.setState({isLoading: false})
-  },
-  renderWebview (props) {
+  };
+
+  renderWebview = (props) => {
     return (
       <webview
         {...props}
         ref='webview'
       />
     )
-  },
-  triggerReflow () {
+  };
+
+  triggerReflow = () => {
     try {
       const {webview} = this.refs
 
@@ -141,8 +154,9 @@ const Webview = React.createClass({
     } catch (err) {
       console.log(err)
     }
-  },
-  isElementInViewport (el) {
+  };
+
+  isElementInViewport = (el) => {
     if (!el) {
       return false
     }
@@ -169,8 +183,9 @@ const Webview = React.createClass({
       el.contains(efp(rect.right, rect.bottom)) ||
       el.contains(efp(rect.left, rect.bottom))
     )
-  },
-  onVisibilityChange (el, callback) {
+  };
+
+  onVisibilityChange = (el, callback) => {
     var oldVisible
 
     return () => {
@@ -183,7 +198,8 @@ const Webview = React.createClass({
         }
       }
     }
-  },
+  };
+
   render () {
     let {isLoading} = this.state
     let props = deleteProps(this.props, [
@@ -202,6 +218,6 @@ const Webview = React.createClass({
       </div>
     )
   }
-})
+}
 
 export default Webview

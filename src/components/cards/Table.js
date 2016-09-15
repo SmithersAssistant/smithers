@@ -42,15 +42,14 @@ const tbodyCellHeaderStyles = {
   lineHeight: '14px'
 }
 
-const Table = React.createClass({
-  getDefaultProps () {
-    return {
-      title: undefined,
-      header: [],
-      body: [],
-      footer: []
-    }
-  },
+class Table extends React.Component {
+  static defaultProps = {
+    title: undefined,
+    header: [],
+    body: [],
+    footer: []
+  };
+
   render () {
     const {title, header, body, footer, ...other} = this.props
 
@@ -96,6 +95,6 @@ const Table = React.createClass({
       </Base>
     )
   }
-})
+}
 
 export default Table

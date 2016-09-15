@@ -4,18 +4,16 @@ import styles from './AStyles'
 import {withStyles, classNames} from 'components/functions'
 const noop = () => {}
 
-const A = React.createClass({
-  getDefaultProps () {
-    return {onClick: noop}
-  },
+class A extends React.Component {
+  static defaultProps = {onClick: noop};
 
-  handleOnClick (e) {
+  handleOnClick = (e) => {
     if (this.props.target === '_blank') {
       e.preventDefault()
       shell.openExternal(this.props.href)
     }
     this.props.onClick(e)
-  },
+  };
 
   render () {
     const {styles, className, children, ...other} = this.props
@@ -28,6 +26,6 @@ const A = React.createClass({
       >{children}</a>
     )
   }
-})
+}
 
 export default withStyles(styles)(A)

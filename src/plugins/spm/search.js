@@ -18,34 +18,34 @@ export default robot => {
   const BASE = 'https://api.npms.io/search'
   const mandatoryKeywords = ['smithers', 'plugin']
 
-  const Search = React.createClass({
-    getInitialState () {
-      return {
-        query: this.props.q,
-        results: [],
-        active: undefined,
-        start: 0,
-        itemsPerPage: 25,
-        filters: {
-          installed: true,
-          notInstalled: true
-        }
+  class Search extends React.Component {
+    static defaultProps = {
+      q: ''
+    };
+
+    state = {
+      query: this.props.q,
+      results: [],
+      active: undefined,
+      start: 0,
+      itemsPerPage: 25,
+      filters: {
+        installed: true,
+        notInstalled: true
       }
-    },
-    getDefaultProps () {
-      return {
-        q: ''
-      }
-    },
+    };
+
     componentWillMount () {
       this.search = debounce(this.search, 500)
 
       this.search()
-    },
-    isInstalled (plugin) {
+    }
+
+    isInstalled = (plugin) => {
       return config.get('plugins.external').includes(plugin)
-    },
-    search () {
+    };
+
+    search = () => {
       return robot.fetchJson(`${BASE}?${robot.httpBuildQuery({
         size: this.state.itemsPerPage,
         from: this.state.start,
@@ -73,8 +73,9 @@ export default robot => {
             }
           }).filter(x => !!x)})
         })
-    },
-    fetchReadme (name) {
+    };
+
+    fetchReadme = (name) => {
       getPackageReadme(name, (err, readme) => {
         if (!err) {
           this.setState({
@@ -92,12 +93,14 @@ export default robot => {
           })
         }
       })
-    },
-    handleChange (value) {
+    };
+
+    handleChange = (value) => {
       this.setState({query: value})
       this.search()
-    },
-    applyFilters (items) {
+    };
+
+    applyFilters = (items) => {
       return items.filter(item => {
         const isInstalled = this.isInstalled(item.name)
 
@@ -111,8 +114,9 @@ export default robot => {
           ? item
           : undefined
       }).filter(x => !!x)
-    },
-    renderItem (item) {
+    };
+
+    renderItem = (item) => {
       const {styles} = this.props
 
       return (
@@ -154,7 +158,8 @@ export default robot => {
           </div>
         </div>
       )
-    },
+    };
+
     render () {
       const {styles, ...other} = this.props
       let {query, results} = this.state
@@ -262,7 +267,7 @@ export default robot => {
         </Blank>
       )
     }
-  })
+  }
 
   robot.registerComponent(enhance(Search, [
     restorableComponent,
