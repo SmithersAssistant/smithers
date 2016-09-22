@@ -3,7 +3,7 @@ import Base from './Base'
 import styles from './_styles'
 import {withStyles, classNames} from 'components/functions'
 
-const Blank = ({styles, children, title, className, ...other}) => (
+const Blank = ({children, title, className, ...other}) => (
   <Base
     {...other}
     title={title}

@@ -3,7 +3,7 @@ import Base from './Base'
 import styles from './_styles'
 import {withStyles, classNames} from 'components/functions'
 
-const Images = ({title, images, className, styles, ...other}) => (
+const Images = ({title, images, className, ...other}) => (
   <Base
     {...other}
     title={title}

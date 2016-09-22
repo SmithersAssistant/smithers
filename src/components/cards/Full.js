@@ -4,7 +4,7 @@ import styles from './_styles'
 import {withStyles, classNames} from 'components/functions'
 import { areTabsVisible } from 'state'
 
-const Full = ({children, styles, className, title, ...other}) => (
+const Full = ({children, className, title, ...other}) => (
   <Base
     {...other}
     title={title}
