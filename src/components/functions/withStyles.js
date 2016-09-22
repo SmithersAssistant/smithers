@@ -16,10 +16,15 @@ export default (cb = {}) => {
     }
   }, {})
 
-  return Component => props => (
-    <Component
-      styles={classNames}
-      {...props}
-    />
-  )
+  return Component => (props = {}) => {
+    return (
+      <Component
+        {...props}
+        styles={{
+          ...classNames,
+          ...(props.styles || {})
+        }}
+      />
+    )
+  }
 }
