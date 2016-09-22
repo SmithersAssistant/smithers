@@ -1,6 +1,6 @@
 const gap = 16
 
-export default (robot) => ({ color, px }) => ({
+export default (robot) => ({ color, px, important }) => ({
   wrapper: {
     margin: 0,
     padding: 0,
@@ -27,7 +27,7 @@ export default (robot) => ({ color, px }) => ({
     pageBreakInside: 'avoid',
     WebkitColumnBreakInside: 'avoid',
     breakInside: 'avoid',
-    paddingBottom: gap
+    paddingBottom: important(px(gap))
   },
   pluginTitle: {
     overflow: 'hidden',
