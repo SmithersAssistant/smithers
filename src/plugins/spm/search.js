@@ -15,7 +15,7 @@ export default robot => {
   const {A, withStyles} = robot.UI
   const {TextField, Dialog, Checkbox} = robot.UI.material
 
-  const BASE = 'https://api.npms.io/search'
+  const BASE = 'https://api.npms.io/v2/search'
   const mandatoryKeywords = ['smithers', 'plugin']
 
   class Search extends React.Component {
@@ -49,10 +49,10 @@ export default robot => {
       return robot.fetchJson(`${BASE}?${robot.httpBuildQuery({
         size: this.state.itemsPerPage,
         from: this.state.start,
-        term: `${this.state.query} ${mandatoryKeywords.join(',')}`
+        q: `${this.state.query} ${mandatoryKeywords.join(',')}`
       })}`)
         .then(({results}) => {
-          this.setState({results: results.map(({module}) => {
+          this.setState({results: results.map(({package: module}) => {
             const keywords = (module.keywords || []).filter(keyword => !mandatoryKeywords.includes(keyword))
 
             // Filter out plugins that don't have the [plugin, smithers] keywords
