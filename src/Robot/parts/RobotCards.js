@@ -1,5 +1,3 @@
-import pluginManager from 'pluginSystem/pluginManager'
-
 import {dispatch} from 'store'
 import {addCard, removeCard} from 'actions/index'
 
@@ -14,9 +12,6 @@ import Table from 'components/cards/Table'
 export default {
   addCard: (card, props = {}) => dispatch(addCard(card, props)),
   removeCard: (id) => dispatch(removeCard(id)),
-  registerComponent (component, name) {
-    pluginManager.registerComponent(component, name)
-  },
   cards: {
     Blank,
     Empty,

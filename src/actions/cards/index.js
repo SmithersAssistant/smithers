@@ -3,6 +3,7 @@ import {getActiveTab} from 'state'
 
 import {
   ADD_CARD,
+  INJECT_SHARED_CARD,
   SAVE_CARD_STATE,
   REMOVE_CARD,
   CLEAR_CARD_HISTORY
@@ -14,6 +15,15 @@ export const addCard = (card, props = {}, relation = getActiveTab()) => ({
   props,
   id: uuid(),
   relation
+})
+
+export const injectSharedCard = (id, card, props = {}, state = {}) => ({
+  type: INJECT_SHARED_CARD,
+  id,
+  card,
+  props,
+  state,
+  relation: getActiveTab()
 })
 
 export const saveCardState = (id, state) => ({

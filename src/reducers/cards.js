@@ -1,5 +1,6 @@
 import {
   ADD_CARD,
+  INJECT_SHARED_CARD,
   SAVE_CARD_STATE,
   CLEAR_CARD_HISTORY,
   REMOVE_CARD,
@@ -16,6 +17,14 @@ const card = (state, action) => {
         id: action.id,
         relation: action.relation
       }
+    case INJECT_SHARED_CARD:
+      return {
+        card: action.card,
+        props: action.props,
+        state: action.state,
+        id: action.id,
+        relation: action.relation
+      }
     default:
       return state
   }
@@ -23,6 +32,7 @@ const card = (state, action) => {
 
 const cards = (state = [], action) => {
   switch (action.type) {
+    case INJECT_SHARED_CARD:
     case ADD_CARD:
       return {
         ...state,

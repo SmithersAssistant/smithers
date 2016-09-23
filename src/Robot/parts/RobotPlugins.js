@@ -94,7 +94,8 @@ export default {
       ...plugins,
       {
         ...plugin,
-        commands: []
+        commands: [],
+        cards: []
       }
     ]
     currentPlugin = plugin
@@ -127,11 +128,36 @@ export default {
       }))
   },
 
-  commands (plugin) {
+  myCommands (plugin) {
     return plugins
       .find(p => this._isCurrentPlugin(p, plugin))
       .commands
       .map(({ regex: name, description, usage, args }) => ({ name, description, usage, ...parseUsage(usage, args) }))
+  },
+
+  myCards (plugin) {
+    return plugins
+      .find(p => this._isCurrentPlugin(p, plugin))
+      .cards
+  },
+
+  registerComponent (component, name) {
+    plugins = plugins.map((plugin) => {
+      if (this._isCurrentPlugin(plugin, currentPlugin)) {
+        plugin = {
+          ...plugin,
+          cards: [
+            ...plugin.cards,
+            {
+              component,
+              name
+            }
+          ]
+        }
+      }
+
+      return plugin
+    })
   },
 
   plugins () {

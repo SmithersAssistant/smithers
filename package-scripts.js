@@ -23,7 +23,7 @@ module.exports = {
     sync: {
       dependencies: 'node ./npm_scripts/syncPackageJson.js'
     },
-    dev: 'npm start clean && cross-env NODE_ENV=development webpack --watch',
+    dev: 'cross-env NODE_ENV=development webpack --watch',
     build: 'npm start clean && npm start sync.dependencies && cross-env NODE_ENV=production webpack',
     pretest: 'standard ./src/**/*.js',
     test: {
