@@ -41,7 +41,7 @@ module.exports = {
     },
     default: 'cross-env NODE_ENV=development electron app',
     postinstall: 'install-app-deps',
-    pack: `npm start build && build -${currentPlatform} --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js`,
+    pack: `npm start build && build -${currentPlatform} --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js && npm start launch`,
     dist: `npm start build && build -${releaseOnPlatforms} && npm start launch`,
     release: `npm start build && npm start tag.create && build -${releaseOnPlatforms} --publish=always`
   }
