@@ -12,8 +12,11 @@ class Plugin {
     this.location = location
 
     robot.registerPlugin(this)
+
     cb(robot)
-    this.commands = robot.commands(this)
+
+    this.commands = robot.myCommands(this)
+    this.cards = robot.myCards(this)
   }
 
   execute (command) {

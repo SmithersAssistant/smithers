@@ -1,7 +1,7 @@
-import {createStore} from 'redux'
+import { createStore } from 'redux'
 import throttle from 'lodash/throttle'
 
-import {loadState, saveState} from './storage'
+import { loadState, saveState } from './storage'
 
 // import the root reducer
 import rootReducer, { defaultState } from './reducers/index'
@@ -30,5 +30,5 @@ window.state = () => {
 }
 
 export const getState = () => store.getState()
-export const {dispatch} = store
+export const { dispatch } = store
 export default store
