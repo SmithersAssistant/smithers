@@ -14,9 +14,18 @@ const currentPlatform = (() => {
 
 const releaseOnPlatforms = [MAC, WINDOWS, LINUX].join('')
 
+function launch () {
+  switch (process.platform) {
+    case 'darwin': return 'open ./dist/mac/smithers.app'
+  }
+
+  return 'echo "This is not implemented yet"'
+}
+
 module.exports = {
   scripts: {
     clean: './npm_scripts/clean.sh',
+    launch: launch(),
     tag: {
       create: 'node ./npm_scripts/createTag.js'
     },
@@ -33,7 +42,7 @@ module.exports = {
     default: 'cross-env NODE_ENV=development electron app',
     postinstall: 'install-app-deps',
     pack: `npm start build && build -${currentPlatform} --dir && babel --no-comments --compact --minified --out-file app/dist/bundle.js app/dist/bundle.js`,
-    dist: `npm start build && build -${releaseOnPlatforms}`,
+    dist: `npm start build && build -${releaseOnPlatforms} && npm start launch`,
     release: `npm start build && npm start tag.create && build -${releaseOnPlatforms} --publish=always`
   }
 };
