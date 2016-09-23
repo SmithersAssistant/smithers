@@ -1,6 +1,6 @@
 const os = require('os')
-const {app, BrowserWindow, autoUpdater, globalShortcut, ipcMain} = require('electron')
-const {get} = require('./config')
+const { app, BrowserWindow, autoUpdater, globalShortcut, ipcMain } = require('electron')
+const { get } = require('./config')
 const menuFactory = require('./Menu')
 
 // Window Management
@@ -75,6 +75,13 @@ const registerShortcuts = (shortcuts = get('keyboardShortcuts')) => {
   })
 }
 
+ipcMain.on('quit_and_install', (event) => {
+  if (process.env.NODE_ENV !== 'development') {
+    autoUpdater.quitAndInstall()
+  }
+  event.returnValue = true
+})
+
 ipcMain.on('unregister_all_shortcuts', (event) => {
   globalShortcut.unregisterAll()
   event.returnValue = true
@@ -89,7 +96,7 @@ ipcMain.on('register_all_shortcuts', (event, shortcuts) => {
   event.returnValue = true
 })
 
-const createWindow = ({onLoaded = noop} = {}) => {
+const createWindow = ({ onLoaded = noop } = {}) => {
   win = new BrowserWindow({
     width: 1000,
     height: 800,

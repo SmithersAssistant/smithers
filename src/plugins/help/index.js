@@ -1,6 +1,7 @@
 import React from 'react'
 import orderBy from 'lodash/orderBy'
 import styleFactory from './styles'
+import updateAvailableFactory from './update'
 
 const HELP_COMPONENT = 'com.robinmalfait.help'
 
@@ -8,6 +9,8 @@ export default robot => {
   const {withStyles} = robot.UI
   const {Blank} = robot.cards
   const {List, Subheader, ListItem} = robot.UI.material
+
+  updateAvailableFactory(robot)
 
   const styles = styleFactory(robot)
   const ws = withStyles(styles)

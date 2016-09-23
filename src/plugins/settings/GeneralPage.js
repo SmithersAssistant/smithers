@@ -2,14 +2,13 @@ import React from 'react'
 import {remote, ipcRenderer} from 'electron'
 import config from 'config'
 import KeyboardRecorder from './KeyboardRecorder'
-const {app, autoUpdater} = remote
+const {app} = remote
 
 const isDevMode = process.env.NODE_ENV === 'development'
 
 export default (robot) => {
   const {UPDATE_AVAILABLE, UPDATE_DOWNLOADED, CHECKING_FOR_UPDATES, UPDATE_NOT_AVAILABLE} = robot.events
   const {
-    A,
     Button,
     Icon,
     Collection,
@@ -83,8 +82,6 @@ export default (robot) => {
     };
 
     render () {
-      const {updateAvailable, updateDownloaded} = this.props.state
-
       return (
         <Collection>
           <CollectionItem className='clearfix'>
@@ -92,11 +89,6 @@ export default (robot) => {
             <Button disabled={isDevMode} className='right' onClick={this.checkForUpdates}>
               {this.renderButtonContents()}
             </Button>
-            {updateAvailable ? (
-              <span className='right breathing'>update available{updateDownloaded && (
-                <span>, <A onClick={() => autoUpdater.quitAndInstall()}>install update</A></span>
-              )}</span>
-            ) : (<span className='right breathing' style={{color: '#ccc'}}>no update available</span>)}
           </CollectionItem>
           <CollectionItem className='clearfix'>
             <Checkbox
