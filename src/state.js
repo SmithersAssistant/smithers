@@ -17,3 +17,5 @@ export const getThemePalette = () => {
   }
 }
 export const getStateForCard = (id) => getState().cards.cards.find(card => card.id === id).state || {}
+export const getCardById = (id) => getState().cards.cards.find(card => card.id === id)
+export const cardExists = (id) => getState().cards.cards.filter(card => card.id === id).length > 0
