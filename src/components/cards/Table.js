@@ -57,26 +57,26 @@ class Table extends React.Component {
       <Base {...other} title={title} style={{...cardStyles, ...itemStyles}}>
         <table style={tableStyles}>
           <tbody style={tbodyStyles}>
-          {header && (
-            <tr style={trStyles}>
-              {header.map((item, i) => {
-                if (item.hasOwnProperty('value')) {
-                  return <td style={{...tbodyCellStyles, ...tbodyCellHeaderStyles}}
-                    key={`header_${i}`} {...item}>{item.value}</td>
-                }
+            {header && (
+              <tr style={trStyles}>
+                {header.map((item, i) => {
+                  if (item.hasOwnProperty('value')) {
+                    return <td style={{...tbodyCellStyles, ...tbodyCellHeaderStyles}}
+                      key={`header_${i}`} {...item}>{item.value}</td>
+                  }
 
-                return <td style={{...tbodyCellStyles, ...tbodyCellHeaderStyles}} key={`header_${i}`}>{item}</td>
-              })}
-            </tr>
-          )}
+                  return <td style={{...tbodyCellStyles, ...tbodyCellHeaderStyles}} key={`header_${i}`}>{item}</td>
+                })}
+              </tr>
+            )}
 
-          {body && body.map((row, rowIndex) => (
-            <tr style={trStyles} key={`body_row_${rowIndex}`}>
-              {row.map((cell, i) => (
-                <td style={tbodyCellStyles} key={`body_${rowIndex}_${i}`}>{cell}</td>
-              ))}
-            </tr>
-          ))}
+            {body && body.map((row, rowIndex) => (
+              <tr style={trStyles} key={`body_row_${rowIndex}`}>
+                {row.map((cell, i) => (
+                  <td style={tbodyCellStyles} key={`body_${rowIndex}_${i}`}>{cell}</td>
+                ))}
+              </tr>
+            ))}
           </tbody>
           {footer && (
             <tfoot>

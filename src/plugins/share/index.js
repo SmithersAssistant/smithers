@@ -17,7 +17,7 @@ export default robot => {
       const pluginExists = robot.plugins().find(p => p.name === plugin)
 
       if (!pluginExists) {
-        robot.execute(`install ${plugin}`)
+        robot.execute(`install ${plugin} --silent`)
       }
 
       robot.injectSharedCard(id, card, props, state)
