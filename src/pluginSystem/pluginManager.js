@@ -1,10 +1,12 @@
-import {resolve} from 'path'
+import { resolve } from 'path'
+import flatten from 'lodash/flatten'
 import Plugin from './Plugin'
+
+import { DEFAULT_PLUGIN, EXTERNAL_PLUGIN } from './sources'
 
 class PluginManager {
 
   constructor () {
-    this.cards = []
     this.plugins = []
   }
 
@@ -51,19 +53,20 @@ class PluginManager {
     this.plugins.forEach(plugin => plugin.execute(command))
   }
 
-  registerComponent (component, name) {
-    this.cards = [
-      ...this.cards,
-      {
-        component,
-        name
-      }
-    ]
+  canShareCard (name) {
+    const plugin = this.plugins.find(plugin => plugin.cards.find(card => card.name === name))
+
+    // Local plugins are not allowed to be shared
+    // Because there is no way to "install" it if it doesn't exist
+    return [
+      DEFAULT_PLUGIN,
+      EXTERNAL_PLUGIN
+    ].includes(plugin.source)
   }
 
   resolveComponent (name) {
     try {
-      const card = this.cards.find(c => c.name === name)
+      const card = flatten(this.plugins.map(plugin => plugin.cards)).find(c => c.name === name)
       if (card) {
         return card.component
       }

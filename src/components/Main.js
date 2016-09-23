@@ -1,11 +1,11 @@
 import React from 'react'
 import pluginManager from 'pluginSystem/pluginManager'
 
-import {dispatch} from 'store'
-import {removeCard, saveCardState} from 'actions/index'
-import Event, {OPEN_HELP} from 'Event'
-import {withStyles} from 'components/functions'
-import {getStateForCard} from 'state'
+import { dispatch } from 'store'
+import { removeCard, saveCardState } from 'actions/index'
+import Event, { OPEN_HELP } from 'Event'
+import { withStyles } from 'components/functions'
+import { getStateForCard, getCardById } from 'state'
 
 const NoCards = withStyles(({ theme, px }) => ({
   noCardsWrapper: {
@@ -49,6 +49,8 @@ const Card = (cardContainer) => {
       <Component
         {...cardContainer.props}
         removeCard={() => dispatch(removeCard(ID))}
+        canShareCard={pluginManager.canShareCard(getCardById(ID).card)}
+        shareCard={() => window.Robot.execute(`share initiate ${ID}`)}
         getState={() => getStateForCard(ID)}
         setState={(state) => dispatch(saveCardState(ID, state))}
       />
@@ -58,7 +60,7 @@ const Card = (cardContainer) => {
 
 class Main extends React.Component {
   render () {
-    let {cards, styles} = this.props
+    let { cards, styles } = this.props
 
     cards = cards.map((c) => Card(c)).filter(c => c !== null)
 
