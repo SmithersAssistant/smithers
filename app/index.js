@@ -186,10 +186,10 @@ app.on('ready', () => {
     checkForUpdates,
     openSettings
   })
+  createLauncher()
   createWindow()
   registerAutoUpdater()
   registerShortcuts()
-  createLauncher()
 })
 
 app.on('window-all-closed', () => {

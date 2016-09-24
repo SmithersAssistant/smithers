@@ -11,7 +11,7 @@ const node_modules = fs.readdirSync('node_modules').filter((x) => x !== '.bin');
 module.exports = {
   devtool: isProduction ? 'hidden-source-map' : null,
   entry: {
-    app: ['babel-polyfill', './src/index.js'],
+    smithers: ['babel-polyfill', './src/smithers.js'],
     launcher: ['babel-polyfill', './src/launcher.js']
   },
   output: {

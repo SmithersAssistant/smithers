@@ -16,9 +16,6 @@ const {app} = remote
 import './styles/global.css'
 import './styles/nativize.css'
 
-// Import the App
-import App from './components/App'
-
 // Load store and provider
 import {Provider} from 'react-redux'
 import store from './store'
@@ -74,11 +71,13 @@ notifications.start()
 // Disable pinch zoom
 webFrame.setZoomLevelLimits(1, 1)
 
-// Render
-render((
-  <MuiThemeProvider muiTheme={getMuiTheme({palette: getThemePalette()})}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </MuiThemeProvider>
-), document.getElementById('root'))
+export default (Application, props = {}) => {
+  // Render
+  render((
+    <MuiThemeProvider muiTheme={getMuiTheme({palette: getThemePalette()})}>
+      <Provider store={store}>
+        <Application {...props} />
+      </Provider>
+    </MuiThemeProvider>
+  ), document.getElementById('root'))
+}
