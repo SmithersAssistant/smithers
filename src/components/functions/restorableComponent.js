@@ -9,7 +9,8 @@ export default (Component) => {
       }
     }
 
-    componentDidMount () {
+    componentDidMount (...args) {
+      super.componentDidMount(...args)
       this.props.setState(this.state)
     }
 
