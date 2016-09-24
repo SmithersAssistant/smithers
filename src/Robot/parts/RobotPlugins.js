@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import pluginManager from 'pluginSystem/pluginManager'
 
 // Return an array
@@ -25,7 +26,7 @@ const execAll = (regex, str) => {
 
   while (match) {
     matches.push({
-      match: match[0],
+      match: match[ 0 ],
       contents: match.slice(1).join(),
       humanized: humanize(match.slice(1).join()),
       index: match.index
@@ -48,11 +49,11 @@ const parseUsage = (usageString, args) => {
   return {
     arguments: [].concat(execAll(ARGUMENTS_REGEX, usageString)).map((variable) => ({
       ...variable,
-      data: args && args[variable.contents] || NOOP
+      data: args && args[ variable.contents ] || NOOP
     })),
     optionals: [].concat(execAll(OPTIONALS_REGEX, usageString)).map((variable) => ({
       ...variable,
-      data: args && args[variable.contents] || NOOP
+      data: args && args[ variable.contents ] || NOOP
     }))
   }
 }
@@ -68,7 +69,7 @@ const mapMatchesToUsages = (plugin, matches) => {
     .reduce((res, item, i) => {
       return {
         ...res,
-        [item.contents]: matches[i + 1]
+        [item.contents]: matches[ i + 1 ]
       }
     }, {})
 
@@ -165,7 +166,9 @@ export default {
   },
 
   execute (value) {
-    pluginManager.execute(value)
+    window.LAUNCHER_MODE
+      ? ipcRenderer.send('handleinput', value)
+      : pluginManager.execute(value)
   },
 
   _isCurrentPlugin (a, b) {

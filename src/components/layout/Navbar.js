@@ -51,6 +51,7 @@ const Navbar = React.createClass({
 
   getDefaultProps () {
     return {
+      launcher: false,
       canGoBack: false,
       canGoForward: false
     }
@@ -154,10 +155,15 @@ const Navbar = React.createClass({
   },
 
   executeCommand (value) {
-    const {handleInput} = this.props
+    const {handleInput, onHandleInput} = this.props
+
+    if (onHandleInput) {
+      onHandleInput(value)
+    } else {
+      pluginManager.execute(value)
+    }
 
     handleInput(value)
-    pluginManager.execute(value)
     this.getInput().value = ''
 
     this.resetSuggestions()

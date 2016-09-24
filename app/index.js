@@ -5,6 +5,7 @@ const menuFactory = require('./Menu')
 
 // Window Management
 let win
+let launcher
 
 let updateAvailableMessageShown = false
 const noop = () => {}
@@ -40,9 +41,9 @@ const registerAutoUpdater = () => {
   }
 }
 
-const _executeOnWindow = (cb) => {
-  if (win === undefined) {
-    createWindow({
+const _executeOnWindow = (cb, context, creator = () => {}) => {
+  if (context === undefined) {
+    creator({
       onLoaded () {
         cb()
       }
@@ -53,24 +54,45 @@ const _executeOnWindow = (cb) => {
   cb()
 }
 
+const _executeOnMainWindow = (cb) => _executeOnWindow(cb, win, createWindow)
+const _executeOnLauncher = (cb) => _executeOnWindow(cb, launcher, createLauncher)
+
 const checkForUpdates = () => {
   if (process.env.NODE_ENV !== 'development') {
-    _executeOnWindow(() => autoUpdater.checkForUpdates())
+    _executeOnMainWindow(() => autoUpdater.checkForUpdates())
   }
 }
 
 const openSettings = () => {
-  _executeOnWindow(() => win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('OPEN_SETTINGS')"))
+  _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.fire('OPEN_SETTINGS')"))
 }
 
 const registerShortcuts = (shortcuts = get('keyboardShortcuts')) => {
   globalShortcut.unregisterAll()
 
   shortcuts.toggleWindow !== "" && globalShortcut.register(shortcuts.toggleWindow, () => {
+    const launch = () => {
+      _executeOnLauncher(() => {
+        launcher.isFocused()
+          ? launcher.hide()
+          : launcher.show()
+
+        _executeOnMainWindow(() => {
+          win.hide()
+        })
+      })
+    }
+
     if (win !== undefined) {
-      win.isFocused()
-        ? win.hide()
-        : win.show()
+      if (!win.isFocused()) {
+        launch()
+      } else {
+        _executeOnMainWindow(() => {
+          win.hide()
+        })
+      }
+    } else {
+      launch()
     }
   })
 }
@@ -95,6 +117,41 @@ ipcMain.on('register_all_shortcuts', (event, shortcuts) => {
   )
   event.returnValue = true
 })
+
+ipcMain.on('handleinput', (event, value) => {
+  _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.execute('" + value + "')"))
+  _executeOnLauncher(() => launcher.hide())
+  _executeOnMainWindow(() => win.show())
+
+  event.returnValue = true
+})
+
+const createLauncher = ({ onLoaded = noop } = {}) => {
+  launcher = new BrowserWindow({
+    width: 680,
+    height: 400,
+    frame: false,
+    show: false,
+    transparent: true,
+    resizable: false,
+    alwaysOnTop: true,
+    skipTaskbar: true
+  })
+
+  launcher.on('ready-to-show', () => {
+    launcher.webContents.executeJavaScript("window.LAUNCHER_MODE = true")
+  })
+
+  launcher.webContents.once("did-frame-finish-load", () => {
+    onLoaded()
+  })
+
+  launcher.loadURL(`file://${__dirname}/launcher.html`)
+
+  launcher.on('closed', () => {
+    launcher = undefined
+  })
+}
 
 const createWindow = ({ onLoaded = noop } = {}) => {
   win = new BrowserWindow({
@@ -132,6 +189,7 @@ app.on('ready', () => {
   createWindow()
   registerAutoUpdater()
   registerShortcuts()
+  createLauncher()
 })
 
 app.on('window-all-closed', () => {

@@ -81,6 +81,9 @@ const helpers = {
   right: {
     float: 'right'
   },
+  grab: {
+    WebkitAppRegion: 'drag'
+  },
   scrollBar: {
     overflowY: 'scroll',
     '::-webkit-scrollbar': {

@@ -1,5 +1,5 @@
-import {getState} from './store'
-import {color} from './styles/functions/_color'
+import { getState } from './store'
+import { color } from './styles/functions/_color'
 
 export const getNotifications = () => getState().notifications
 export const getCardsByIdentifier = (identifier) => getState().cards.cards.filter(card => card.card === identifier)
