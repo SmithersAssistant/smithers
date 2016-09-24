@@ -1,8 +1,6 @@
-import {getNotifications} from 'state'
-import store, {dispatch} from 'store'
-import {dequeueNotification} from 'actions/index'
-
-let isActive = false
+import { getNotifications } from 'state'
+import store, { dispatch } from 'store'
+import { dequeueNotification } from 'actions/index'
 
 const next = () => {
   dispatch(dequeueNotification())
@@ -15,22 +13,15 @@ const showNotification = () => {
   const body = notifications[notifications.length - 1]
 
   if (hasMessage) {
-    new window.Notification('Smithers', {body}) // eslint-disable-line no-new
-    isActive = true
-
-    setTimeout(() => {
-      isActive = false
-      next()
-    }, 4000)
+    new window.Notification('Smithers', { body }) // eslint-disable-line no-new
+    setTimeout(next, 0)
   }
 }
 
 export default {
   start () {
     store.subscribe(() => {
-      if (!isActive) {
-        showNotification()
-      }
+      showNotification()
     })
   }
 }
