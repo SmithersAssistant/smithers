@@ -18,21 +18,21 @@ const registerAutoUpdater = () => {
     autoUpdater.addListener('update-available', () => {
       clearInterval(this._checkUpdatesInterval)
       if (!updateAvailableMessageShown) {
-        win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_AVAILABLE')")
+        _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.fire('UPDATE_AVAILABLE')"))
       }
       updateAvailableMessageShown = true
     })
     autoUpdater.addListener('update-downloaded', () => {
-      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_DOWNLOADED')")
+      _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.fire('UPDATE_DOWNLOADED')"))
     })
     autoUpdater.addListener('error', () => {
-      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_ERROR')")
+      _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.fire('UPDATE_ERROR')"))
     })
     autoUpdater.addListener('checking-for-update', () => {
-      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('CHECKING_FOR_UPDATES')")
+      _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.fire('CHECKING_FOR_UPDATES')"))
     })
     autoUpdater.addListener('update-not-available', () => {
-      win !== undefined && win.webContents.executeJavaScript("window.Robot.fire('UPDATE_NOT_AVAILABLE')")
+      _executeOnMainWindow(() => win.webContents.executeJavaScript("window.Robot.fire('UPDATE_NOT_AVAILABLE')"))
     })
 
     this._checkUpdatesInterval = setInterval(() => {
@@ -203,9 +203,6 @@ app.on('will-quit', () => {
 })
 
 app.on('activate', () => {
-  if (win === undefined) {
-    createWindow()
-  } else {
-    win.show()
-  }
+  _executeOnMainWindow(() => win.show())
+  _executeOnLauncher(() => launcher.hide())
 })
