@@ -22,7 +22,7 @@ export default robot => {
         }
 
         robot.injectSharedCard(id, card, props, state)
-        clipboard.writeText('')
+        clipboard.clear()
       }
     } catch (err) {
       robot.notify('We could not receive this share')
