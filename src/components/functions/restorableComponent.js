@@ -10,7 +10,10 @@ export default (Component) => {
     }
 
     componentDidMount (...args) {
-      super.componentDidMount(...args)
+      if (super.hasOwnProperty('componentDidMount')) {
+        super.componentDidMount(...args)
+      }
+
       this.props.setState(this.state)
     }
 
