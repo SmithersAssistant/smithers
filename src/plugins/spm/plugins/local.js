@@ -1,33 +1,29 @@
 import React from 'react'
-import {sep} from 'path'
-import {homedir} from 'os'
-import styles from './styles'
-import {withStyles} from 'components/functions'
+import { sep } from 'path'
+import { homedir } from 'os'
+import listFactory from './List'
 
 import {
   LOCAL_PLUGIN
 } from 'pluginSystem/sources'
 
-export default withStyles(styles)(({styles, robot}) => {
-  const {
-    Collection,
-    CollectionItem
-  } = robot.UI
-
+export default ({ robot }) => {
   const localPlugins = robot.plugins().filter(plugin => plugin.source === LOCAL_PLUGIN)
+  const List = listFactory(robot)
+
+  function renderList () {
+    return (
+      <List
+        plugins={localPlugins}
+      />
+    )
+  }
 
   return (
     <div>
-      {localPlugins.length > 0 ? (
-        <Collection>
-          {localPlugins.map((plugin, i) => (
-            <CollectionItem className={styles.pluginItem} key={i}>
-              {plugin.name}
-              <span className={styles.info}>(v{plugin.version})</span>
-            </CollectionItem>
-          ))}
-        </Collection>
-      ) : (
+      {localPlugins.length > 0
+        ? renderList()
+        : (
         <div>
           <p>
             There are no local plugins, add your first local plugin now!
@@ -37,4 +33,4 @@ export default withStyles(styles)(({styles, robot}) => {
       )}
     </div>
   )
-})
+}
