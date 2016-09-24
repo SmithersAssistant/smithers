@@ -1,3 +1,5 @@
+const NOOP = () => {}
+
 export default (Component) => {
   class EnhancedClass extends Component {
     constructor (...args) {
@@ -10,9 +12,7 @@ export default (Component) => {
     }
 
     componentDidMount (...args) {
-      if (super.hasOwnProperty('componentDidMount')) {
-        super.componentDidMount(...args)
-      }
+      (super.componentDidMount || NOOP).bind(this)(...args)
 
       this.props.setState(this.state)
     }
