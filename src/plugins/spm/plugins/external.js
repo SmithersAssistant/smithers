@@ -24,8 +24,7 @@ export default ({ robot }) => {
         ? renderList()
         : (
         <p>
-          There are no external plugins yet, you can find some plugins of our plugins
-          <A
+          There are no external plugins yet, you can find some plugins of our plugins <A
             target='_blank'
             href='https://www.npmjs.com/search?q=smithers+assistant'
           >
