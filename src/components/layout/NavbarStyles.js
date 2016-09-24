@@ -78,8 +78,7 @@ export default ({ theme, lighten, color, px }) => {
     suggestions: {
       maxHeight: isLauncher ? `calc(100vh - ${px(inputHeight)})` : 'calc(100vh / 2)',
       overflowY: 'scroll',
-      margin: '0.3rem 10px 1rem 10px',
-      width: '100%'
+      margin: '0.3rem 10px 1rem 10px'
     },
     suggestion: {
       cursor: 'default'
