@@ -5,23 +5,27 @@ export default robot => {
   const RECEIVE_REGEX = /^share receive (.*)$/
 
   function inject (code) {
-    const {
-      plugin,
-      card,
-      props,
-      state,
-      id
-    } = JSON.parse(window.atob(code))
+    try {
+      const {
+        plugin,
+        card,
+        props,
+        state,
+        id
+      } = JSON.parse(window.atob(code))
 
-    if (!robot.cardExists(id)) {
-      const pluginExists = robot.plugins().find(p => p.name === plugin)
+      if (!robot.cardExists(id)) {
+        const pluginExists = robot.plugins().find(p => p.name === plugin)
 
-      if (!pluginExists) {
-        robot.execute(`install ${plugin} --silent`)
+        if (!pluginExists) {
+          robot.execute(`install ${plugin} --silent`)
+        }
+
+        robot.injectSharedCard(id, card, props, state)
+        clipboard.writeText('')
       }
-
-      robot.injectSharedCard(id, card, props, state)
-      clipboard.writeText('')
+    } catch (err) {
+      robot.notify('We could not receive this share')
     }
   }
 
