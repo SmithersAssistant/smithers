@@ -9,6 +9,10 @@ export default (Component) => {
       }
     }
 
+    componentDidMount () {
+      this.props.setState(this.state)
+    }
+
     setState (state = {}, cb = () => {}) {
       super.setState(state, cb)
       this.props.setState(state)
