@@ -126,6 +126,11 @@ ipcMain.on('handleinput', (event, value) => {
   event.returnValue = true
 })
 
+ipcMain.on('hidelauncher', (event) => {
+  _executeOnLauncher(() => launcher.hide())
+  event.returnValue = true
+})
+
 const createLauncher = ({ onLoaded = noop } = {}) => {
   launcher = new BrowserWindow({
     width: 680,

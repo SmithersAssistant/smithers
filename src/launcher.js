@@ -7,5 +7,8 @@ run(Navbar, {
   launcher: true,
   onHandleInput: (data) => {
     ipcRenderer.send('handleinput', data)
+  },
+  onEscape: () => {
+    ipcRenderer.send('hidelauncher')
   }
 })

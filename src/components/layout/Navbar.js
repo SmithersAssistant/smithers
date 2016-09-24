@@ -53,7 +53,8 @@ const Navbar = React.createClass({
     return {
       launcher: false,
       canGoBack: false,
-      canGoForward: false
+      canGoForward: false,
+      onEscape: () => {}
     }
   },
 
@@ -178,6 +179,9 @@ const Navbar = React.createClass({
       if (e.keyCode === Keys.ESC) {
         this.selectInputText()
         this.resetSuggestions()
+        if (this.props.launcher) {
+          this.props.onEscape()
+        }
       }
     }
 
