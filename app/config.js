@@ -3,6 +3,7 @@ const {writeFile, existsSync, readFileSync} = require('fs')
 const {app, ipcMain} = require('electron')
 const _ = require('lodash')
 const mkdirp = require('mkdirp')
+const deepAssign = require('deep-assign')
 
 const CONFIG_PATH = resolve(app.getPath('userData'), 'user.config.json')
 const PLUGINS_PATH = resolve(app.getPath('userData'), 'plugins')
@@ -13,8 +14,8 @@ const persist = () => {
   writeFile(CONFIG_PATH, JSON.stringify(config, null, '  '))
 }
 
-const defaultConfig = () => {
-  return {
+const mergeWithDefaultConfig = (config = {}) => {
+  return deepAssign({
     plugins: {
       local: [],
       external: []
@@ -22,22 +23,22 @@ const defaultConfig = () => {
     keyboardShortcuts: {
       toggleWindow: 'Alt+S'
     }
-  }
+  }, config)
 }
 
 const loadConfig = () => {
   if (existsSync(CONFIG_PATH)) {
     const config = readFileSync(CONFIG_PATH, 'utf8')
     try {
-      return JSON.parse(config)
+      return mergeWithDefaultConfig(JSON.parse(config))
     } catch (e) {
       console.error(`ERROR\n  Could not load config file (${CONFIG_PATH})\n  Check the file, and see what's going on`)
-      return defaultConfig()
+      return mergeWithDefaultConfig()
     }
   }
 
-  writeFile(CONFIG_PATH, JSON.stringify(defaultConfig(), null, '  '))
-  return defaultConfig()
+  writeFile(CONFIG_PATH, JSON.stringify(mergeWithDefaultConfig(), null, '  '))
+  return mergeWithDefaultConfig()
 }
 
 let config = loadConfig()
