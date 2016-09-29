@@ -13,7 +13,7 @@ const noop = () => {}
 const registerAutoUpdater = () => {
   // Auto Updater
   if (process.env.NODE_ENV !== 'development') {
-    autoUpdater.setFeedURL(`https://smithers.robinmalfait.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`)
+    autoUpdater.setFeedURL(`https://download.getsmithers.com/update/${os.platform()}_${os.arch()}/${app.getVersion()}`)
 
     autoUpdater.addListener('update-available', () => {
       clearInterval(this._checkUpdatesInterval)

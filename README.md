@@ -6,7 +6,7 @@
     <a target="_blank" href="https://github.com/SmithersAssistant/smithers/releases"><img src="https://img.shields.io/github/downloads/SmithersAssistant/smithers/total.svg?style=flat-square" title="Total Downloads" alt="Total Downloads"/></a>
     <a target="_blank" href="https://github.com/SmithersAssistant/smithers/releases"><img src="https://img.shields.io/github/release/SmithersAssistant/smithers.svg?style=flat-square" title="Latest Release" alt="Latest Release"/></a>
     <a target="_blank" href="http://eisenbergeffect.bluespire.com/evergreen-browsers/"><img src="https://img.shields.io/badge/updates-evergreen-brightgreen.svg?style=flat-square" title="Evergreen Software" alt="Evergreen Software"/></a>
-    <a target="_blank" href="https://smithers.robinmalfait.com/download"><img src="https://img.shields.io/badge/Smithers-Download-blue.svg?style=flat-square" title="Download Smithers" alt="Download Smithers"/></a>
+    <a target="_blank" href="https://download.getsmithers.com"><img src="https://img.shields.io/badge/Smithers-Download-blue.svg?style=flat-square" title="Download Smithers" alt="Download Smithers"/></a>
     <a target="_blank" href="https://www.paypal.me/RobinMalfait"><img src="https://img.shields.io/badge/PayPal-Donate-blue.svg?style=flat-square" title="Evergreen Software" alt="Evergreen Software"/></a>
 </p>
 
