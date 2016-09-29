@@ -1,8 +1,9 @@
-import {v4 as uuid} from 'uuid'
-import {dispatch} from 'store'
-import {deleteProps} from 'components/functions'
+import Thread from '../../Thread'
+import { v4 as uuid } from 'uuid'
+import { dispatch } from 'store'
+import { deleteProps } from 'components/functions'
 
-import {userInfo} from 'os'
+import { userInfo } from 'os'
 
 import {
   enqueueNotification
@@ -33,13 +34,13 @@ const utils = {
       key = encodeURIComponent(key.replace(/[!'()*]/g, escape))
       tmpKey ? key = `${tmpKey}[${key}]` : ''
 
-      if (typeof obj[val] === 'object') {
-        const query = utils.httpBuildQuery(obj[val], key)
+      if (typeof obj[ val ] === 'object') {
+        const query = utils.httpBuildQuery(obj[ val ], key)
         output.push(query)
         return
       }
 
-      const value = encodeURIComponent(`${obj[val]}`.replace(/[!'()*]/g, escape))
+      const value = encodeURIComponent(`${obj[ val ]}`.replace(/[!'()*]/g, escape))
       output.push(`${key}=${value}`)
     })
 
@@ -75,7 +76,8 @@ const utils = {
   },
   notify: (msg) => dispatch(enqueueNotification(msg)),
   noop: () => {},
-  deleteProps
+  deleteProps,
+  Thread
 }
 
 export default utils
