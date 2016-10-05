@@ -3,7 +3,6 @@ const {writeFile, existsSync, readFileSync} = require('fs')
 const {app, ipcMain} = require('electron')
 const _ = require('lodash')
 const mkdirp = require('mkdirp')
-const deepAssign = require('deep-assign')
 
 const CONFIG_PATH = resolve(app.getPath('userData'), 'user.config.json')
 const PLUGINS_PATH = resolve(app.getPath('userData'), 'plugins')
@@ -15,7 +14,7 @@ const persist = () => {
 }
 
 const mergeWithDefaultConfig = (config = {}) => {
-  return deepAssign({
+  return _.merge({
     plugins: {
       local: [],
       external: []
