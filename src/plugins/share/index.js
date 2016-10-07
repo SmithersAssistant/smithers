@@ -1,10 +1,19 @@
 import { getCardById } from 'state'
 import { clipboard } from 'electron'
 
+const BASE_URL = 'https://getsmithers.com'
+
 export default robot => {
   const RECEIVE_REGEX = /^share receive (.*)$/
 
   function inject (code) {
+    const UUID_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/
+
+    if (UUID_REGEX.test(code)) {
+      return robot.fetchJson(`${BASE_URL}/api/share/${code}`)
+        .then(({ data }) => inject(data.payload))
+    }
+
     try {
       const {
         plugin,
@@ -12,7 +21,7 @@ export default robot => {
         props,
         state,
         id
-      } = JSON.parse(window.atob(code))
+      } = code
 
       if (!robot.cardExists(id)) {
         const pluginExists = robot.plugins().find(p => p.name === plugin)
@@ -47,8 +56,25 @@ export default robot => {
         plugin: robot.plugins().find(plugin => plugin.cards.find(card => card.name === cardData.card)).name,
         ...cardData
       }
-      clipboard.writeText(`share receive ${window.btoa(JSON.stringify(data))}`)
-      robot.notify('The sharing code is in your clipboard, share it with your friend!')
+
+      robot.fetchJson(`${BASE_URL}/api/share`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify({
+          payload: data
+        })
+      })
+        .then(({ errors, data }) => {
+          if (errors) {
+            return robot.notify('Something went wrong while trying to share this card')
+          }
+
+          clipboard.writeText(`share receive ${data.id}`)
+          robot.notify('The sharing code is in your clipboard, share it with your friend!')
+        })
     } catch (err) {
       robot.notify('We could not share this card at the moment')
     }
