@@ -23,7 +23,13 @@ const utils = {
     return window.fetch(url, options)
   },
   fetchJson (url, options = {}) {
-    return utils.fetch(url, options).then((res) => res.json())
+    return utils.fetch(url, options).then((response) => {
+      let json = response.json()
+
+      return response.status >= 200 && response.status < 300
+        ? json
+        : json.then(Promise.reject.bind(Promise))
+    })
   },
   httpBuildQuery (obj, tmpKey) {
     const output = []
