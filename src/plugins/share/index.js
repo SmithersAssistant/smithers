@@ -61,19 +61,24 @@ export default robot => {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json; charset=utf-8'
+          'Content-Type': 'application/json; charset=utf-8',
+          'Authorization': `JWT ${window.localStorage.getItem('jwt.token')}`
         },
         body: JSON.stringify({
           payload: data
         })
       })
-        .then(({ errors, data }) => {
+        .then(({ data }) => {
+          clipboard.writeText(`share receive ${data.id}`)
+          robot.notify('The sharing code is in your clipboard, share it with your friend!')
+        }, ({ errors }) => {
+          if (errors && errors.message === 'jwt malformed') {
+            return robot.notify('You are not authenticate, run `auth` to authenticate yourself and try again')
+          }
+
           if (errors) {
             return robot.notify('Something went wrong while trying to share this card')
           }
-
-          clipboard.writeText(`share receive ${data.id}`)
-          robot.notify('The sharing code is in your clipboard, share it with your friend!')
         })
     } catch (err) {
       robot.notify('We could not share this card at the moment')
