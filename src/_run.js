@@ -41,6 +41,7 @@ pluginManager.register(pluginInfo({name: 'settings'}), require('plugins/settings
 pluginManager.register(pluginInfo({name: 'tabs'}), require('plugins/tabs'))
 pluginManager.register(pluginInfo({name: 'spm'}), require('plugins/spm'))
 pluginManager.register(pluginInfo({name: 'share'}), require('plugins/share'))
+pluginManager.register(pluginInfo({name: 'auth'}), require('plugins/auth'))
 
 // Load Local Plugins
 config.get('plugins.local').map((plugin) => {
