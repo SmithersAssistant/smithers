@@ -21,8 +21,8 @@ const getParameterByName = (name, url) => {
 export default robot => {
   const { React } = robot.dependencies
   const { Blank } = robot.cards
-  const { material } = robot.UI
-  const { Chip, Avatar } = material
+  const { material, Button } = robot.UI
+  const { Chip, Avatar, LinearProgress } = material
 
   const AUTH_COMPONENT = 'com.robinmalfait.auth'
   class Auth extends React.Component {
@@ -30,14 +30,17 @@ export default robot => {
       super(...args)
 
       this.state = {
+        loadingLoginModal: false,
         jwt: null,
         authenticated: false,
         met: {}
       }
     }
 
-    componentDidMount () {
+    signIn () {
       if (!window.localStorage.getItem('jwt.token')) {
+        this.setState({ loadingLoginModal: true })
+
         const bw = new BrowserWindow({ show: false })
 
         bw.loadURL(`${BASE_URL}/login`)
@@ -50,7 +53,7 @@ export default robot => {
 
           if (token) {
             window.localStorage.setItem('jwt.token', token)
-            this.setState({ jwt: token }, () => this.fetchUser())
+            this.setState({ jwt: token, loadingLoginModal: false }, () => this.fetchUser())
             bw.destroy()
           }
         })
@@ -72,20 +75,63 @@ export default robot => {
           this.setState({
             me: data,
             authenticated: true
-          })
+          }, () => robot.notify('You have been authenticated'))
         }, () => this.setState({ authenticated: false }))
     }
 
     render () {
       const { ...other } = this.props
-      const { authenticated, me } = this.state
+      const { loadingLoginModal, authenticated, me } = this.state
+
+      const actions = []
+
+      if (authenticated) {
+        actions.push({
+          label: 'Sign out',
+          onClick: () => {
+            window.localStorage.removeItem('jwt.token')
+            this.setState({
+              jwt: null,
+              me: {},
+              authenticated: false
+            })
+
+            robot.notify('You have been logged out')
+          }
+        })
+      } else {
+        actions.push({
+          label: 'Sign in',
+          onClick: () => {
+            this.signIn()
+          }
+        })
+      }
 
       return (
-        <Blank title='Authenticate' {...other}>
-          <h3>You have {authenticated ? '' : 'not'} been authenticated {authenticated ? '' : 'yet'}.</h3>
+        <Blank
+          title={authenticated ? 'Authenticated' : 'Authenticate'}
+          actions={actions}
+          {...other}
+        >
+          {!authenticated && (
+            <h3>You have not been authenticated yet</h3>
+          )}
+
+          {loadingLoginModal && (
+            <LinearProgress
+              mode='indeterminate'
+            />
+          )}
+
+          {!authenticated && !loadingLoginModal && (
+            <Button onClick={() => this.signIn()}>Sign In</Button>
+          )}
 
           {authenticated && (
-            <Chip>
+            <Chip
+              style={{margin: '40px auto'}}
+            >
               <Avatar
                 src={`https://s.gravatar.com/avatar/${md5(me.email)}?size=24&default=mm`}
               /> {me.firstName}
