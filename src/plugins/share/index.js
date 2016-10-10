@@ -10,7 +10,7 @@ export default robot => {
     const UUID_REGEX = /([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/
 
     if (UUID_REGEX.test(code)) {
-      return robot.fetchJson(`${BASE_URL}/api/share/${code}`)
+      return robot.fetchJson(`${BASE_URL}/api/shares/${code}`)
         .then(({ data }) => inject(data.payload))
     }
 
@@ -57,7 +57,7 @@ export default robot => {
         ...cardData
       }
 
-      robot.fetchJson(`${BASE_URL}/api/share`, {
+      robot.fetchJson(`${BASE_URL}/api/shares`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
