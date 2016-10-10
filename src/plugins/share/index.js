@@ -73,7 +73,7 @@ export default robot => {
           robot.notify('The sharing code is in your clipboard, share it with your friend!')
         }, ({ errors }) => {
           if (errors && errors.message === 'jwt malformed') {
-            return robot.notify('You are not authenticate, run `auth` to authenticate yourself and try again')
+            return robot.notify('You are not authenticated, run `auth` to authenticate yourself and try again')
           }
 
           if (errors) {
