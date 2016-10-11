@@ -19,18 +19,20 @@ export default ({ robot }) => {
     )
   }
 
+  const empty = () => (
+    <div>
+      <p>
+        There are no local plugins, add your first local plugin now!
+      </p>
+      <pre>install {`${homedir()}${sep}your_first_plugin`}</pre>
+    </div>
+  )
+
   return (
     <div>
       {localPlugins.length > 0
         ? renderList()
-        : (
-        <div>
-          <p>
-            There are no local plugins, add your first local plugin now!
-          </p>
-          <pre>install {`${homedir()}${sep}your_first_plugin`}</pre>
-        </div>
-      )}
+        : empty()}
     </div>
   )
 }
