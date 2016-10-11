@@ -37,6 +37,10 @@ export default robot => {
       }
     }
 
+    componentWillMount () {
+      this.signIn()
+    }
+
     signIn () {
       if (!window.localStorage.getItem('jwt.token')) {
         this.setState({ loadingLoginModal: true })
