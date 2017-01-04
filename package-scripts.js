@@ -32,6 +32,7 @@ module.exports = {
     sync: {
       dependencies: 'node ./npm_scripts/syncPackageJson.js'
     },
+    electron: 'cross-env NODE_ENV=development electron app',
     dev: 'cross-env NODE_ENV=development webpack --watch',
     build: 'npm start clean && npm start sync.dependencies && cross-env NODE_ENV=production webpack',
     pretest: 'standard ./src/**/*.js',
@@ -39,10 +40,10 @@ module.exports = {
       default: 'cross-env NODE_ENV=production ./node_modules/.bin/mocha \'./tests/**/*.spec.js\' --compilers js:babel-core/register',
       watch: 'npm test -- --watch'
     },
-    default: 'cross-env NODE_ENV=development electron app',
+    default: 'npm start dev',
     postinstall: 'install-app-deps',
     pack: `npm start build && build -${currentPlatform} --dir && npm start launch`,
     dist: `npm start build && build -${releaseOnPlatforms} && npm start launch`,
     release: `npm start build && npm start tag.create && build -${releaseOnPlatforms} --publish=always`
   }
-};
+}

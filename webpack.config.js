@@ -1,12 +1,18 @@
-const webpack = require('webpack');
-const fs = require('fs');
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const nodeEnv = process.env.NODE_ENV || 'development';
-const isProduction = nodeEnv === 'production';
-const noop = () => {};
+const webpack = require('webpack')
+const fs = require('fs')
+const exec = require('child_process').exec
+const path = require('path')
+const nodeExternals = require('webpack-node-externals')
+const nodeEnv = process.env.NODE_ENV || 'development'
+const isProduction = nodeEnv === 'production'
+const noop = () => {}
 
-const node_modules = fs.readdirSync('node_modules').filter((x) => x !== '.bin');
+const node_modules = fs.readdirSync('node_modules').filter((x) => x !== '.bin')
+
+if (! isProduction) {
+  // Let's open electron
+  exec('npm start electron')
+}
 
 module.exports = {
   devtool: isProduction ? 'hidden-source-map' : null,
@@ -57,7 +63,7 @@ module.exports = {
       compressor: {
         warnings: false
       },
-      sourceMap: false,
+      sourceMap: false
     }) : noop
   ],
   standard: {
@@ -67,4 +73,4 @@ module.exports = {
   externals: [nodeExternals({
     whitelist: ['babel-polyfill', 'regenerator-runtime/runtime']
   })]
-};
+}
