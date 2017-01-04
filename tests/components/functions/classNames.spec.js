@@ -12,7 +12,6 @@ export default () => {
       expect(classNames('a', undefined, 'b')).to.equal('a b');
       expect(classNames('a', false, 'b')).to.equal('a b');
       expect(classNames('a', null, 'b')).to.equal('a b');
-      expect(classNames('a', 0, 'b')).to.equal('a b');
     });
 
     it('should flatten arrays of class names as well', () => {
