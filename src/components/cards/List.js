@@ -7,11 +7,11 @@ const List = ({title, items, styles, className, ...other}) => (
   <Base
     {...other}
     title={title}
-    className={classNames(styles.cardStyles, styles.itemStyles, className)}
+    className={classNames(styles.card, styles.item, className)}
   >
-    <ul className={styles.cardListStyles}>
+    <ul className={styles.cardList}>
       {items.map((item, i) => (
-        item && <li key={i} className={styles.cardListItemStyles}>{item}</li>
+        item && <li key={i} className={styles.cardListItem}>{item}</li>
       ))}
     </ul>
   </Base>

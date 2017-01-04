@@ -7,7 +7,7 @@ const Empty = ({children, title, className, ...other}) => (
   <Base
     {...other}
     title={title}
-    className={classNames(styles.itemStyles, className)}
+    className={classNames(styles.item, className)}
   >
     {children}
   </Base>

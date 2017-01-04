@@ -9,15 +9,15 @@ const Full = ({children, styles, className, title, ...other}) => (
     {...other}
     title={title}
     className={classNames(
-      styles.cardStyles,
-      styles.itemStyles,
+      styles.card,
+      styles.item,
       areTabsVisible()
-        ? styles.cardFullStylesWithTabs
-        : styles.cardFullStylesWithoutTabs,
+        ? styles.cardFullWithTabs
+        : styles.cardFullWithoutTabs,
       className
     )}
   >
-    <div className={styles.embedStyles}>
+    <div className={styles.embed}>
       {children}
     </div>
   </Base>

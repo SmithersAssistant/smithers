@@ -3,7 +3,7 @@ export default ({ theme, sum, px }) => {
 
   return {
     // ALL CARDS
-    cardStyles: {
+    card: {
       position: 'relative',
       backgroundColor: theme.cardBackground,
       borderRadius: 3,
@@ -11,12 +11,12 @@ export default ({ theme, sum, px }) => {
       padding: px(sum(theme.cardHeaderHeight, theme.padding), theme.padding, theme.padding),
       ...theme.shadow2
     },
-    itemStyles: {
+    item: {
       margin: px(0, theme.cardSpace, theme.cardSpace)
     },
 
     // FULL CARD
-    cardFullStylesWithTabs: {
+    cardFullWithTabs: {
       position: 'relative',
       height: `calc(100vh - ${px(sum(
         theme.inputHeight,
@@ -26,7 +26,7 @@ export default ({ theme, sum, px }) => {
         theme.footerHeight
       ))})`
     },
-    cardFullStylesWithoutTabs: {
+    cardFullWithoutTabs: {
       position: 'relative',
       height: `calc(100vh - ${px(sum(
         theme.inputHeight,
@@ -35,7 +35,7 @@ export default ({ theme, sum, px }) => {
         theme.footerHeight
       ))})`
     },
-    embedStyles: {
+    embed: {
       padding: 0,
       width: '100%',
       position: 'absolute',
@@ -46,11 +46,11 @@ export default ({ theme, sum, px }) => {
     },
 
     // IMAGES CARD
-    cardImagesStyles: {
+    cardImages: {
       margin: 0,
       padding: 0
     },
-    imagesStyles: {
+    images: {
       lineHeight: 0,
       columnCount: 5,
       columnGap: gap,
@@ -67,14 +67,14 @@ export default ({ theme, sum, px }) => {
         columnCount: 1
       }
     },
-    imgStyles: {
+    img: {
       width: '100%',
       height: 'auto',
       margin: px((gap / 2), 0)
     },
 
     // LIST CARD
-    cardListStyles: {
+    cardList: {
       display: 'block',
       listStyleType: 'none',
       padding: 0,
@@ -82,7 +82,7 @@ export default ({ theme, sum, px }) => {
       borderRadius: 2,
       ...theme.shadow1
     },
-    cardListItemStyles: {
+    cardListItem: {
       backgroundColor: 'white',
       lineHeight: '1.9rem',
       padding: '10px 20px',
