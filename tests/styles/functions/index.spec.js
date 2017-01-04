@@ -7,5 +7,5 @@ export default () => {
     importantTests()
     mathTests()
     generalTests()
-  });
+  })
 }

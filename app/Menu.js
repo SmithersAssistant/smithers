@@ -124,14 +124,14 @@ module.exports = (options) => {
           label: 'Check for Updates...',
           enabled: isProductionMode,
           click () {
-            options.checkForUpdates();
+            options.checkForUpdates()
           }
         },
         {
           label: 'Preferences...',
           accelerator: 'Command+,',
           click () {
-            options.openSettings();
+            options.openSettings()
           }
         },
         {

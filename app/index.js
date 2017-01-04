@@ -70,7 +70,7 @@ const openSettings = () => {
 const registerShortcuts = (shortcuts = get('keyboardShortcuts')) => {
   globalShortcut.unregisterAll()
 
-  shortcuts.toggleWindow !== "" && globalShortcut.register(shortcuts.toggleWindow, () => {
+  shortcuts.toggleWindow !== '' && globalShortcut.register(shortcuts.toggleWindow, () => {
     const launch = () => {
       _executeOnLauncher(() => {
         launcher.isFocused()
@@ -144,10 +144,10 @@ const createLauncher = ({ onLoaded = noop } = {}) => {
   })
 
   launcher.on('ready-to-show', () => {
-    launcher.webContents.executeJavaScript("window.LAUNCHER_MODE = true")
+    launcher.webContents.executeJavaScript('window.LAUNCHER_MODE = true')
   })
 
-  launcher.webContents.once("did-frame-finish-load", () => {
+  launcher.webContents.once('did-frame-finish-load', () => {
     onLoaded()
   })
 
@@ -173,7 +173,7 @@ const createWindow = ({ onLoaded = noop } = {}) => {
     win.show()
   })
 
-  win.webContents.once("did-frame-finish-load", () => {
+  win.webContents.once('did-frame-finish-load', () => {
     autoUpdater.checkForUpdates()
     onLoaded()
   })

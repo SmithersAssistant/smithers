@@ -3,7 +3,7 @@ import classNames from './classNames.spec'
 
 export default () => {
   describe('Functions', () => {
-    deleteProps();
-    classNames();
-  });
-};
+    deleteProps()
+    classNames()
+  })
+}

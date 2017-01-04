@@ -1,7 +1,7 @@
-const exec = require('child_process').exec;
-const path = require('path');
+const exec = require('child_process').exec
+const path = require('path')
 
-const version = 'v' + require(path.resolve('package.json')).version;
+const version = 'v' + require(path.resolve('package.json')).version
 
 function execute (command) {
   return new Promise((resolve, reject) => {
@@ -10,17 +10,17 @@ function execute (command) {
       shell: process.env.SHELL
     }, (err, stdout, stderr) => {
       if (err || stderr) {
-        reject('Could not push latest updates');
+        reject('Could not push latest updates')
       }
 
-      resolve();
+      resolve()
     })
-  });
+  })
 }
 
 Promise.resolve()
   .then(execute('./npm_scripts/createTag.sh ' + version))
   .catch((err) => {
-    console.error(err);
-    process.exit(1);
+    console.error(err)
+    process.exit(1)
   })

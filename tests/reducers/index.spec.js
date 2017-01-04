@@ -4,8 +4,8 @@ import notifications from './notifications.spec'
 import settings from './settings.spec'
 
 describe('Reducers', () => {
-  cards();
-  commands();
-  notifications();
-  settings();
-});
+  cards()
+  commands()
+  notifications()
+  settings()
+})

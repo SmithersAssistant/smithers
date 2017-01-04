@@ -1,6 +1,6 @@
-import {expect} from 'chai';
+import {expect} from 'chai'
 
-import deleteProps from '../../../src/components/functions/deleteProps';
+import deleteProps from '../../../src/components/functions/deleteProps'
 
 export default () => {
   describe('deleteProps', () => {
@@ -12,13 +12,13 @@ export default () => {
         className: 'someClassName',
         someRandomToBeDeleted: 123,
         onChange: noop
-      };
+      }
 
       expect(deleteProps(props, ['someRandomToBeDeleted'])).to.deep.equal({
         onClick: noop,
         className: 'someClassName',
         onChange: noop
-      });
-    });
-  });
-};
+      })
+    })
+  })
+}
