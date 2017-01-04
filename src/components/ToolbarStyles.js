@@ -1,5 +1,5 @@
 export default ({ theme, px, sum }) => ({
-  cardHeaderStyles: {
+  cardHeader: {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -9,7 +9,7 @@ export default ({ theme, px, sum }) => ({
     borderRadius: '3px 3px 0 0',
     backgroundColor: theme.cardBackground
   },
-  cardHeaderTitleStyles: {
+  cardHeaderTitle: {
     height: px(theme.cardHeaderHeight),
     lineHeight: px(theme.cardHeaderHeight),
     whiteSpace: 'nowrap',

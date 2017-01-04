@@ -4,37 +4,43 @@ import { Menu, MenuItem, MenuDivider } from './UI/Menu'
 import styles from './ToolbarStyles'
 import { withStyles } from 'components/functions'
 
-const Toolbar = ({ styles, title, actions, removeCard, canShareCard, shareCard }) => {
+const Actions = ({ actions = [] }) => {
+  const DIVIDER = 'divider'
+  const hasActions = actions && actions.length > 0
+
   return (
-    <div className={styles.cardHeaderStyles}>
+    <div>
+      {hasActions && actions.map(({ type, label, ...other }, i) => {
+        if (type === DIVIDER) {
+          return <MenuDivider key={i} />
+        }
 
-      {title && <h3 className={styles.cardHeaderTitleStyles}>{title}</h3>}
+        return <MenuItem key={i} {...other}>{label}</MenuItem>
+      })}
+    </div>
+  )
+}
 
+const Toolbar = ({ styles, title, actions, removeCard, canShareCard, shareCard }) => {
+  const hasActions = actions && actions.length > 0
+  const hasTitle = title && title !== undefined
+
+  return (
+    <div className={styles.cardHeader}>
+      {/* Render a title if there is one */}
+      {hasTitle && <h3 className={styles.cardHeaderTitle}>{title}</h3>}
+
+      {/* Render the menu dropdown itself */}
       <Menu className={styles.right} icon={ExpandMoreIcon}>
-        {actions && actions.length > 0 && actions.map(({ type, label, ...other }, i) => {
-          if (type === 'divider') {
-            return (
-              <MenuDivider
-                key={i}
-              />
-            )
-          }
+        {/* Render all actions from the plugin */}
+        <Actions actions={actions} />
 
-          return (
-            <MenuItem
-              key={i}
-              {...other}
-            >
-              {label}
-            </MenuItem>
-          )
-        })}
-        {actions && actions.length > 0 && (
-          <MenuDivider />
-        )}
+        {/* Render a divider if the plugin has actions */}
+        {hasActions && <MenuDivider />}
 
-        <MenuItem onClick={removeCard}>Remove card</MenuItem>
+        {/* Render default actions */}
         <MenuItem disabled={!canShareCard} onClick={() => canShareCard && shareCard()}>Share card</MenuItem>
+        <MenuItem onClick={removeCard}>Remove card</MenuItem>
       </Menu>
     </div>
   )
