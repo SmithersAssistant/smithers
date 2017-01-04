@@ -68,6 +68,16 @@ export default robot => {
       }
     }
 
+    signOut () {
+      window.localStorage.removeItem('jwt.token')
+
+      this.setState({
+        jwt: null,
+        me: {},
+        authenticated: false
+      })
+    }
+
     fetchUser () {
       robot.fetchJson(`${BASE_URL}/api/auth/me`, {
         headers: {
@@ -75,12 +85,18 @@ export default robot => {
           'Authorization': `JWT ${this.state.jwt}`
         }
       })
-        .then(({ data }) => {
-          this.setState({
-            me: data,
-            authenticated: true
-          }, () => robot.notify('You have been authenticated'))
-        }, () => this.setState({ authenticated: false }))
+        .then(
+          ({ data }) => {
+            this.setState({
+              me: data,
+              authenticated: true
+            }, () => robot.notify('You have been authenticated'))
+          },
+          () => {
+            window.localStorage.removeItem('jwt.token')
+            this.setState({ authenticated: false })
+          }
+        )
     }
 
     render () {
@@ -93,13 +109,7 @@ export default robot => {
         actions.push({
           label: 'Sign out',
           onClick: () => {
-            window.localStorage.removeItem('jwt.token')
-            this.setState({
-              jwt: null,
-              me: {},
-              authenticated: false
-            })
-
+            this.signOut()
             robot.notify('You have been logged out')
           }
         })
@@ -108,6 +118,7 @@ export default robot => {
           label: 'Sign in',
           onClick: () => {
             this.signIn()
+            robot.notify('You have been signed in')
           }
         })
       }
