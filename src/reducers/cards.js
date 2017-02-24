@@ -1,3 +1,5 @@
+import reducer from './reducer'
+
 import {
   ADD_CARD,
   INJECT_SHARED_CARD,
@@ -7,73 +9,60 @@ import {
   REMOVE_TAB
 } from '../actions/types'
 
-const card = (state, action) => {
-  switch (action.type) {
-    case ADD_CARD:
-      return {
-        card: action.card,
-        props: action.props,
-        state: {},
-        id: action.id,
-        relation: action.relation
-      }
-    case INJECT_SHARED_CARD:
-      return {
-        card: action.card,
-        props: action.props,
-        state: action.state,
-        id: action.id,
-        relation: action.relation
-      }
-    default:
-      return state
-  }
-}
+const card = reducer({
+  [ADD_CARD]: (state, action) => ({
+    card: action.card,
+    props: action.props,
+    state: {},
+    id: action.id,
+    relation: action.relation
+  }),
+  [INJECT_SHARED_CARD]: (state, action) => ({
+    card: action.card,
+    props: action.props,
+    state: action.state,
+    id: action.id,
+    relation: action.relation
+  })
+})
 
-const cards = (state = [], action) => {
-  switch (action.type) {
-    case INJECT_SHARED_CARD:
-    case ADD_CARD:
-      return {
-        ...state,
-        cards: [...state.cards, card(undefined, action)]
-      }
-    case SAVE_CARD_STATE:
-      return {
-        ...state,
-        cards: state.cards.map(card => {
-          if (card.id === action.id) {
-            card = {
-              ...card,
-              state: {
-                ...card.state,
-                ...(action.state || {})
-              }
-            }
+const cards = reducer({
+  [INJECT_SHARED_CARD]: (state, action) => ({
+    ...state,
+    cards: [...state.cards, card(undefined, action)]
+  }),
+  [ADD_CARD]: (state, action) => ({
+    ...state,
+    cards: [...state.cards, card(undefined, action)]
+  }),
+  [SAVE_CARD_STATE]: (state, action) => ({
+    ...state,
+    cards: state.cards.map(card => {
+      if (card.id === action.id) {
+        card = {
+          ...card,
+          state: {
+            ...card.state,
+            ...(action.state || {})
           }
-
-          return card
-        })
+        }
       }
-    case REMOVE_CARD:
-      return {
-        ...state,
-        cards: state.cards.filter(item => item.id !== action.id)
-      }
-    case CLEAR_CARD_HISTORY:
-      return {
-        ...state,
-        cards: [...state.cards.filter(card => card.relation !== action.tab)]
-      }
-    case REMOVE_TAB:
-      return {
-        ...state,
-        cards: state.cards.filter(item => item.relation !== action.id)
-      }
-    default:
-      return state
-  }
-}
+      return card
+    })
+  }),
+  [REMOVE_CARD]: (state, action) => ({
+    ...state,
+    cards: state.cards.filter(item => item.id !== action.id)
+  }),
+  [CLEAR_CARD_HISTORY]: (state, action) => ({
+    ...state,
+    cards: [...state.cards.filter(card => card.relation !== action.tab)]
+  }),
+  [REMOVE_TAB]: (state, action) => ({
+    ...state,
+    cards: state.cards.filter(item => item.relation !== action.id)
+  })
+}, [])
 
 export const defaultState = {
   cards: []

@@ -1,25 +1,14 @@
+import reducer from './reducer'
+
 import {
   ENQUEUE_NOTIFICATION,
   DEQUEUE_NOTIFICATION
 } from '../actions/types'
 
-const notifications = (state = [], action) => {
-  switch (action.type) {
-    case ENQUEUE_NOTIFICATION:
-      return [
-        action.msg,
-        ...state
-      ]
-    case DEQUEUE_NOTIFICATION:
-      const newState = state.slice()
-      newState.pop()
-      return [
-        ...newState
-      ]
-    default:
-      return state
-  }
-}
+const notifications = reducer({
+  [ENQUEUE_NOTIFICATION]: (state, action) => ([action.msg, ...state]),
+  [DEQUEUE_NOTIFICATION]: (state, action) => ([state.slice(0, state.length - 1)])
+}, [])
 
 export const defaultState = []
 

@@ -1,5 +1,6 @@
 import {v4 as uuid} from 'uuid'
 import {userInfo} from 'os'
+import reducer from './reducer'
 
 import {
   ADD_TAB,
@@ -55,125 +56,109 @@ const findTabAfterActiveTab = (state, places = 1) => {
   return findNextActiveTab(state, places)
 }
 
-const tab = (state, action) => {
-  switch (action.type) {
-    case ADD_TAB:
-      return {
-        title: normalize(action.title, 'untitled'),
-        id: action.id
-      }
-    case EDIT_TAB:
-      return {
-        ...state,
-        title: normalize(action.title, 'untitled')
-      }
-    default:
-      return state
-  }
-}
+const tab = reducer({
+  [ADD_TAB]: (state, action) => ({
+    title: normalize(action.title, 'untitled'),
+    id: action.id
+  }),
+  [EDIT_TAB]: (state, action) => ({
+    ...state,
+    title: normalize(action.title, 'untitled')
+  })
+})
 
-const tabs = (state = [], action) => {
-  let activeIndex
-  let id
+const tabs = reducer({
+  [ADD_TAB]: (state, action) => ({
+    ...state,
+    list: [...state.list, tab(undefined, action)],
+    active: action.id,
+    visible: true
+  }),
+  [EDIT_TAB]: (state, action) => ({
+    ...state,
+    list: state.list.map(item => {
+      if (item.id === action.id) {
+        return tab(item, action)
+      }
+      return item
+    })
+  }),
+  [HIDE_TABS]: (state, action) => ({
+    ...state,
+    visible: false
+  }),
+  [SHOW_TABS]: (state, action) => {
+    // You can only make the tabs bar visible, when there are tabs
+    if (state.list.length > 0) {
+      return {
+        ...state,
+        visible: state.list.length > 0
+      }
+    }
 
-  switch (action.type) {
-    case ADD_TAB:
-      return {
-        ...state,
-        list: [...state.list, tab(undefined, action)],
-        active: action.id,
-        visible: true
-      }
-    case EDIT_TAB:
-      return {
-        ...state,
-        list: state.list.map(item => {
-          if (item.id === action.id) {
-            return tab(item, action)
-          }
-          return item
-        })
-      }
-    case HIDE_TABS:
-      return {
-        ...state,
-        visible: false
-      }
-    case SHOW_TABS:
-      // You can only make the tabs bar visible, when there are tabs
-      if (state.list.length > 0) {
-        return {
-          ...state,
-          visible: state.list.length > 0
-        }
-      }
+    const id = uuid()
 
-      id = uuid()
+    return {
+      ...state,
+      list: [{
+        title: userInfo().username,
+        id: id
+      }],
+      active: id,
+      visible: true
+    }
+  },
+  [REMOVE_TAB]: (state, action) => {
+    const list = state.list.filter(item => item.id !== action.id)
 
-      return {
-        ...state,
-        list: [{
-          title: userInfo().username,
-          id: id
-        }],
-        active: id,
-        visible: true
-      }
-    case REMOVE_TAB:
-      const list = state.list.filter(item => item.id !== action.id)
+    let active = null
+    let visible = false
 
-      let active = null
-      let visible = false
+    if (list.length > 0) {
+      active = action.id === state.active ? list[list.length - 1].id : state.active
+      visible = true
+    }
 
-      if (list.length > 0) {
-        active = action.id === state.active ? list[list.length - 1].id : state.active
-        visible = true
-      }
+    return {
+      ...state,
+      list,
+      active,
+      visible
+    }
+  },
+  [MOVE_TAB]: (state, action) => ({
+    ...state,
+    list: moveItemInArray(state.list, action.oldIndex, action.newIndex)
+  }),
+  [MOVE_TAB_TO_THE_LEFT]: (state, action) => {
+    const activeIndex = findTabIndex(state.list, action.id)
 
-      return {
-        ...state,
-        list,
-        active,
-        visible
-      }
-    case MOVE_TAB:
-      return {
-        ...state,
-        list: moveItemInArray(state.list, action.oldIndex, action.newIndex)
-      }
-    case MOVE_TAB_TO_THE_LEFT:
-      activeIndex = findTabIndex(state.list, action.id)
+    return {
+      ...state,
+      list: moveItemInArray(state.list, activeIndex, activeIndex - 1)
+    }
+  },
+  [MOVE_TAB_TO_THE_RIGHT]: (state, action) => {
+    const activeIndex = findTabIndex(state.list, action.id)
 
-      return {
-        ...state,
-        list: moveItemInArray(state.list, activeIndex, activeIndex - 1)
-      }
-    case MOVE_TAB_TO_THE_RIGHT:
-      activeIndex = findTabIndex(state.list, action.id)
-
-      return {
-        ...state,
-        list: moveItemInArray(state.list, activeIndex, activeIndex + 1)
-      }
-    case FOCUS_TAB:
-      return {
-        ...state,
-        active: action.id
-      }
-    case FOCUS_PREV_TAB:
-      return {
-        ...state,
-        active: findTabBeforeActiveTab(state, action.places)
-      }
-    case FOCUS_NEXT_TAB:
-      return {
-        ...state,
-        active: findTabAfterActiveTab(state, action.places)
-      }
-    default:
-      return state
-  }
-}
+    return {
+      ...state,
+      list: moveItemInArray(state.list, activeIndex, activeIndex + 1)
+    }
+  },
+  [FOCUS_TAB]: (state, action) => ({
+    ...state,
+    active: action.id
+  }),
+  [FOCUS_PREV_TAB]: (state, action) => ({
+    ...state,
+    active: findTabBeforeActiveTab(state, action.places)
+  }),
+  [FOCUS_NEXT_TAB]: (state, action) => ({
+    ...state,
+    active: findTabAfterActiveTab(state, action.places)
+  })
+}, [])
 
 const firstTabId = uuid()
 

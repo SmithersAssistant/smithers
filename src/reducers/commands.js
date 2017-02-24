@@ -1,3 +1,5 @@
+import reducer from './reducer'
+
 import {
   HANDLE_INPUT,
   PREVIOUS_COMMAND,
@@ -5,46 +7,40 @@ import {
   CLEAR_COMMAND_HISTORY
 } from '../actions/types'
 
-const commands = (state = {}, action) => {
-  let currentCommand
+const commands = reducer({
+  [HANDLE_INPUT]: (state, action) => ({
+    ...state,
+    currentCommand: state.past.length + 1,
+    past: [
+      ...state.past,
+      action.input
+    ]
+  }),
+  [PREVIOUS_COMMAND]: (state, action) => {
+    const currentCommand = Math.max(0, state.currentCommand - 1)
 
-  switch (action.type) {
-    case HANDLE_INPUT:
-      return {
-        ...state,
-        currentCommand: state.past.length + 1,
-        past: [
-          ...state.past,
-          action.input
-        ]
-      }
-    case PREVIOUS_COMMAND:
-      currentCommand = Math.max(0, state.currentCommand - 1)
+    return {
+      ...state,
+      command: state.past[currentCommand] || '',
+      currentCommand
+    }
+  },
+  [NEXT_COMMAND]: (state, action) => {
+    const currentCommand = Math.min(state.past.length, state.currentCommand + 1)
 
-      return {
-        ...state,
-        command: state.past[currentCommand] || '',
-        currentCommand
-      }
-    case NEXT_COMMAND:
-      currentCommand = Math.min(state.past.length, state.currentCommand + 1)
-
-      return {
-        ...state,
-        command: state.past[currentCommand] || '',
-        currentCommand
-      }
-    case CLEAR_COMMAND_HISTORY:
-      return {
-        ...state,
-        currentCommand: 0,
-        command: '',
-        past: []
-      }
-    default:
-      return state
-  }
-}
+    return {
+      ...state,
+      command: state.past[currentCommand] || '',
+      currentCommand
+    }
+  },
+  [CLEAR_COMMAND_HISTORY]: (state, action) => ({
+    ...state,
+    currentCommand: 0,
+    command: '',
+    past: []
+  })
+}, {})
 
 export const defaultState = {
   past: [],
