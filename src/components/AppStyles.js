@@ -2,7 +2,7 @@ export default ({ theme }) => ({
   scrollBar: {
     ...theme.scrollBar
   },
-  bodyStyles: {
+  body: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -11,7 +11,7 @@ export default ({ theme }) => ({
     backgroundColor: theme.backgroundColor,
     color: theme.color
   },
-  contentStyles: {
+  content: {
     position: 'absolute',
     top: theme.headerOffset + theme.inputHeight,
     left: 0,

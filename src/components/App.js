@@ -29,9 +29,9 @@ class App extends React.Component {
     let {visibleTabs} = this.state
 
     return (
-      <div className={styles.bodyStyles}>
+      <div className={styles.body}>
         <Navbar />
-        <div className={classNames(styles.contentStyles, visibleTabs ? undefined : styles.scrollBar)}>
+        <div className={classNames(styles.content, visibleTabs ? undefined : styles.scrollBar)}>
           <Tabs />
         </div>
         <Tools />
