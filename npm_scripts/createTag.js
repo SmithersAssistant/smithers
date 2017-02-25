@@ -10,7 +10,7 @@ function execute (command) {
       shell: process.env.SHELL
     }, (err, stdout, stderr) => {
       if (err || stderr) {
-        reject('Could not push latest updates')
+        return reject('Could not push latest updates')
       }
 
       resolve()
@@ -18,9 +18,8 @@ function execute (command) {
   })
 }
 
-Promise.resolve()
-  .then(execute('./npm_scripts/createTag.sh ' + version))
-  .catch((err) => {
-    console.error(err)
-    process.exit(1)
-  })
+execute('./npm_scripts/createTag.sh ' + version)
+.catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
